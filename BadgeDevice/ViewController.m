@@ -24,6 +24,8 @@
     [self.ble readDataWithUpdateHandler:^(struct DeviceData deviceData) {
         self.currentData.macAddress = self.ble.device.macAddress;
         self.currentData.pres = (__bridge NSString *)(deviceData.pres);
+        self.currentData.humi = (__bridge NSString *)(deviceData.humi);
+        self.currentData.temp = (__bridge NSString *)(deviceData.temp);
         self.textView.text = [self.currentData generateShowText];
     } notify:YES];
 }

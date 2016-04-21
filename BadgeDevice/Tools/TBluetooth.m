@@ -197,28 +197,29 @@ NSString *const kTBluetoothDisConnect = @"kTBluetoothDisConnect";
 //            }
 //        }
         // 温湿度
-//        if ([service.UUID.UUIDString isEqualToString:thServiceUUID]) {
-//            for (CBCharacteristic *chara in service.characteristics) {
-//                if ([chara.UUID.UUIDString isEqualToString:thConfigUUID]) {
-//                    [strongSelf writeValueForCBPeripheral:peripheral CBCharacteristic:chara];
-//                }
-//                
-//                if ([chara.UUID.UUIDString isEqualToString:thDataUUID]) {
-//                    thDataChara = chara;
-//                    if (strongSelf.notify) {	// 需要不断通知
-//                        // 注册温湿度值的通知，获取回调值
-//                        [strongSelf.babyBt notify:peripheral characteristic:chara block:^(CBPeripheral *peripheral, CBCharacteristic *characteristics, NSError *error) {
-//                            if (strongSelf.temp) {
-//                                strongSelf.temp([BluetoothReadWriteHelper stringTempWithValue:characteristics.value]);
-//                            }
-//                            if (strongSelf.humi) {
-//                                strongSelf.humi([BluetoothReadWriteHelper stringHumiWithValue:characteristics.value]);
-//                            }
-//                        }];
-//                    }
-//                }
-//            }
-//        }
+        if ([service.UUID.UUIDString isEqualToString:thServiceUUID]) {
+            for (CBCharacteristic *chara in service.characteristics) {
+                if ([chara.UUID.UUIDString isEqualToString:thConfigUUID]) {
+                    [strongSelf writeValueForCBPeripheral:peripheral CBCharacteristic:chara];
+                }
+                
+                if ([chara.UUID.UUIDString isEqualToString:thDataUUID]) {
+                    thDataChara = chara;
+                    if (strongSelf->isNotify) {	// 需要不断通知
+                        // 注册温湿度值的通知，获取回调值
+                        [strongSelf.babyBluetooth notify:peripheral characteristic:chara block:^(CBPeripheral *peripheral, CBCharacteristic *characteristics, NSError *error) {
+                            NSString *temp = [BluetoothReadWriteHelper stringTempWithValue:characteristics.value];
+                            NSString *humi = [BluetoothReadWriteHelper stringHumiWithValue:characteristics.value];
+                            strongSelf->deviceData.temp = (__bridge CFTypeRef)(temp);
+                            strongSelf->deviceData.humi = (__bridge CFTypeRef)(humi);
+                            if (strongSelf->blockUpdateHandler) {
+                                strongSelf->blockUpdateHandler(strongSelf->deviceData);
+                            }
+                        }];
+                    }
+                }
+            }
+        }
         // 气压
         if ([service.UUID.UUIDString isEqualToString:prServiceUUID]) {
             for (CBCharacteristic *chara in service.characteristics) {
@@ -238,9 +239,7 @@ NSString *const kTBluetoothDisConnect = @"kTBluetoothDisConnect";
                                 NSString *pres = [BluetoothReadWriteHelper stringPressureWithValue:characteristics.value];
                                 NSLog(@"设备的气压值为:%@",pres);
                                 strongSelf->deviceData.pres = (__bridge CFTypeRef)(pres);
-                                NSLog(@"设备的气压值为--:%@",strongSelf->deviceData.pres);
                                 strongSelf->blockUpdateHandler(strongSelf->deviceData);
-                                
                             }
                         }];
                     }
