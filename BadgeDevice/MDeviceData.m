@@ -9,5 +9,10 @@
 #import "MDeviceData.h"
 
 @implementation MDeviceData
+- (NSString *)generateShowText {
+    NSString *string = [NSString stringWithFormat:@"设备名:%@\tMac地址:%@\n当前数据:\n气压:%@",self.name,self.macAddress,self.pres];
+    
+    return string;
+}
 
 @end
