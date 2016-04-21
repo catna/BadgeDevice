@@ -16,6 +16,15 @@
 @end
 
 extern NSString *const kTBluetoothConnectSuccess;
+extern NSString *const kTBluetoothDisConnect;
+
+struct DeviceData {
+    CFTypeRef UVNu;
+    CFTypeRef UVLe;
+    CFTypeRef pres;
+    CFTypeRef humi;
+    CFTypeRef temp;
+};
 
 @interface TBluetooth : NSObject
 @property (nonatomic ,strong ,readonly) TBluetoothDevice *device;
@@ -25,5 +34,5 @@ extern NSString *const kTBluetoothConnectSuccess;
 - (void)connect;
 - (void)cancelConnecting;
 
-- (void)readDataWithCompletionHandler:(void (^)())handler;
+- (void)readDataWithUpdateHandler:(void (^)(struct DeviceData))handler notify:(BOOL)notify;
 @end
