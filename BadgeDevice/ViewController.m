@@ -7,21 +7,45 @@
 //
 
 #import "ViewController.h"
+#import "TBluetooth.h"
 
 @interface ViewController ()
-
+@property (weak, nonatomic) IBOutlet UITextView *textView;
+@property (nonatomic ,strong) TBluetooth *ble;
 @end
 
 @implementation ViewController
-
+#pragma mark - life cycle
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view, typically from a nib.
+    [self.ble connect];
+    [self addListener];
 }
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+- (void)dealloc {
+    [self removeListener];
+}
+
+#pragma mark - event
+- (void)eDeviceConnectSuccess {
+    self.textView.text = self.ble.device.name;
+}
+
+#pragma mark - private methods
+- (void)addListener {
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(eDeviceConnectSuccess) name:kTBluetoothConnectSuccess object:nil];
+}
+
+- (void)removeListener {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+#pragma mark - getter
+- (TBluetooth *)ble {
+    if (!_ble) {
+        _ble = [TBluetooth sharedBluetooth];
+    }
+    return _ble;
 }
 
 @end
