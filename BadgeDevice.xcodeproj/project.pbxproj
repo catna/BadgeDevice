@@ -1,0 +1,544 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		E19E374B1CC8C71F00071346 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = E19E374A1CC8C71F00071346 /* main.m */; };
+		E19E374E1CC8C71F00071346 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = E19E374D1CC8C71F00071346 /* AppDelegate.m */; };
+		E19E37511CC8C71F00071346 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E19E37501CC8C71F00071346 /* ViewController.m */; };
+		E19E37541CC8C71F00071346 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E19E37521CC8C71F00071346 /* Main.storyboard */; };
+		E19E37571CC8C71F00071346 /* BadgeDevice.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = E19E37551CC8C71F00071346 /* BadgeDevice.xcdatamodeld */; };
+		E19E37591CC8C71F00071346 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E19E37581CC8C71F00071346 /* Assets.xcassets */; };
+		E19E375C1CC8C71F00071346 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E19E375A1CC8C71F00071346 /* LaunchScreen.storyboard */; };
+		E19E37671CC8C71F00071346 /* BadgeDeviceTests.m in Sources */ = {isa = PBXBuildFile; fileRef = E19E37661CC8C71F00071346 /* BadgeDeviceTests.m */; };
+		E19E37721CC8C71F00071346 /* BadgeDeviceUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = E19E37711CC8C71F00071346 /* BadgeDeviceUITests.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		E19E37631CC8C71F00071346 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E19E373E1CC8C71F00071346 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = E19E37451CC8C71F00071346;
+			remoteInfo = BadgeDevice;
+		};
+		E19E376E1CC8C71F00071346 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E19E373E1CC8C71F00071346 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = E19E37451CC8C71F00071346;
+			remoteInfo = BadgeDevice;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		E19E37461CC8C71F00071346 /* BadgeDevice.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BadgeDevice.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		E19E374A1CC8C71F00071346 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		E19E374C1CC8C71F00071346 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		E19E374D1CC8C71F00071346 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		E19E374F1CC8C71F00071346 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
+		E19E37501CC8C71F00071346 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		E19E37531CC8C71F00071346 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		E19E37561CC8C71F00071346 /* BadgeDevice.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = BadgeDevice.xcdatamodel; sourceTree = "<group>"; };
+		E19E37581CC8C71F00071346 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		E19E375B1CC8C71F00071346 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		E19E375D1CC8C71F00071346 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		E19E37621CC8C71F00071346 /* BadgeDeviceTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BadgeDeviceTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		E19E37661CC8C71F00071346 /* BadgeDeviceTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BadgeDeviceTests.m; sourceTree = "<group>"; };
+		E19E37681CC8C71F00071346 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		E19E376D1CC8C71F00071346 /* BadgeDeviceUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BadgeDeviceUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		E19E37711CC8C71F00071346 /* BadgeDeviceUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BadgeDeviceUITests.m; sourceTree = "<group>"; };
+		E19E37731CC8C71F00071346 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		E19E37431CC8C71F00071346 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E19E375F1CC8C71F00071346 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E19E376A1CC8C71F00071346 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		E19E373D1CC8C71F00071346 = {
+			isa = PBXGroup;
+			children = (
+				E19E37481CC8C71F00071346 /* BadgeDevice */,
+				E19E37651CC8C71F00071346 /* BadgeDeviceTests */,
+				E19E37701CC8C71F00071346 /* BadgeDeviceUITests */,
+				E19E37471CC8C71F00071346 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		E19E37471CC8C71F00071346 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				E19E37461CC8C71F00071346 /* BadgeDevice.app */,
+				E19E37621CC8C71F00071346 /* BadgeDeviceTests.xctest */,
+				E19E376D1CC8C71F00071346 /* BadgeDeviceUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		E19E37481CC8C71F00071346 /* BadgeDevice */ = {
+			isa = PBXGroup;
+			children = (
+				E19E374C1CC8C71F00071346 /* AppDelegate.h */,
+				E19E374D1CC8C71F00071346 /* AppDelegate.m */,
+				E19E374F1CC8C71F00071346 /* ViewController.h */,
+				E19E37501CC8C71F00071346 /* ViewController.m */,
+				E19E37521CC8C71F00071346 /* Main.storyboard */,
+				E19E37581CC8C71F00071346 /* Assets.xcassets */,
+				E19E375A1CC8C71F00071346 /* LaunchScreen.storyboard */,
+				E19E375D1CC8C71F00071346 /* Info.plist */,
+				E19E37551CC8C71F00071346 /* BadgeDevice.xcdatamodeld */,
+				E19E37491CC8C71F00071346 /* Supporting Files */,
+			);
+			path = BadgeDevice;
+			sourceTree = "<group>";
+		};
+		E19E37491CC8C71F00071346 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				E19E374A1CC8C71F00071346 /* main.m */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		E19E37651CC8C71F00071346 /* BadgeDeviceTests */ = {
+			isa = PBXGroup;
+			children = (
+				E19E37661CC8C71F00071346 /* BadgeDeviceTests.m */,
+				E19E37681CC8C71F00071346 /* Info.plist */,
+			);
+			path = BadgeDeviceTests;
+			sourceTree = "<group>";
+		};
+		E19E37701CC8C71F00071346 /* BadgeDeviceUITests */ = {
+			isa = PBXGroup;
+			children = (
+				E19E37711CC8C71F00071346 /* BadgeDeviceUITests.m */,
+				E19E37731CC8C71F00071346 /* Info.plist */,
+			);
+			path = BadgeDeviceUITests;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		E19E37451CC8C71F00071346 /* BadgeDevice */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E19E37761CC8C71F00071346 /* Build configuration list for PBXNativeTarget "BadgeDevice" */;
+			buildPhases = (
+				E19E37421CC8C71F00071346 /* Sources */,
+				E19E37431CC8C71F00071346 /* Frameworks */,
+				E19E37441CC8C71F00071346 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = BadgeDevice;
+			productName = BadgeDevice;
+			productReference = E19E37461CC8C71F00071346 /* BadgeDevice.app */;
+			productType = "com.apple.product-type.application";
+		};
+		E19E37611CC8C71F00071346 /* BadgeDeviceTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E19E37791CC8C71F00071346 /* Build configuration list for PBXNativeTarget "BadgeDeviceTests" */;
+			buildPhases = (
+				E19E375E1CC8C71F00071346 /* Sources */,
+				E19E375F1CC8C71F00071346 /* Frameworks */,
+				E19E37601CC8C71F00071346 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				E19E37641CC8C71F00071346 /* PBXTargetDependency */,
+			);
+			name = BadgeDeviceTests;
+			productName = BadgeDeviceTests;
+			productReference = E19E37621CC8C71F00071346 /* BadgeDeviceTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		E19E376C1CC8C71F00071346 /* BadgeDeviceUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E19E377C1CC8C71F00071346 /* Build configuration list for PBXNativeTarget "BadgeDeviceUITests" */;
+			buildPhases = (
+				E19E37691CC8C71F00071346 /* Sources */,
+				E19E376A1CC8C71F00071346 /* Frameworks */,
+				E19E376B1CC8C71F00071346 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				E19E376F1CC8C71F00071346 /* PBXTargetDependency */,
+			);
+			name = BadgeDeviceUITests;
+			productName = BadgeDeviceUITests;
+			productReference = E19E376D1CC8C71F00071346 /* BadgeDeviceUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		E19E373E1CC8C71F00071346 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0730;
+				ORGANIZATIONNAME = MX;
+				TargetAttributes = {
+					E19E37451CC8C71F00071346 = {
+						CreatedOnToolsVersion = 7.3;
+						DevelopmentTeam = 7VTAQLJLUA;
+					};
+					E19E37611CC8C71F00071346 = {
+						CreatedOnToolsVersion = 7.3;
+						TestTargetID = E19E37451CC8C71F00071346;
+					};
+					E19E376C1CC8C71F00071346 = {
+						CreatedOnToolsVersion = 7.3;
+						TestTargetID = E19E37451CC8C71F00071346;
+					};
+				};
+			};
+			buildConfigurationList = E19E37411CC8C71F00071346 /* Build configuration list for PBXProject "BadgeDevice" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = E19E373D1CC8C71F00071346;
+			productRefGroup = E19E37471CC8C71F00071346 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				E19E37451CC8C71F00071346 /* BadgeDevice */,
+				E19E37611CC8C71F00071346 /* BadgeDeviceTests */,
+				E19E376C1CC8C71F00071346 /* BadgeDeviceUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		E19E37441CC8C71F00071346 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E19E375C1CC8C71F00071346 /* LaunchScreen.storyboard in Resources */,
+				E19E37591CC8C71F00071346 /* Assets.xcassets in Resources */,
+				E19E37541CC8C71F00071346 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E19E37601CC8C71F00071346 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E19E376B1CC8C71F00071346 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		E19E37421CC8C71F00071346 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E19E37511CC8C71F00071346 /* ViewController.m in Sources */,
+				E19E374E1CC8C71F00071346 /* AppDelegate.m in Sources */,
+				E19E374B1CC8C71F00071346 /* main.m in Sources */,
+				E19E37571CC8C71F00071346 /* BadgeDevice.xcdatamodeld in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E19E375E1CC8C71F00071346 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E19E37671CC8C71F00071346 /* BadgeDeviceTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E19E37691CC8C71F00071346 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E19E37721CC8C71F00071346 /* BadgeDeviceUITests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		E19E37641CC8C71F00071346 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = E19E37451CC8C71F00071346 /* BadgeDevice */;
+			targetProxy = E19E37631CC8C71F00071346 /* PBXContainerItemProxy */;
+		};
+		E19E376F1CC8C71F00071346 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = E19E37451CC8C71F00071346 /* BadgeDevice */;
+			targetProxy = E19E376E1CC8C71F00071346 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		E19E37521CC8C71F00071346 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				E19E37531CC8C71F00071346 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		E19E375A1CC8C71F00071346 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				E19E375B1CC8C71F00071346 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		E19E37741CC8C71F00071346 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		E19E37751CC8C71F00071346 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		E19E37771CC8C71F00071346 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				INFOPLIST_FILE = BadgeDevice/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.MX.BadgeDevice;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		E19E37781CC8C71F00071346 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				INFOPLIST_FILE = BadgeDevice/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.MX.BadgeDevice;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		E19E377A1CC8C71F00071346 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				INFOPLIST_FILE = BadgeDeviceTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.MX.BadgeDevice.BadgeDeviceTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/BadgeDevice.app/BadgeDevice";
+			};
+			name = Debug;
+		};
+		E19E377B1CC8C71F00071346 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				INFOPLIST_FILE = BadgeDeviceTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.MX.BadgeDevice.BadgeDeviceTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/BadgeDevice.app/BadgeDevice";
+			};
+			name = Release;
+		};
+		E19E377D1CC8C71F00071346 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INFOPLIST_FILE = BadgeDeviceUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.MX.BadgeDevice.BadgeDeviceUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_TARGET_NAME = BadgeDevice;
+			};
+			name = Debug;
+		};
+		E19E377E1CC8C71F00071346 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INFOPLIST_FILE = BadgeDeviceUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.MX.BadgeDevice.BadgeDeviceUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_TARGET_NAME = BadgeDevice;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		E19E37411CC8C71F00071346 /* Build configuration list for PBXProject "BadgeDevice" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E19E37741CC8C71F00071346 /* Debug */,
+				E19E37751CC8C71F00071346 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		E19E37761CC8C71F00071346 /* Build configuration list for PBXNativeTarget "BadgeDevice" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E19E37771CC8C71F00071346 /* Debug */,
+				E19E37781CC8C71F00071346 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		E19E37791CC8C71F00071346 /* Build configuration list for PBXNativeTarget "BadgeDeviceTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E19E377A1CC8C71F00071346 /* Debug */,
+				E19E377B1CC8C71F00071346 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		E19E377C1CC8C71F00071346 /* Build configuration list for PBXNativeTarget "BadgeDeviceUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E19E377D1CC8C71F00071346 /* Debug */,
+				E19E377E1CC8C71F00071346 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		E19E37551CC8C71F00071346 /* BadgeDevice.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				E19E37561CC8C71F00071346 /* BadgeDevice.xcdatamodel */,
+			);
+			currentVersion = E19E37561CC8C71F00071346 /* BadgeDevice.xcdatamodel */;
+			path = BadgeDevice.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
+	};
+	rootObject = E19E373E1CC8C71F00071346 /* Project object */;
+}
