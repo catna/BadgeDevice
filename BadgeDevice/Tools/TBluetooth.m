@@ -122,6 +122,8 @@ NSString *const kTBluetoothDisConnect = @"kTBluetoothDisConnect";
         return NO;
     }];
     
+//    _babyBluetooth auto
+    
     // 连接到设备成功的委托
     [_babyBluetooth setBlockOnConnected:^(CBCentralManager *central, CBPeripheral *peripheral) {
         __strong typeof(self) strongSelf = weakSelf;
