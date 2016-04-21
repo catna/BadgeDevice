@@ -27,7 +27,7 @@ typedef NS_ENUM(NSUInteger, BabySpeakerType) {
 //默认channel名称
 #define defaultChannel @"babyDefault"
 
-@implementation BabySpeaker{
+@implementation BabySpeaker {
     //所有委托频道
     NSMutableDictionary *channels;
     //当前委托频道
@@ -36,7 +36,7 @@ typedef NS_ENUM(NSUInteger, BabySpeakerType) {
     NSMutableDictionary *notifyList;
 }
 
--(instancetype)init{
+- (instancetype)init {
     self = [super init];
     if (self) {
         BabyCallback *defaultCallback = [[BabyCallback alloc]init];
@@ -48,26 +48,26 @@ typedef NS_ENUM(NSUInteger, BabySpeakerType) {
     return self;
 }
 
--(BabyCallback *)callback{
+- (BabyCallback *)callback {
     return [channels objectForKey:defaultChannel];
 }
 
--(BabyCallback *)callbackOnCurrChannel {
+- (BabyCallback *)callbackOnCurrChannel {
     return [self callbackOnChnnel:currChannel];
 }
 
--(BabyCallback *)callbackOnChnnel:(NSString *)channel{
+- (BabyCallback *)callbackOnChnnel:(NSString *)channel {
     if (!channel) {
         [self callback];
     }
     return [channels objectForKey:channel];
 }
 
--(BabyCallback *)callbackOnChnnel:(NSString *)channel
-               createWhenNotExist:(BOOL)createWhenNotExist{
+- (BabyCallback *)callbackOnChnnel:(NSString *)channel
+               createWhenNotExist:(BOOL)createWhenNotExist {
     
     BabyCallback *callback = [channels objectForKey:channel];
-    if (!callback && createWhenNotExist){
+    if (!callback && createWhenNotExist) {
         callback = [[BabyCallback alloc]init];
         [channels setObject:callback forKey:channel];
     }
@@ -75,42 +75,40 @@ typedef NS_ENUM(NSUInteger, BabySpeakerType) {
     return callback;
 }
 
-
--(void)switchChannel:(NSString *)channel{
+- (void)switchChannel:(NSString *)channel {
     if (channel) {
         if ([self callbackOnChnnel:channel]) {
             currChannel = channel;
             NSLog(@">>>已切换到%@",channel);
         }
-        else{
+        else {
             NSLog(@">>>所要切换的channel不存在");
         }
-    }else{
+    }
+    else {
         currChannel = defaultChannel;
             NSLog(@">>>已切换到默认频道");
     }
-    
-    
 }
 
 //添加到notify list
--(void)addNotifyCallback:(CBCharacteristic *)c
-           withBlock:(void(^)(CBPeripheral *peripheral, CBCharacteristic *characteristics, NSError *error))block{
+- (void)addNotifyCallback:(CBCharacteristic *)c
+           withBlock:(void(^)(CBPeripheral *peripheral, CBCharacteristic *characteristics, NSError *error))block {
     [notifyList setObject:block forKey:c.UUID.description];
 }
 
 //添加到notify list
--(void)removeNotifyCallback:(CBCharacteristic *)c{
+- (void)removeNotifyCallback:(CBCharacteristic *)c {
     [notifyList removeObjectForKey:c.UUID.description];
 }
 
 //获取notify list
--(NSMutableDictionary *)notifyCallBackList{
+- (NSMutableDictionary *)notifyCallBackList {
     return notifyList;
 }
 
 //获取notityBlock
--(void(^)(CBPeripheral *peripheral, CBCharacteristic *characteristics, NSError *error))notifyCallback:(CBCharacteristic *)c{
+- (void(^)(CBPeripheral *peripheral, CBCharacteristic *characteristics, NSError *error))notifyCallback:(CBCharacteristic *)c {
     return [notifyList objectForKey:c.UUID.description];
 }
 @end

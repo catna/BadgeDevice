@@ -13,17 +13,19 @@
 @implementation BabyCallback
 
 
--(instancetype)init{
+- (instancetype)init {
     self = [super init];
-    if (self){
-        [self setFilterOnDiscoverPeripherals:^BOOL(NSString *peripheralName) {
-            if(![peripheralName isEqualToString:@""])
+    if (self) {
+        [self setFilterOnDiscoverPeripherals:^BOOL(NSString *peripheralName, NSDictionary *advertisementData, NSNumber *RSSI) {
+            if (![peripheralName isEqualToString:@""]) {
                 return YES;
+            }
             return NO;
         }];
-        [self setFilterOnConnetToPeripherals:^BOOL(NSString *peripheralName) {
-            if(![peripheralName isEqualToString:@""])
+        [self setFilterOnconnectToPeripherals:^BOOL(NSString *peripheralName, NSDictionary *advertisementData, NSNumber *RSSI) {
+            if (![peripheralName isEqualToString:@""]) {
                 return YES;
+            }
             return NO;
         }];
     }

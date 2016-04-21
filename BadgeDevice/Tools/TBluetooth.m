@@ -115,14 +115,12 @@ NSString *const kTBluetoothDisConnect = @"kTBluetoothDisConnect";
     }];
     
     // 设置连接设备的过滤器，只连接设备
-    [_babyBluetooth setFilterOnConnetToPeripherals:^BOOL(NSString *peripheralName) {
+    [_babyBluetooth setFilterOnConnectToPeripherals:^BOOL(NSString *peripheralName, NSDictionary *advertisementData, NSNumber *RSSI) {
         if ([peripheralName isEqualToString:@"TI BLE Sensor Tag"] || [peripheralName isEqualToString:@"SensorTag"]) {
             return YES;
         }
         return NO;
     }];
-    
-//    _babyBluetooth auto
     
     // 连接到设备成功的委托
     [_babyBluetooth setBlockOnConnected:^(CBCentralManager *central, CBPeripheral *peripheral) {
@@ -130,6 +128,7 @@ NSString *const kTBluetoothDisConnect = @"kTBluetoothDisConnect";
         NSLog(@"连接成功");
         strongSelf.device.name = peripheral.name;
         strongSelf.device.peripheral = peripheral;
+        [strongSelf.babyBluetooth AutoReconnect:peripheral];
         [[NSNotificationCenter defaultCenter] postNotificationName:kTBluetoothConnectSuccess object:nil userInfo:nil];
     }];
 //    
