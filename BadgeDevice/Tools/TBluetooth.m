@@ -75,7 +75,7 @@ NSString *const kTBluetoothDisConnect = @"kTBluetoothDisConnect";
     NSDictionary *scanForPeripheralsWithOptions = @{CBCentralManagerScanOptionAllowDuplicatesKey:@YES};
     NSDictionary *connectOptions = @{CBConnectPeripheralOptionNotifyOnConnectionKey:@YES,
                                      CBConnectPeripheralOptionNotifyOnDisconnectionKey:@YES,
-                                     CBConnectPeripheralOptionNotifyOnNotificationKey:@YES};
+                                     CBConnectPeripheralOptionNotifyOnNotificationKey:@NO};
     [_babyBluetooth setBabyOptionsWithScanForPeripheralsWithOptions:scanForPeripheralsWithOptions connectPeripheralWithOptions:connectOptions scanForPeripheralsWithServices:nil discoverWithServices:nil discoverWithCharacteristics:nil];
 }
 
@@ -168,34 +168,33 @@ NSString *const kTBluetoothDisConnect = @"kTBluetoothDisConnect";
                 // 找到 UV 的 service
             }
         }
-//        if ([service.UUID.UUIDString isEqualToString:uvServiceUUID]) {
-//            for (CBCharacteristic *chara in service.characteristics) {
-//                // 找到 UV Config 的 characteristic，这里写入 0x01，启动传感器的自动通知
-//                if ([chara.UUID.UUIDString isEqualToString:uvConfigUUID]) {	                    [strongSelf writeValueForCBPeripheral:peripheral CBCharacteristic:chara];
-//                }
-//                
-//                if ([chara.UUID.UUIDString isEqualToString:uvDataUUID]) {
-//                    // 找到 UV Data 的 characteristic
-//                    uvDataChara = chara;
-//                    if (strongSelf.notify) {	// 需要不断通知
-//                        // 注册 UV 值的通知，获取回调值
-//                        [strongSelf.babyBt notify:peripheral characteristic:chara block:^(CBPeripheral *peripheral, CBCharacteristic *characteristics, NSError *error) {
-//                            if (strongSelf.uv) {
-//                                
-//                                int v = [BabyToy ConvertDataToInt:characteristics.value];
+        if ([service.UUID.UUIDString isEqualToString:uvServiceUUID]) {
+            for (CBCharacteristic *chara in service.characteristics) {
+                // 找到 UV Config 的 characteristic，这里写入 0x01，启动传感器的自动通知
+                if ([chara.UUID.UUIDString isEqualToString:uvConfigUUID]) {	                    [strongSelf writeValueForCBPeripheral:peripheral CBCharacteristic:chara];
+                }
+                
+                if ([chara.UUID.UUIDString isEqualToString:uvDataUUID]) {
+                    // 找到 UV Data 的 characteristic
+                    uvDataChara = chara;
+                    if (strongSelf->isNotify) {	// 需要不断通知
+                        // 注册 UV 值的通知，获取回调值
+                        [strongSelf.babyBluetooth notify:peripheral characteristic:chara block:^(CBPeripheral *peripheral, CBCharacteristic *characteristics, NSError *error) {
+                            if (strongSelf->blockUpdateHandler) {
+                                int v = [BabyToy ConvertDataToInt:characteristics.value];
 //                                NSString *str = [NSString stringWithFormat:@"原始data:%@\n设备返回的值是:%x",characteristics.value,v];
-//                                
-//                                NSString *vstr = [NSString stringWithFormat:@"%@\n计算的值是:%@\n计算的UV等级是:%@",str,[BluetoothReadWriteHelper stringUVWithValue:characteristics.value],[BluetoothReadWriteHelper stringUVLevelWithValue:characteristics.value]];
-//                                strongSelf.uv(vstr);
-//                            }
-//                            if (strongSelf.uvLe) {
-//                                strongSelf.uvLe([BluetoothReadWriteHelper stringUVLevelWithValue:characteristics.value]);
-//                            }
-//                        }];
-//                    }
-//                }
-//            }
-//        }
+                                NSString *uv = [BluetoothReadWriteHelper stringUVWithValue:characteristics.value];
+                                NSString *uvLe = [BluetoothReadWriteHelper stringUVLevelWithValue:characteristics.value];
+                                strongSelf->deviceData.UVNu = (__bridge CFTypeRef)(uv);
+                                strongSelf->deviceData.UVLe = (__bridge CFTypeRef)(uvLe);
+                                strongSelf->blockUpdateHandler(strongSelf->deviceData);
+                            }
+                            
+                        }];
+                    }
+                }
+            }
+        }
         // 温湿度
         if ([service.UUID.UUIDString isEqualToString:thServiceUUID]) {
             for (CBCharacteristic *chara in service.characteristics) {
