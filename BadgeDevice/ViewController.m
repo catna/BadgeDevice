@@ -22,6 +22,7 @@
     [super viewDidLoad];
     [self addListener];
     [self.ble readDataWithUpdateHandler:^(struct DeviceData deviceData) {
+        self.currentData.macAddress = self.ble.device.macAddress;
         self.currentData.pres = (__bridge NSString *)(deviceData.pres);
         self.textView.text = [self.currentData generateShowText];
     } notify:YES];
@@ -34,7 +35,6 @@
 #pragma mark - event
 - (void)eDeviceConnectSuccess {
     self.currentData.name = self.ble.device.name;
-    self.currentData.macAddress = self.ble.device.macAddress;
 }
 
 #pragma mark - private methods
