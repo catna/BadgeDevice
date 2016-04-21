@@ -1,0 +1,13 @@
+PODS:
+  - BabyBluetooth (0.5.0)
+  - SVProgressHUD (2.0.3)
+
+DEPENDENCIES:
+  - BabyBluetooth (~> 0.5.0)
+  - SVProgressHUD (~> 2.0-beta8)
+
+SPEC CHECKSUMS:
+  BabyBluetooth: dae3d3edc48d13939deebd457bb57d35f64dae19
+  SVProgressHUD: b0830714205bea1317ea1a2ebc71e5633af334d4
+
+COCOAPODS: 0.39.0
