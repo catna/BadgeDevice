@@ -1,0 +1,6 @@
+framework module FLEXDebug {
+  umbrella header "FLEXDebug.h"
+
+  export *
+  module * { export * }
+}

@@ -8,6 +8,28 @@
 
 /* Begin PBXBuildFile section */
 		8D46D32818E2A1B561D7FEC5 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B2B53AB90D7A92F5556D062E /* libPods.a */; };
+		E11FF63B1CE74DFB00907206 /* BadgeBLE.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = E11FF63A1CE74DFB00907206 /* BadgeBLE.h */; };
+		E11FF63D1CE74DFB00907206 /* BadgeBLE.m in Sources */ = {isa = PBXBuildFile; fileRef = E11FF63C1CE74DFB00907206 /* BadgeBLE.m */; };
+		E11FF6411CE74E1600907206 /* TBluetooth.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = E19E37801CC8C8E800071346 /* TBluetooth.h */; };
+		E11FF6421CE74E1600907206 /* TBluetoothTools.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = E19E37861CC8DFE300071346 /* TBluetoothTools.h */; };
+		E11FF6431CE74E1600907206 /* BluetoothTools.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = E19E378F1CC8E79D00071346 /* BluetoothTools.h */; };
+		E11FF6441CE74E1600907206 /* BluetoothReadWriteHelper.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = E19E37891CC8E76300071346 /* BluetoothReadWriteHelper.h */; };
+		E11FF6451CE74E1600907206 /* StringTool.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = E19E378B1CC8E76300071346 /* StringTool.h */; };
+		E11FF6461CE74E1600907206 /* AppDelegate.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = E19E374C1CC8C71F00071346 /* AppDelegate.h */; };
+		E11FF6471CE74E1600907206 /* ViewController.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = E19E374F1CC8C71F00071346 /* ViewController.h */; };
+		E11FF6481CE74E1600907206 /* MDeviceData.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = E19E37831CC8D8B800071346 /* MDeviceData.h */; };
+		E11FF6491CE74E2400907206 /* TBluetooth.m in Sources */ = {isa = PBXBuildFile; fileRef = E19E37811CC8C8E800071346 /* TBluetooth.m */; };
+		E11FF64A1CE74E2400907206 /* TBluetoothTools.m in Sources */ = {isa = PBXBuildFile; fileRef = E19E37871CC8DFE300071346 /* TBluetoothTools.m */; };
+		E11FF64B1CE74E2400907206 /* BluetoothTools.m in Sources */ = {isa = PBXBuildFile; fileRef = E19E37901CC8E79D00071346 /* BluetoothTools.m */; };
+		E11FF64C1CE74E2400907206 /* BluetoothReadWriteHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = E19E378A1CC8E76300071346 /* BluetoothReadWriteHelper.m */; };
+		E11FF64D1CE74E2400907206 /* StringTool.m in Sources */ = {isa = PBXBuildFile; fileRef = E19E378C1CC8E76300071346 /* StringTool.m */; };
+		E11FF64E1CE74E2400907206 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = E19E374D1CC8C71F00071346 /* AppDelegate.m */; };
+		E11FF64F1CE74E2400907206 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E19E37501CC8C71F00071346 /* ViewController.m */; };
+		E11FF6501CE74E2400907206 /* MDeviceData.m in Sources */ = {isa = PBXBuildFile; fileRef = E19E37841CC8D8B800071346 /* MDeviceData.m */; };
+		E11FF6511CE74E2400907206 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = E19E374A1CC8C71F00071346 /* main.m */; };
+		E11FF6521CE74E2400907206 /* BadgeDeviceTests.m in Sources */ = {isa = PBXBuildFile; fileRef = E19E37661CC8C71F00071346 /* BadgeDeviceTests.m */; };
+		E11FF6531CE74E2400907206 /* BadgeDeviceUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = E19E37711CC8C71F00071346 /* BadgeDeviceUITests.m */; };
+		E11FF6561CE74E6800907206 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B2B53AB90D7A92F5556D062E /* libPods.a */; };
 		E19E374B1CC8C71F00071346 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = E19E374A1CC8C71F00071346 /* main.m */; };
 		E19E374E1CC8C71F00071346 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = E19E374D1CC8C71F00071346 /* AppDelegate.m */; };
 		E19E37511CC8C71F00071346 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E19E37501CC8C71F00071346 /* ViewController.m */; };
@@ -23,6 +45,9 @@
 		E19E378D1CC8E76300071346 /* BluetoothReadWriteHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = E19E378A1CC8E76300071346 /* BluetoothReadWriteHelper.m */; };
 		E19E378E1CC8E76300071346 /* StringTool.m in Sources */ = {isa = PBXBuildFile; fileRef = E19E378C1CC8E76300071346 /* StringTool.m */; };
 		E19E37911CC8E79D00071346 /* BluetoothTools.m in Sources */ = {isa = PBXBuildFile; fileRef = E19E37901CC8E79D00071346 /* BluetoothTools.m */; };
+		E1F03A3F1CEB0C1B007AD562 /* libz.1.2.5.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = E1F03A3E1CEB0C1B007AD562 /* libz.1.2.5.tbd */; };
+		E1F03A411CEB0C29007AD562 /* libsqlite3.0.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = E1F03A401CEB0C29007AD562 /* libsqlite3.0.tbd */; };
+		E1F03A491CEB1B88007AD562 /* FLEXDebug.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E1F03A481CEB1B88007AD562 /* FLEXDebug.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -42,10 +67,35 @@
 		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		E11FF6361CE74DFB00907206 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "include/$(PRODUCT_NAME)";
+			dstSubfolderSpec = 16;
+			files = (
+				E11FF6411CE74E1600907206 /* TBluetooth.h in CopyFiles */,
+				E11FF6421CE74E1600907206 /* TBluetoothTools.h in CopyFiles */,
+				E11FF6431CE74E1600907206 /* BluetoothTools.h in CopyFiles */,
+				E11FF6441CE74E1600907206 /* BluetoothReadWriteHelper.h in CopyFiles */,
+				E11FF6451CE74E1600907206 /* StringTool.h in CopyFiles */,
+				E11FF6461CE74E1600907206 /* AppDelegate.h in CopyFiles */,
+				E11FF6471CE74E1600907206 /* ViewController.h in CopyFiles */,
+				E11FF6481CE74E1600907206 /* MDeviceData.h in CopyFiles */,
+				E11FF63B1CE74DFB00907206 /* BadgeBLE.h in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		3824465E38823669662F7B57 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		B2B53AB90D7A92F5556D062E /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		C06FD762E2E2AFA17CADF243 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
+		E11FF6381CE74DFB00907206 /* libBadgeBLE.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libBadgeBLE.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		E11FF63A1CE74DFB00907206 /* BadgeBLE.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BadgeBLE.h; sourceTree = "<group>"; };
+		E11FF63C1CE74DFB00907206 /* BadgeBLE.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BadgeBLE.m; sourceTree = "<group>"; };
+		E11FF6541CE74E3900907206 /* libBabyBluetooth.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libBabyBluetooth.a; path = "../../../../../Library/Developer/Xcode/DerivedData/BadgeDevice-eirrwdnflmnaupexafvsvwgdhodp/Build/Products/Debug-iphoneos/libBabyBluetooth.a"; sourceTree = "<group>"; };
 		E19E37461CC8C71F00071346 /* BadgeDevice.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BadgeDevice.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E19E374A1CC8C71F00071346 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		E19E374C1CC8C71F00071346 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -75,13 +125,27 @@
 		E19E378C1CC8E76300071346 /* StringTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StringTool.m; sourceTree = "<group>"; };
 		E19E378F1CC8E79D00071346 /* BluetoothTools.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BluetoothTools.h; sourceTree = "<group>"; };
 		E19E37901CC8E79D00071346 /* BluetoothTools.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BluetoothTools.m; sourceTree = "<group>"; };
+		E1F03A3E1CEB0C1B007AD562 /* libz.1.2.5.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.1.2.5.tbd; path = usr/lib/libz.1.2.5.tbd; sourceTree = SDKROOT; };
+		E1F03A401CEB0C29007AD562 /* libsqlite3.0.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.0.tbd; path = usr/lib/libsqlite3.0.tbd; sourceTree = SDKROOT; };
+		E1F03A481CEB1B88007AD562 /* FLEXDebug.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FLEXDebug.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		E11FF6351CE74DFB00907206 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E11FF6561CE74E6800907206 /* libPods.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		E19E37431CC8C71F00071346 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E1F03A411CEB0C29007AD562 /* libsqlite3.0.tbd in Frameworks */,
+				E1F03A491CEB1B88007AD562 /* FLEXDebug.framework in Frameworks */,
+				E1F03A3F1CEB0C1B007AD562 /* libz.1.2.5.tbd in Frameworks */,
 				8D46D32818E2A1B561D7FEC5 /* libPods.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -112,12 +176,22 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
+		E11FF6391CE74DFB00907206 /* BadgeBLE */ = {
+			isa = PBXGroup;
+			children = (
+				E11FF63A1CE74DFB00907206 /* BadgeBLE.h */,
+				E11FF63C1CE74DFB00907206 /* BadgeBLE.m */,
+			);
+			path = BadgeBLE;
+			sourceTree = "<group>";
+		};
 		E19E373D1CC8C71F00071346 = {
 			isa = PBXGroup;
 			children = (
 				E19E37481CC8C71F00071346 /* BadgeDevice */,
 				E19E37651CC8C71F00071346 /* BadgeDeviceTests */,
 				E19E37701CC8C71F00071346 /* BadgeDeviceUITests */,
+				E11FF6391CE74DFB00907206 /* BadgeBLE */,
 				E19E37471CC8C71F00071346 /* Products */,
 				444785CECF9F46D3AA7B0143 /* Pods */,
 				E7C286D3F623DA1061FD92D9 /* Frameworks */,
@@ -130,6 +204,7 @@
 				E19E37461CC8C71F00071346 /* BadgeDevice.app */,
 				E19E37621CC8C71F00071346 /* BadgeDeviceTests.xctest */,
 				E19E376D1CC8C71F00071346 /* BadgeDeviceUITests.xctest */,
+				E11FF6381CE74DFB00907206 /* libBadgeBLE.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -137,6 +212,7 @@
 		E19E37481CC8C71F00071346 /* BadgeDevice */ = {
 			isa = PBXGroup;
 			children = (
+				E1F03A481CEB1B88007AD562 /* FLEXDebug.framework */,
 				E19E377F1CC8C8CA00071346 /* Tools */,
 				E19E374C1CC8C71F00071346 /* AppDelegate.h */,
 				E19E374D1CC8C71F00071346 /* AppDelegate.m */,
@@ -200,6 +276,9 @@
 		E7C286D3F623DA1061FD92D9 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				E1F03A401CEB0C29007AD562 /* libsqlite3.0.tbd */,
+				E1F03A3E1CEB0C1B007AD562 /* libz.1.2.5.tbd */,
+				E11FF6541CE74E3900907206 /* libBabyBluetooth.a */,
 				B2B53AB90D7A92F5556D062E /* libPods.a */,
 			);
 			name = Frameworks;
@@ -208,6 +287,23 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		E11FF6371CE74DFB00907206 /* BadgeBLE */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E11FF6401CE74DFB00907206 /* Build configuration list for PBXNativeTarget "BadgeBLE" */;
+			buildPhases = (
+				E11FF6341CE74DFB00907206 /* Sources */,
+				E11FF6351CE74DFB00907206 /* Frameworks */,
+				E11FF6361CE74DFB00907206 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = BadgeBLE;
+			productName = BadgeBLE;
+			productReference = E11FF6381CE74DFB00907206 /* libBadgeBLE.a */;
+			productType = "com.apple.product-type.library.static";
+		};
 		E19E37451CC8C71F00071346 /* BadgeDevice */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = E19E37761CC8C71F00071346 /* Build configuration list for PBXNativeTarget "BadgeDevice" */;
@@ -273,6 +369,9 @@
 				LastUpgradeCheck = 0730;
 				ORGANIZATIONNAME = MX;
 				TargetAttributes = {
+					E11FF6371CE74DFB00907206 = {
+						CreatedOnToolsVersion = 7.3.1;
+					};
 					E19E37451CC8C71F00071346 = {
 						CreatedOnToolsVersion = 7.3;
 						DevelopmentTeam = 7VTAQLJLUA;
@@ -303,6 +402,7 @@
 				E19E37451CC8C71F00071346 /* BadgeDevice */,
 				E19E37611CC8C71F00071346 /* BadgeDeviceTests */,
 				E19E376C1CC8C71F00071346 /* BadgeDeviceUITests */,
+				E11FF6371CE74DFB00907206 /* BadgeBLE */,
 			);
 		};
 /* End PBXProject section */
@@ -383,6 +483,25 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		E11FF6341CE74DFB00907206 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E11FF6491CE74E2400907206 /* TBluetooth.m in Sources */,
+				E11FF64A1CE74E2400907206 /* TBluetoothTools.m in Sources */,
+				E11FF64B1CE74E2400907206 /* BluetoothTools.m in Sources */,
+				E11FF64C1CE74E2400907206 /* BluetoothReadWriteHelper.m in Sources */,
+				E11FF64D1CE74E2400907206 /* StringTool.m in Sources */,
+				E11FF64E1CE74E2400907206 /* AppDelegate.m in Sources */,
+				E11FF64F1CE74E2400907206 /* ViewController.m in Sources */,
+				E11FF6501CE74E2400907206 /* MDeviceData.m in Sources */,
+				E11FF6511CE74E2400907206 /* main.m in Sources */,
+				E11FF6521CE74E2400907206 /* BadgeDeviceTests.m in Sources */,
+				E11FF6531CE74E2400907206 /* BadgeDeviceUITests.m in Sources */,
+				E11FF63D1CE74DFB00907206 /* BadgeBLE.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		E19E37421CC8C71F00071346 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -451,6 +570,36 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		E11FF63E1CE74DFB00907206 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"${PODS_ROOT}/Headers/Public\"",
+					"\"${PODS_ROOT}/Headers/Public/BabyBluetooth\"",
+					"\"${PODS_ROOT}/Headers/Public/SVProgressHUD\"",
+				);
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		E11FF63F1CE74DFB00907206 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"${PODS_ROOT}/Headers/Public\"",
+					"\"${PODS_ROOT}/Headers/Public/BabyBluetooth\"",
+					"\"${PODS_ROOT}/Headers/Public/SVProgressHUD\"",
+				);
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
 		E19E37741CC8C71F00071346 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -542,6 +691,11 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/BadgeDevice/Tools",
+					"$(PROJECT_DIR)/BadgeDevice",
+				);
 				INFOPLIST_FILE = BadgeDevice/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -559,6 +713,11 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/BadgeDevice/Tools",
+					"$(PROJECT_DIR)/BadgeDevice",
+				);
 				INFOPLIST_FILE = BadgeDevice/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -618,6 +777,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		E11FF6401CE74DFB00907206 /* Build configuration list for PBXNativeTarget "BadgeBLE" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E11FF63E1CE74DFB00907206 /* Debug */,
+				E11FF63F1CE74DFB00907206 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		E19E37411CC8C71F00071346 /* Build configuration list for PBXProject "BadgeDevice" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
