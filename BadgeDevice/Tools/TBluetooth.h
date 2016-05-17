@@ -7,16 +7,8 @@
 //
 
 #import <Foundation/Foundation.h>
-@class CBPeripheral;
-///设备模型
-@interface TBluetoothDevice : NSObject
-@property (nonatomic ,copy  ) NSString     *name;
-@property (nonatomic ,copy  ) NSString     *macAddress;
-@property (nonatomic ,strong) CBPeripheral *peripheral;
-@end
-
-extern NSString *const kTBluetoothConnectSuccess;
-extern NSString *const kTBluetoothDisConnect;
+@class BabyBluetooth;
+@class TBLEDevice;
 
 struct DeviceData {
     CFTypeRef UVNu;
@@ -27,11 +19,13 @@ struct DeviceData {
 };
 
 @interface TBluetooth : NSObject
-@property (nonatomic ,strong ,readonly) TBluetoothDevice *device;
+@property (nonatomic ,strong ,readonly) TBLEDevice *device;/**<current connect device*/
+@property (nonatomic ,strong ,readonly) BabyBluetooth *babyBluetooth;/**<babyBluetooth tool*/
 
 + (instancetype)sharedBluetooth;
 
-- (void)connect;
+- (void)scanAndConnectWithMacAddrList:(NSArray <NSString *>*)macAddrList;
+/////--------
 - (void)cancelConnecting;
 
 - (void)readDataWithUpdateHandler:(void (^)(struct DeviceData))handler notify:(BOOL)notify;

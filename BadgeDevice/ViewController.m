@@ -21,15 +21,16 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self addListener];
-    [self.ble readDataWithUpdateHandler:^(struct DeviceData deviceData) {
-        self.currentData.macAddress = self.ble.device.macAddress;
-        self.currentData.pres = (__bridge NSString *)(deviceData.pres);
-        self.currentData.humi = (__bridge NSString *)(deviceData.humi);
-        self.currentData.temp = (__bridge NSString *)(deviceData.temp);
-        self.currentData.UVNu = (__bridge NSString *)(deviceData.UVNu);
-        self.currentData.UVLe = (__bridge NSString *)(deviceData.UVLe);
-        self.textView.text = [self.currentData generateShowText];
-    } notify:YES];
+//    [self.ble readDataWithUpdateHandler:^(struct DeviceData deviceData) {
+//        self.currentData.macAddress = self.ble.device.macAddress;
+//        self.currentData.pres = (__bridge NSString *)(deviceData.pres);
+//        self.currentData.humi = (__bridge NSString *)(deviceData.humi);
+//        self.currentData.temp = (__bridge NSString *)(deviceData.temp);
+//        self.currentData.UVNu = (__bridge NSString *)(deviceData.UVNu);
+//        self.currentData.UVLe = (__bridge NSString *)(deviceData.UVLe);
+//        self.textView.text = [self.currentData generateShowText];
+//    } notify:YES];
+    [self.ble scanAndConnectWithMacAddrList:nil];
 }
 
 - (void)dealloc {
@@ -38,13 +39,13 @@
 
 #pragma mark - event
 - (void)eDeviceConnectSuccess {
-    self.currentData.name = self.ble.device.name;
-    self.textView.text = [NSString stringWithFormat:@"%@\n%@",self.textView.text,self.ble.device.name];
+//    self.currentData.name = self.ble.device.name;
+//    self.textView.text = [NSString stringWithFormat:@"%@\n%@",self.textView.text,self.ble.device.name];
 }
 
 #pragma mark - private methods
 - (void)addListener {
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(eDeviceConnectSuccess) name:kTBluetoothConnectSuccess object:nil];
+//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(eDeviceConnectSuccess) name:kTBluetoothConnectSuccess object:nil];
 }
 
 - (void)removeListener {
