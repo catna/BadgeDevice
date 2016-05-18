@@ -56,6 +56,7 @@ NSString *const kTBLENotificationMatchSuccess = @"kTBLENotificationMatchSuccess"
 }
 
 - (void)scanAndConnectWithMacAddrList:(NSArray <NSString *>*)macAddrList {
+    [self.canConnAddrList removeAllObjects];
     [self.canConnAddrList addObjectsFromArray:macAddrList];
     [self cancelConnectingAndConfig];
     [self setupWorkFlow];
@@ -178,7 +179,7 @@ NSString *const kTBLENotificationMatchSuccess = @"kTBLENotificationMatchSuccess"
 //     扫描到设备某个 service 下的 characteristic 的委托
     [_babyBluetooth setBlockOnDiscoverCharacteristics:^(CBPeripheral *peripheral, CBService *service, NSError *error) {
         __strong typeof(weakSelf) strongSelf = weakSelf;
-
+        
         [strongSelf openPeri:peripheral dataGalleryService:service];
 
     }];
@@ -242,6 +243,7 @@ NSString *const kTBLENotificationMatchSuccess = @"kTBLENotificationMatchSuccess"
     for (NSString *key in self.seConfDic.allKeys) {
         if ([service.UUID.UUIDString isEqualToString:key]) {
             for (CBCharacteristic *ch in service.characteristics) {
+//                NSLog(@"发现了服务%@下的Ch%@",service,ch);
                 if ([ch.UUID.UUIDString isEqualToString:self.seConfDic[key]]) {
                     [self writeValueForCBPeripheral:peri CBCharacteristic:ch];
                 }

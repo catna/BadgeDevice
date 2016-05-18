@@ -15,7 +15,8 @@ CB_EXTERN NSString *const kTBLENotificationDataUpdate;/**< 数据更新的通知
 CB_EXTERN NSString *const kTBLENotificationMatchSuccess;/**< 设备mac地址比对成功，但是不代表会一直连接这个设备*/
 
 @interface TBluetooth : NSObject
-@property (nonatomic ,strong ,readonly) TBLEDevice *device;/**<current connect device*/
+//@property (nonatomic ,strong ,readonly) NSMutableArray <TBLEDevice *>*devices;/**<current connect device*/
+@property (nonatomic ,strong ,readonly) TBLEDevice *device;
 @property (nonatomic ,strong ,readonly) BabyBluetooth *babyBluetooth;/**<babyBluetooth tool*/
 
 + (instancetype)sharedBluetooth;

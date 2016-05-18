@@ -45,7 +45,9 @@
             NSLog(@"收到设备连接后的mac地址%@",m);
             if ([m isEqualToString:@"7C:EC:79:E4:24:D5"]) {
                 [self.ble cancelConn];
-                [self.ble scanAndConnectWithMacAddrList:@[@""]];
+                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                   [self.ble scanAndConnectWithMacAddrList:@[@""]]; 
+                });
             }
         }
     }
