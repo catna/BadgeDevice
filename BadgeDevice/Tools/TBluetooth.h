@@ -7,16 +7,12 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <CoreBluetooth/CoreBluetooth.h>
 @class BabyBluetooth;
 @class TBLEDevice;
 
-struct DeviceData {
-    CFTypeRef UVNu;
-    CFTypeRef UVLe;
-    CFTypeRef pres;
-    CFTypeRef humi;
-    CFTypeRef temp;
-};
+CB_EXTERN NSString *const kTBLENotificationDataUpdate;/**< 数据更新的通知*/
+CB_EXTERN NSString *const kTBLENotificationMatchSuccess;/**< 设备mac地址比对成功，但是不代表会一直连接这个设备*/
 
 @interface TBluetooth : NSObject
 @property (nonatomic ,strong ,readonly) TBLEDevice *device;/**<current connect device*/
@@ -25,8 +21,11 @@ struct DeviceData {
 + (instancetype)sharedBluetooth;
 
 - (void)scanAndConnectWithMacAddrList:(NSArray <NSString *>*)macAddrList;
-/////--------
-- (void)cancelConnecting;
 
-- (void)readDataWithUpdateHandler:(void (^)(struct DeviceData))handler notify:(BOOL)notify;
+- (void)setDataNotify:(BOOL)notify;
+
+///清除数据和断开连接
+- (void)cancelConn;
+- (void)clear;
+
 @end

@@ -8,11 +8,22 @@
 
 #import <Foundation/Foundation.h>
 
-@class CBPeripheral;
+@class CBPeripheral,CBCharacteristic;
+
+@interface TBLEDeviceRawData : NSObject
+@property (nonatomic ,strong) NSData *UVRawData;/**< 紫外线数据*/
+@property (nonatomic ,strong) NSData *THRawData;/**< 温湿度数据*/
+@property (nonatomic ,strong) NSData *PrRawData;/**< 大气压数据*/
+@end
+
 @interface TBLEDevice : NSObject
 @property (nonatomic ,copy) NSString *name;
 @property (nonatomic ,copy) NSString *macAddr;
 @property (nonatomic ,strong) CBPeripheral *peri;
 
+@property (nonatomic ,strong) NSDictionary *advertisementData;/**< ad*/
+@property (nonatomic ,strong) NSMutableArray <CBCharacteristic *>*characteristicsForData;
+
+@property (nonatomic ,strong) TBLEDeviceRawData *currentRawData;/**< 当前数据*/
 - (void)clearAllPropertyData;
 @end

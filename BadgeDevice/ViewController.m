@@ -9,6 +9,7 @@
 #import "ViewController.h"
 #import "TBluetooth.h"
 #import "MDeviceData.h"
+#import "TBLEDevice.h"
 
 @interface ViewController ()
 @property (weak, nonatomic) IBOutlet UITextView *textView;
@@ -30,7 +31,24 @@
 //        self.currentData.UVLe = (__bridge NSString *)(deviceData.UVLe);
 //        self.textView.text = [self.currentData generateShowText];
 //    } notify:YES];
-    [self.ble scanAndConnectWithMacAddrList:nil];
+    [self.ble scanAndConnectWithMacAddrList:@[@""]];
+//    [self.ble scanAndConnectWithMacAddrList:nil];
+//    7C:EC:79:E4:24:D5
+    [self.ble.device addObserver:self forKeyPath:@"macAddr" options:NSKeyValueObservingOptionNew context:nil];
+}
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSString *,id> *)change context:(void *)context {
+    if ([keyPath isEqualToString:@"macAddr"]) {
+        
+        if ([change[@"new"] isKindOfClass:[NSString class]]) {
+            NSString *m = change[@"new"];
+            NSLog(@"收到设备连接后的mac地址%@",m);
+            if ([m isEqualToString:@"7C:EC:79:E4:24:D5"]) {
+                [self.ble cancelConn];
+                [self.ble scanAndConnectWithMacAddrList:@[@""]];
+            }
+        }
+    }
 }
 
 - (void)dealloc {
