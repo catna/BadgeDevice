@@ -12,21 +12,19 @@
 @class TBLEDevice;
 
 CB_EXTERN NSString *const kTBLENotificationDataUpdate;/**< 数据更新的通知*/
-CB_EXTERN NSString *const kTBLENotificationMatchSuccess;/**< 设备mac地址比对成功，但是不代表会一直连接这个设备*/
+CB_EXTERN NSString *const kTBLENotificationReadMacAddress;/**< 读取到设备mac地址*/
+CB_EXTERN NSString *const kTBLENotificationDisConnect;/** <连接断开的通知,决定之后的操作*/
 
 @interface TBluetooth : NSObject
-//@property (nonatomic ,strong ,readonly) NSMutableArray <TBLEDevice *>*devices;/**<current connect device*/
-@property (nonatomic ,strong ,readonly) TBLEDevice *device;
 @property (nonatomic ,strong ,readonly) BabyBluetooth *babyBluetooth;/**<babyBluetooth tool*/
+@property (nonatomic ,strong ,readonly) NSMutableDictionary <CBPeripheral *,TBLEDevice *> *devicesDic;
+
 
 + (instancetype)sharedBluetooth;
 
-- (void)scanAndConnectWithMacAddrList:(NSArray <NSString *>*)macAddrList;
+- (void)scanAndConnect:(BOOL)autoSearch;
 
-- (void)setDataNotify:(BOOL)notify;
-
-///清除数据和断开连接
-- (void)cancelConn;
-- (void)clear;
+///改变数据通道的开关
+- (void)dataGalleryOpen:(BOOL)open peri:(CBPeripheral *)peri service:(CBService *)service;
 
 @end

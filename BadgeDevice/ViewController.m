@@ -18,41 +18,15 @@
 @property (nonatomic ,strong) MDeviceData *currentData;
 @end
 
-@implementation ViewController
+@implementation ViewController {
+    BOOL d;
+}
 #pragma mark - life cycle
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self addListener];
 
-//    [self.ble readDataWithUpdateHandler:^(struct DeviceData deviceData) {
-//        self.currentData.macAddress = self.ble.device.macAddress;
-//        self.currentData.pres = (__bridge NSString *)(deviceData.pres);
-//        self.currentData.humi = (__bridge NSString *)(deviceData.humi);
-//        self.currentData.temp = (__bridge NSString *)(deviceData.temp);
-//        self.currentData.UVNu = (__bridge NSString *)(deviceData.UVNu);
-//        self.currentData.UVLe = (__bridge NSString *)(deviceData.UVLe);
-//        self.textView.text = [self.currentData generateShowText];
-//    } notify:YES];
-    [self.ble scanAndConnectWithMacAddrList:@[@""]];
-//    [self.ble scanAndConnectWithMacAddrList:nil];
-//    7C:EC:79:E4:24:D5
-    [self.ble.device addObserver:self forKeyPath:@"macAddr" options:NSKeyValueObservingOptionNew context:nil];
-}
-
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSString *,id> *)change context:(void *)context {
-//    if ([keyPath isEqualToString:@"macAddr"]) {
-//        
-//        if ([change[@"new"] isKindOfClass:[NSString class]]) {
-//            NSString *m = change[@"new"];
-//            NSLog(@"收到设备连接后的mac地址%@",m);
-//            if ([m isEqualToString:@"7C:EC:79:E4:24:D5"]) {
-//                [self.ble cancelConn];
-//                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-//                   [self.ble scanAndConnectWithMacAddrList:@[@""]]; 
-//                });
-//            }
-//        }
-//    }
+    [self.ble scanAndConnect:YES];
 }
 
 - (void)dealloc {
@@ -60,14 +34,35 @@
 }
 
 #pragma mark - event
-- (void)eDeviceConnectSuccess {
-//    self.currentData.name = self.ble.device.name;
-    self.textView.text = [NSString stringWithFormat:@"%@\n%@",self.textView.text,self.ble.device.name];
+- (void)eReadDeviceMacAddr {
+    if (YES) {
+        for (TBLEDevice *dev in self.ble.devicesDic.allValues) {
+            if (dev.isConnect) {
+                for (CBService *ser in dev.peri.services) {
+                    [self.ble dataGalleryOpen:YES peri:dev.peri service:ser];
+                }
+            }
+        }
+    }
+}
+
+- (void)eDisConn {
+    NSLog(@"断开了连接------------------------");
+    if (YES) {
+        for (TBLEDevice *dev in self.ble.devicesDic.allValues) {
+            if (dev.isConnect) {
+                for (CBService *ser in dev.peri.services) {
+                    [self.ble dataGalleryOpen:NO peri:dev.peri service:ser];
+                }
+            }
+        }
+    }
 }
 
 #pragma mark - private methods
 - (void)addListener {
-//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(eDeviceConnectSuccess) name:kTBluetoothConnectSuccess object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(eReadDeviceMacAddr) name:kTBLENotificationReadMacAddress object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(eDisConn) name:kTBLENotificationDisConnect object:nil];
 }
 
 - (void)removeListener {

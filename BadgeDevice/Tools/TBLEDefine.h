@@ -26,4 +26,6 @@
 #define DeviceNameOne @"SensorTag"
 #define DeviceNameTwo @"TI BLE Sensor Tag"
 
+#define AutoSearchTimeGap 5 /**<自动搜索时间间隔*/
+
 #endif /* TBLEDefine_h */

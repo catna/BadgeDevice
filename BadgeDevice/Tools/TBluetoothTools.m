@@ -8,26 +8,31 @@
 
 #import "TBluetoothTools.h"
 #import <CoreBluetooth/CoreBluetooth.h>
+#import "TBLEDefine.h"
 
 @implementation TBluetoothTools
 + (NSString *)macWithCharacteristic:(CBCharacteristic *)characteristic {
     if (characteristic.value) {
         NSString *value = [NSString stringWithFormat:@"%@", characteristic.value];
         NSMutableString *macString = [[NSMutableString alloc] init];
-        [macString appendString:[[value substringWithRange:NSMakeRange(16, 2)] uppercaseString]];
-        [macString appendString:@":"];
-        [macString appendString:[[value substringWithRange:NSMakeRange(14, 2)] uppercaseString]];
-        [macString appendString:@":"];
-        [macString appendString:[[value substringWithRange:NSMakeRange(12, 2)] uppercaseString]];
-        [macString appendString:@":"];
-        [macString appendString:[[value substringWithRange:NSMakeRange(5, 2)] uppercaseString]];
-        [macString appendString:@":"];
-        [macString appendString:[[value substringWithRange:NSMakeRange(3, 2)] uppercaseString]];
-        [macString appendString:@":"];
-        [macString appendString:[[value substringWithRange:NSMakeRange(1, 2)] uppercaseString]];
-        return macString;	// 如：00:E0:4C:3F:14:DE
+        int rangs[6] = {1,3,5,12,14,16};
+        for (int i = 5; i >= 0; i--) {
+            [macString appendString:[[value substringWithRange:NSMakeRange(rangs[i], 2)] uppercaseString]];
+            [macString appendString:@":"];
+        }
+        return [macString substringToIndex:macString.length - 1];
     }
     return @"";
 }
 
+
+/** 先写入 0x01 到 config 的 characteristic 中，之后再去 data 的 characteristic 去读取数据 */
++ (void)writeValueForCBPeripheral:(CBPeripheral *)peripheral CBCharacteristic:(CBCharacteristic *)characteristic {
+    Byte b = 0x01;
+    NSData *data = [NSData dataWithBytes:&b length:sizeof(b)];
+    [peripheral writeValue:data forCharacteristic:characteristic type:CBCharacteristicWriteWithResponse];
+}
+
 @end
+
+
