@@ -48,6 +48,7 @@
 		E1F03A3F1CEB0C1B007AD562 /* libz.1.2.5.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = E1F03A3E1CEB0C1B007AD562 /* libz.1.2.5.tbd */; };
 		E1F03A411CEB0C29007AD562 /* libsqlite3.0.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = E1F03A401CEB0C29007AD562 /* libsqlite3.0.tbd */; };
 		E1F03A491CEB1B88007AD562 /* FLEXDebug.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E1F03A481CEB1B88007AD562 /* FLEXDebug.framework */; };
+		E1F03A4D1CEB24F1007AD562 /* TBLEDevice.m in Sources */ = {isa = PBXBuildFile; fileRef = E1F03A4C1CEB24F1007AD562 /* TBLEDevice.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -128,6 +129,9 @@
 		E1F03A3E1CEB0C1B007AD562 /* libz.1.2.5.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.1.2.5.tbd; path = usr/lib/libz.1.2.5.tbd; sourceTree = SDKROOT; };
 		E1F03A401CEB0C29007AD562 /* libsqlite3.0.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.0.tbd; path = usr/lib/libsqlite3.0.tbd; sourceTree = SDKROOT; };
 		E1F03A481CEB1B88007AD562 /* FLEXDebug.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FLEXDebug.framework; sourceTree = "<group>"; };
+		E1F03A4A1CEB22F8007AD562 /* TBLEDefine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TBLEDefine.h; sourceTree = "<group>"; };
+		E1F03A4B1CEB24F1007AD562 /* TBLEDevice.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TBLEDevice.h; sourceTree = "<group>"; };
+		E1F03A4C1CEB24F1007AD562 /* TBLEDevice.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TBLEDevice.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -259,6 +263,9 @@
 		E19E377F1CC8C8CA00071346 /* Tools */ = {
 			isa = PBXGroup;
 			children = (
+				E1F03A4A1CEB22F8007AD562 /* TBLEDefine.h */,
+				E1F03A4B1CEB24F1007AD562 /* TBLEDevice.h */,
+				E1F03A4C1CEB24F1007AD562 /* TBLEDevice.m */,
 				E19E37801CC8C8E800071346 /* TBluetooth.h */,
 				E19E37811CC8C8E800071346 /* TBluetooth.m */,
 				E19E37861CC8DFE300071346 /* TBluetoothTools.h */,
@@ -512,6 +519,7 @@
 				E19E378D1CC8E76300071346 /* BluetoothReadWriteHelper.m in Sources */,
 				E19E37911CC8E79D00071346 /* BluetoothTools.m in Sources */,
 				E19E374E1CC8C71F00071346 /* AppDelegate.m in Sources */,
+				E1F03A4D1CEB24F1007AD562 /* TBLEDevice.m in Sources */,
 				E19E374B1CC8C71F00071346 /* main.m in Sources */,
 				E19E37821CC8C8E800071346 /* TBluetooth.m in Sources */,
 				E19E37571CC8C71F00071346 /* BadgeDevice.xcdatamodeld in Sources */,

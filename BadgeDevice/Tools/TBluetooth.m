@@ -7,40 +7,44 @@
 //
 
 #import "TBluetooth.h"
+#import "TBLEDefine.h"
+#import "TBLEDevice.h"
+
 #import <BabyBluetooth.h>
 #import <SVProgressHUD.h>
 
 #import "TBluetoothTools.h"
-#import "BluetoothReadWriteHelper.h"
 
-@interface TBluetoothDevice ()
+// NSString *const kTBluetoothConnectSuccess = @"kTBluetoothConnectSuccess";
+// NSString *const kTBluetoothDisConnect = @"kTBluetoothDisConnect";
 
-@end
-@implementation TBluetoothDevice
+NSString *const kTBLENotificationDataUpdate = @"kTBLENotificationDataUpdate";
+NSString *const kTBLENotificationMatchSuccess = @"kTBLENotificationMatchSuccess";
 
-@end
-
-NSString *const kTBluetoothConnectSuccess = @"kTBluetoothConnectSuccess";
-NSString *const kTBluetoothDisConnect = @"kTBluetoothDisConnect";
 
 @interface TBluetooth ()
-@property (nonatomic ,strong) BabyBluetooth *babyBluetooth;
+
+@property (nonatomic ,strong) NSDictionary <NSString *,NSArray<NSString *>*>* seConfDataDic;
+
+@property (nonatomic ,strong) NSMutableDictionary <CBPeripheral *,TBLEDevice *> *devicesDic;
+
+/*!
+ *	@brief 1.在设备有可供连接的mac地址列表时，且设备的mac地址与列表中的不匹配
+ *          2.在设备的可连接列表中仅包含一个空字符串时
+ *          以上两种情况外的设备都会被添加到忽略列表中
+ */
+@property (nonatomic ,strong) NSMutableDictionary <CBPeripheral *,NSString *> *ignoreDic;/**<main ignore dic*/
+@property (nonatomic ,strong) NSMutableArray <NSString *> *canConnAddrList;/**<need to ignore mac*/
+
+@property (nonatomic ,strong) NSMutableDictionary <CBPeripheral *,NSDictionary *> *peripheralsAdvertisementData;
+
 @end
 
-@implementation TBluetooth {
-    void(^blockUpdateHandler)(struct DeviceData);
-    BOOL isNotify;
-    struct DeviceData deviceData;
-}
-@synthesize device = _device;
+@implementation TBluetooth
+@synthesize device        = _device;
+@synthesize babyBluetooth = _babyBluetooth;
 
 #pragma mark - life cycle
-- (id)init {
-    if (self = [super init]) {
-        self.babyBluetooth = [BabyBluetooth shareBabyBluetooth];
-    }
-    return self;
-}
 
 #pragma mark - Public methods
 + (instancetype)sharedBluetooth {
@@ -52,38 +56,51 @@ NSString *const kTBluetoothDisConnect = @"kTBluetoothDisConnect";
     return sharedInstance;
 }
 
-- (void)connect {
-    [self cancelBluetoothConnectingAndConfigConnectSetting];
-    [self setupBluetoothWorkFlow];
-    [self bluetoothStartConnect];
+- (void)scanAndConnectWithMacAddrList:(NSArray <NSString *>*)macAddrList {
+    [self.canConnAddrList removeAllObjects];
+    [self.canConnAddrList addObjectsFromArray:macAddrList];
+    [self cancelConnectingAndConfig];
+    [self setupWorkFlow];
+    self.babyBluetooth.scanForPeripherals().then.connectToPeripherals().and.discoverServices().and.discoverCharacteristics().then.readValueForCharacteristic().begin();
 }
 
-- (void)cancelConnecting {
-    [self cancelBluetoothConnectingAndConfigConnectSetting];
+- (void)setDataNotify:(BOOL)notify {
+    if (self.device.peri) {
+        for (CBCharacteristic *ch in self.device.characteristicsForData) {
+            [self.device.peri setNotifyValue:notify forCharacteristic:ch];
+        }
+    }
 }
 
-- (void)readDataWithUpdateHandler:(void (^)(struct DeviceData))handler notify:(BOOL)notify {
-    blockUpdateHandler = handler;
-    isNotify = notify;
-    [self bluetoothStartRead];
+- (void)cancelConn {
+    if (self.device.peri) {
+        [self.babyBluetooth AutoReconnectCancel:self.device.peri];
+        [self.device clearAllPropertyData];
+    }
+}
+
+- (void)clear {
+    [self.peripheralsAdvertisementData removeAllObjects];
+    [self.canConnAddrList removeAllObjects];
+    [self.ignoreDic removeAllObjects];
 }
 
 #pragma mark - private methods
-- (void)cancelBluetoothConnectingAndConfigConnectSetting {
-    [_babyBluetooth cancelAllPeripheralsConnection];
+- (void)cancelConnectingAndConfig {
+    [self.babyBluetooth cancelAllPeripheralsConnection];
     // 扫描选项->CBCentralManagerScanOptionAllowDuplicatesKey:忽略同一个Peripheral端的多个发现事件被聚合成一个发现事件
     NSDictionary *scanForPeripheralsWithOptions = @{CBCentralManagerScanOptionAllowDuplicatesKey:@YES};
     NSDictionary *connectOptions = @{CBConnectPeripheralOptionNotifyOnConnectionKey:@YES,
                                      CBConnectPeripheralOptionNotifyOnDisconnectionKey:@YES,
                                      CBConnectPeripheralOptionNotifyOnNotificationKey:@NO};
-    [_babyBluetooth setBabyOptionsWithScanForPeripheralsWithOptions:scanForPeripheralsWithOptions connectPeripheralWithOptions:connectOptions scanForPeripheralsWithServices:nil discoverWithServices:nil discoverWithCharacteristics:nil];
+    [self.babyBluetooth setBabyOptionsWithScanForPeripheralsWithOptions:scanForPeripheralsWithOptions connectPeripheralWithOptions:connectOptions scanForPeripheralsWithServices:nil discoverWithServices:nil discoverWithCharacteristics:nil];
 }
 
-- (void)setupBluetoothWorkFlow {
+- (void)setupWorkFlow {
     __block typeof(self) weakSelf = self;
-    
+    [self babyBluetooth];
     // 蓝牙设备开启状态的委托
-    [_babyBluetooth setBlockOnCentralManagerDidUpdateState:^(CBCentralManager *central) {
+    [self.babyBluetooth setBlockOnCentralManagerDidUpdateState:^(CBCentralManager *central) {
         switch (central.state) {
             case CBCentralManagerStateUnknown:
                 [SVProgressHUD showInfoWithStatus:@"CBCentralManagerStateUnknown"];
@@ -107,171 +124,119 @@ NSString *const kTBluetoothDisConnect = @"kTBluetoothDisConnect";
                 break;
         }
     }];
-    
+
+    //只发现名字符合要求的设备，其他的一律忽略
+    [_babyBluetooth setFilterOnDiscoverPeripherals:^BOOL(NSString *peripheralName, NSDictionary *advertisementData, NSNumber *RSSI) {
+         if ([peripheralName isEqualToString:DeviceNameOne] || [peripheralName isEqualToString:DeviceNameTwo]) {
+             return YES;
+         } else {
+             return NO;
+         }
+     }];
+
     // 扫描到设备的委托
     [_babyBluetooth setBlockOnDiscoverToPeripherals:^(CBCentralManager *central, CBPeripheral *peripheral, NSDictionary *advertisementData, NSNumber *RSSI) {
-        
+        __strong typeof(self) strongSelf = weakSelf;
         NSLog(@"已扫描的设备:%@",peripheral.name);
+        [strongSelf.peripheralsAdvertisementData setObject:advertisementData forKey:peripheral];
     }];
-    
+
     // 设置连接设备的过滤器，只连接设备
     [_babyBluetooth setFilterOnConnectToPeripherals:^BOOL(NSString *peripheralName, NSDictionary *advertisementData, NSNumber *RSSI) {
-        if ([peripheralName isEqualToString:@"TI BLE Sensor Tag"] || [peripheralName isEqualToString:@"SensorTag"]) {
+        if ([peripheralName isEqualToString:DeviceNameOne] || [peripheralName isEqualToString:DeviceNameTwo]) {
             return YES;
         }
         return NO;
     }];
-    
+
     // 连接到设备成功的委托
     [_babyBluetooth setBlockOnConnected:^(CBCentralManager *central, CBPeripheral *peripheral) {
         __strong typeof(self) strongSelf = weakSelf;
-        NSLog(@"连接成功");
-        strongSelf.device.name = peripheral.name;
-        strongSelf.device.peripheral = peripheral;
-        [strongSelf.babyBluetooth AutoReconnect:peripheral];
-        [[NSNotificationCenter defaultCenter] postNotificationName:kTBluetoothConnectSuccess object:nil userInfo:nil];
+        NSLog(@"连接成功---%@",peripheral.name);
+        if ([strongSelf.ignoreDic.allKeys containsObject:peripheral]) {
+            NSLog(@"忽略字典里存在这个设备，需要取消这个设备的连接");
+            [central cancelPeripheralConnection:peripheral];
+            return;
+        }
+        [strongSelf.devicesDic setObject:[[TBLEDevice alloc] init] forKey:peripheral];
+        strongSelf.devicesDic[peripheral].name = peripheral.name;
+        strongSelf.devicesDic[peripheral].peri = peripheral;
+        strongSelf.devicesDic[peripheral].isConnect = YES;
     }];
-//    
+//
     // 设备断开连接的委托
     [_babyBluetooth setBlockOnDisconnect:^(CBCentralManager *central, CBPeripheral *peripheral, NSError *error) {
         NSLog(@"断开%@连接", peripheral.name);
-//        __strong typeof(self) strongSelf = weakSelf;
-        [[NSNotificationCenter defaultCenter] postNotificationName:kTBluetoothDisConnect object:nil userInfo:nil];
+        __strong typeof(self) strongSelf = weakSelf;
+        if ([strongSelf.devicesDic.allKeys containsObject:peripheral]) {
+            strongSelf.devicesDic[peripheral].isConnect = NO;
+        }
     }];
 //
     // 扫描到设备的 service 的委托
     [_babyBluetooth setBlockOnDiscoverServices:^(CBPeripheral *peripheral, NSError *error) {
-//        for (CBService *service in peripheral.services) {
-//            NSLog(@"CBService, UUID:%@", service.UUID.UUIDString);
-//        }
+        #ifndef DEBUG
+        for (CBService *service in peripheral.services) {
+           NSLog(@"CBService, UUID:%@", service.UUID.UUIDString);
+        }
+        #endif
     }];
-//
-    // 扫描到设备某个 characteristic 的值的委托
-    [_babyBluetooth setBlockOnReadValueForCharacteristic:^(CBPeripheral *peripheral, CBCharacteristic *characteristic, NSError *error) {
-//        __strong typeof(self) strongSelf = weakSelf;
-        // 不需要不断通知时，只读取一次数据
-//        if (!strongSelf.notify) {
-//            [strongSelf invocateMethodWithCharacterastic:characteristic strongSelf:strongSelf];
-//        }
-    }];
-    
-    __block CBCharacteristic *uvDataChara;
-    __block CBCharacteristic *thDataChara;
-    __block CBCharacteristic *prDataChara;
-    
+
 //     扫描到设备某个 service 下的 characteristic 的委托
     [_babyBluetooth setBlockOnDiscoverCharacteristics:^(CBPeripheral *peripheral, CBService *service, NSError *error) {
         __strong typeof(weakSelf) strongSelf = weakSelf;
-        for (CBCharacteristic *characteristic in service.characteristics) {
-            if ([characteristic.UUID.UUIDString isEqualToString:@"2A23"]) {
-                //                [peripheral setNotifyValue:YES forCharacteristic:characteristic];
-                //                [peripheral readValueForCharacteristic:characteristic];
-                // 找到 UV 的 service
-            }
-        }
-        if ([service.UUID.UUIDString isEqualToString:uvServiceUUID]) {
-            for (CBCharacteristic *chara in service.characteristics) {
-                // 找到 UV Config 的 characteristic，这里写入 0x01，启动传感器的自动通知
-                if ([chara.UUID.UUIDString isEqualToString:uvConfigUUID]) {	                    [strongSelf writeValueForCBPeripheral:peripheral CBCharacteristic:chara];
-                }
-                
-                if ([chara.UUID.UUIDString isEqualToString:uvDataUUID]) {
-                    // 找到 UV Data 的 characteristic
-                    uvDataChara = chara;
-                    if (strongSelf->isNotify) {	// 需要不断通知
-                        // 注册 UV 值的通知，获取回调值
-                        [strongSelf.babyBluetooth notify:peripheral characteristic:chara block:^(CBPeripheral *peripheral, CBCharacteristic *characteristics, NSError *error) {
-                            if (strongSelf->blockUpdateHandler) {
-                                int v = [BabyToy ConvertDataToInt:characteristics.value];
-//                                NSString *str = [NSString stringWithFormat:@"原始data:%@\n设备返回的值是:%x",characteristics.value,v];
-                                NSString *uv = [BluetoothReadWriteHelper stringUVWithValue:characteristics.value];
-                                NSString *uvLe = [BluetoothReadWriteHelper stringUVLevelWithValue:characteristics.value];
-                                strongSelf->deviceData.UVNu = (__bridge CFTypeRef)(uv);
-                                strongSelf->deviceData.UVLe = (__bridge CFTypeRef)(uvLe);
-                                strongSelf->blockUpdateHandler(strongSelf->deviceData);
-                            }
-                            
-                        }];
-                    }
-                }
-            }
-        }
-        // 温湿度
-        if ([service.UUID.UUIDString isEqualToString:thServiceUUID]) {
-            for (CBCharacteristic *chara in service.characteristics) {
-                if ([chara.UUID.UUIDString isEqualToString:thConfigUUID]) {
-                    [strongSelf writeValueForCBPeripheral:peripheral CBCharacteristic:chara];
-                }
-                
-                if ([chara.UUID.UUIDString isEqualToString:thDataUUID]) {
-                    thDataChara = chara;
-                    if (strongSelf->isNotify) {	// 需要不断通知
-                        // 注册温湿度值的通知，获取回调值
-                        [strongSelf.babyBluetooth notify:peripheral characteristic:chara block:^(CBPeripheral *peripheral, CBCharacteristic *characteristics, NSError *error) {
-                            NSString *temp = [BluetoothReadWriteHelper stringTempWithValue:characteristics.value];
-                            NSString *humi = [BluetoothReadWriteHelper stringHumiWithValue:characteristics.value];
-                            strongSelf->deviceData.temp = (__bridge CFTypeRef)(temp);
-                            strongSelf->deviceData.humi = (__bridge CFTypeRef)(humi);
-                            if (strongSelf->blockUpdateHandler) {
-                                strongSelf->blockUpdateHandler(strongSelf->deviceData);
-                            }
-                        }];
-                    }
-                }
-            }
-        }
-        // 气压
-        if ([service.UUID.UUIDString isEqualToString:prServiceUUID]) {
-            for (CBCharacteristic *chara in service.characteristics) {
-                if ([chara.UUID.UUIDString isEqualToString:prConfigUUID]) {
-                    [strongSelf writeValueForCBPeripheral:peripheral CBCharacteristic:chara];
-                }
-                
-                if ([chara.UUID.UUIDString isEqualToString:prDataUUID]) {
-                    prDataChara = chara;
-                    // 需要不断通知
-                    if (strongSelf->isNotify) {
-                        // 注册气压值的通知，获取回调值
-                        [strongSelf.babyBluetooth notify:peripheral characteristic:chara block:^(CBPeripheral *peripheral, CBCharacteristic *characteristics, NSError *error) {
-                            
-                            
-                            if (strongSelf->blockUpdateHandler) {
-                                NSString *pres = [BluetoothReadWriteHelper stringPressureWithValue:characteristics.value];
-                                NSLog(@"设备的气压值为:%@",pres);
-                                strongSelf->deviceData.pres = (__bridge CFTypeRef)(pres);
-                                strongSelf->blockUpdateHandler(strongSelf->deviceData);
-                            }
-                        }];
-                    }
-                }
-            }
-        }
+
+        [strongSelf openPeri:peripheral dataGalleryService:service];
     }];
-    
+
     [_babyBluetooth setBlockOnReadValueForCharacteristic:^(CBPeripheral *peripheral, CBCharacteristic *characteristic, NSError *error) {
         __strong typeof(self) strongSelf = weakSelf;
-        if ([characteristic.UUID.UUIDString isEqualToString:@"2A23"]) {
+        if ([characteristic.UUID.UUIDString isEqualToString:MacAddrUUID]) {
             // 只取 System ID
             NSString *macAddress = [TBluetoothTools macWithCharacteristic:characteristic];
             NSLog(@"设备mac地址是:%@",macAddress);
-            strongSelf.device.macAddress = macAddress;
+            BOOL matchSuc = NO;
+            for (NSString *macStr in strongSelf.canConnAddrList) {
+                if ([macAddress isEqualToString:macStr]) {
+                    NSLog(@"找到了可以连接的设备");
+                    [strongSelf matchedSuccess:&matchSuc p:peripheral addr:macAddress];
+                    return;
+                }
+            }
+
+            if (strongSelf.canConnAddrList.count == 1 && [strongSelf.canConnAddrList[0] isEqualToString:@""]) {
+                NSLog(@"没有匹配的mac地址表,但传入参数是空字符串""所以也连接了");
+                [strongSelf matchedSuccess:&matchSuc p:peripheral addr:macAddress];
+                return;
+            }
+
+            if (!matchSuc) {
+                NSLog(@"没有在mac地址列表或者空字符串中匹配找到可以连接的设备,断开连接");
+                [strongSelf.ignoreDic setObject:macAddress forKey:peripheral];
+                [strongSelf.babyBluetooth.centralManager cancelPeripheralConnection:peripheral];
+                return;
+            }
+        }
+
+        NSString *UUIDStr = characteristic.UUID.UUIDString;
+        for (NSArray *uuidArr in strongSelf.seConfDataDic.allValues) {
+            if ([uuidArr containsObject:UUIDStr]) {
+                NSString *dataName;
+                if ([UUIDStr isEqualToString:THData]) {
+                    dataName = @"温湿度";
+                    strongSelf.device.currentRawData.THRawData = characteristic.value;
+                } else if ([UUIDStr isEqualToString:UVData]) {
+                    dataName = @"紫外线";
+                    strongSelf.device.currentRawData.UVRawData = characteristic.value;
+                } else if ([UUIDStr isEqualToString:PrData]) {
+                    dataName = @"大气压";
+                    strongSelf.device.currentRawData.PrRawData = characteristic.value;
+                }
+                NSLog(@"准备发送通知,读取到%@数据--%@",dataName,characteristic.value);
+                [[NSNotificationCenter defaultCenter] postNotificationName:kTBLENotificationDataUpdate object:nil];
+            }
         }
     }];
-}
-
-- (void)bluetoothStartConnect {
-    _babyBluetooth.scanForPeripherals().then.connectToPeripherals().begin();
-}
-
-- (void)bluetoothStartRead {
-    if (self.device.peripheral) {
-        _babyBluetooth.having(self.device.peripheral).connectToPeripherals().discoverServices().then.discoverCharacteristics().and.readValueForCharacteristic().begin();
-    } else {
-        [self cancelBluetoothConnectingAndConfigConnectSetting];
-        [self setupBluetoothWorkFlow];
-        _babyBluetooth.scanForPeripherals().connectToPeripherals().discoverServices().then.discoverCharacteristics().and.readValueForCharacteristic().begin();
-    }
-    
 }
 
 /** 先写入 0x01 到 config 的 characteristic 中，之后再去 data 的 characteristic 去读取数据 */
@@ -280,13 +245,84 @@ NSString *const kTBluetoothDisConnect = @"kTBluetoothDisConnect";
     NSData *data = [NSData dataWithBytes:&b length:sizeof(b)];
     [peripheral writeValue:data forCharacteristic:characteristic type:CBCharacteristicWriteWithResponse];
 }
+///打开数据通道
+- (void)openPeri:(CBPeripheral *)peri dataGalleryService:(CBService *)service{
+    for (NSString *key in self.seConfDataDic.allKeys) {
+        if ([service.UUID.UUIDString isEqualToString:key]) {
+            for (CBCharacteristic *ch in service.characteristics) {
+//                NSLog(@"发现了服务%@下的Ch%@",service,ch);
+                if ([ch.UUID.UUIDString isEqualToString:self.seConfDataDic[key][1]]) {
+                    [self writeValueForCBPeripheral:peri CBCharacteristic:ch];
+                }
+                if ([ch.UUID.UUIDString isEqualToString:self.seConfDataDic[key][1]]) {
+#ifdef DEBUG
+                    NSDictionary *nameDic = @{UVService:@"紫外线",THService:@"温湿度",PrService:@"大气压"};
+                    NSString *str = nameDic[key];
+                    NSLog(@"读取到%@数据--%@",str,ch.value);
+#endif
+                    [peri setNotifyValue:YES forCharacteristic:ch];
+                }
+
+            }
+        }
+    }
+}
+
+- (void)matchedSuccess:(BOOL *)match p:(CBPeripheral *)p addr:(NSString *)addr {
+    *match = YES;
+    self.device.macAddr = addr;
+    [self.babyBluetooth AutoReconnect:p];
+    self.device.advertisementData = [self.peripheralsAdvertisementData objectForKey:p];
+    [[NSNotificationCenter defaultCenter] postNotificationName:kTBLENotificationMatchSuccess object:nil];
+}
 
 #pragma mark - getter
-- (TBluetoothDevice *)device {
+- (TBLEDevice *)device {
     if (!_device) {
-        _device = [[TBluetoothDevice alloc] init];
+        _device = [[TBLEDevice alloc] init];
     }
     return _device;
 }
 
+- (NSMutableDictionary <CBPeripheral *,TBLEDevice *>*)devicesDic {
+    if (!_devicesDic) {
+        _devicesDic = [[NSMutableDictionary alloc] init];
+    }
+    return _devicesDic;
+}
+
+- (BabyBluetooth *)babyBluetooth {
+    if (!_babyBluetooth) {
+        _babyBluetooth = [BabyBluetooth shareBabyBluetooth];
+    }
+    return _babyBluetooth;
+}
+
+- (NSMutableArray <NSString *>*)canConnAddrList {
+    if (!_canConnAddrList) {
+        _canConnAddrList = [[NSMutableArray alloc] init];
+    }
+    return _canConnAddrList;
+}
+
+- (NSMutableDictionary <CBPeripheral *,NSString *> *)ignoreDic {
+    if (!_ignoreDic) {
+        _ignoreDic = [[NSMutableDictionary alloc] init];
+    }
+    return _ignoreDic;
+}
+
+- (NSMutableDictionary <CBPeripheral *,NSDictionary *> *)peripheralsAdvertisementData {
+    if (!_peripheralsAdvertisementData) {
+        _peripheralsAdvertisementData = [[NSMutableDictionary alloc] init];
+    }
+    return _peripheralsAdvertisementData;
+}
+
+- (NSDictionary <NSString *,NSArray <NSString *>*>*)seConfDataDic {
+    if (!_seConfDataDic) {
+        _seConfDataDic = @{UVService:@[UVConfig,UVData],THService:@[THConfig,THData],PrService:@[PrConfig,PrData]};
+    }
+    return _seConfDataDic;
+}
 @end

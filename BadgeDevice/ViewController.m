@@ -10,6 +10,7 @@
 #import "TBluetooth.h"
 #import "MDeviceData.h"
 #import "AppDelegate.h"
+#import "TBLEDevice.h"
 
 @interface ViewController ()
 @property (weak, nonatomic) IBOutlet UITextView *textView;
@@ -23,20 +24,35 @@
     [super viewDidLoad];
     [self addListener];
 
-//    NSLog(@"%@",delegate.managedObjectContext);
-    [self.ble readDataWithUpdateHandler:^(struct DeviceData deviceData) {
-        self.currentData.macAddress = self.ble.device.macAddress;
-        self.currentData.pres = (__bridge NSString *)(deviceData.pres);
-        self.currentData.humi = (__bridge NSString *)(deviceData.humi);
-        self.currentData.temp = (__bridge NSString *)(deviceData.temp);
-        self.currentData.uvnu = (__bridge NSString *)(deviceData.UVNu);
-        self.currentData.uvle = (__bridge NSString *)(deviceData.UVLe);
-        self.currentData.time = [NSDate date];
+//    [self.ble readDataWithUpdateHandler:^(struct DeviceData deviceData) {
+//        self.currentData.macAddress = self.ble.device.macAddress;
+//        self.currentData.pres = (__bridge NSString *)(deviceData.pres);
+//        self.currentData.humi = (__bridge NSString *)(deviceData.humi);
+//        self.currentData.temp = (__bridge NSString *)(deviceData.temp);
+//        self.currentData.UVNu = (__bridge NSString *)(deviceData.UVNu);
+//        self.currentData.UVLe = (__bridge NSString *)(deviceData.UVLe);
 //        self.textView.text = [self.currentData generateShowText];
-        AppDelegate *delegate = [[UIApplication sharedApplication] delegate];
-        [delegate saveContext];
-        
-    } notify:YES];
+//    } notify:YES];
+    [self.ble scanAndConnectWithMacAddrList:@[@""]];
+//    [self.ble scanAndConnectWithMacAddrList:nil];
+//    7C:EC:79:E4:24:D5
+    [self.ble.device addObserver:self forKeyPath:@"macAddr" options:NSKeyValueObservingOptionNew context:nil];
+}
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSString *,id> *)change context:(void *)context {
+//    if ([keyPath isEqualToString:@"macAddr"]) {
+//        
+//        if ([change[@"new"] isKindOfClass:[NSString class]]) {
+//            NSString *m = change[@"new"];
+//            NSLog(@"收到设备连接后的mac地址%@",m);
+//            if ([m isEqualToString:@"7C:EC:79:E4:24:D5"]) {
+//                [self.ble cancelConn];
+//                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+//                   [self.ble scanAndConnectWithMacAddrList:@[@""]]; 
+//                });
+//            }
+//        }
+//    }
 }
 
 - (void)dealloc {
@@ -51,7 +67,7 @@
 
 #pragma mark - private methods
 - (void)addListener {
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(eDeviceConnectSuccess) name:kTBluetoothConnectSuccess object:nil];
+//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(eDeviceConnectSuccess) name:kTBluetoothConnectSuccess object:nil];
 }
 
 - (void)removeListener {
