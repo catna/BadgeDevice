@@ -9,6 +9,7 @@
 #import "ViewController.h"
 #import "TBluetooth.h"
 #import "MDeviceData.h"
+#import "AppDelegate.h"
 
 @interface ViewController ()
 @property (weak, nonatomic) IBOutlet UITextView *textView;
@@ -21,14 +22,20 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self addListener];
+
+//    NSLog(@"%@",delegate.managedObjectContext);
     [self.ble readDataWithUpdateHandler:^(struct DeviceData deviceData) {
         self.currentData.macAddress = self.ble.device.macAddress;
         self.currentData.pres = (__bridge NSString *)(deviceData.pres);
         self.currentData.humi = (__bridge NSString *)(deviceData.humi);
         self.currentData.temp = (__bridge NSString *)(deviceData.temp);
-        self.currentData.UVNu = (__bridge NSString *)(deviceData.UVNu);
-        self.currentData.UVLe = (__bridge NSString *)(deviceData.UVLe);
-        self.textView.text = [self.currentData generateShowText];
+        self.currentData.uvnu = (__bridge NSString *)(deviceData.UVNu);
+        self.currentData.uvle = (__bridge NSString *)(deviceData.UVLe);
+        self.currentData.time = [NSDate date];
+//        self.textView.text = [self.currentData generateShowText];
+        AppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+        [delegate saveContext];
+        
     } notify:YES];
 }
 
@@ -38,7 +45,7 @@
 
 #pragma mark - event
 - (void)eDeviceConnectSuccess {
-    self.currentData.name = self.ble.device.name;
+//    self.currentData.name = self.ble.device.name;
     self.textView.text = [NSString stringWithFormat:@"%@\n%@",self.textView.text,self.ble.device.name];
 }
 
@@ -60,9 +67,9 @@
 }
 
 - (MDeviceData *)currentData {
-    if (!_currentData) {
-        _currentData = [[MDeviceData alloc] init];
-    }
+    AppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+    NSManagedObjectContext *context = delegate.managedObjectContext;
+    _currentData = [NSEntityDescription insertNewObjectForEntityForName:@"MDeviceData" inManagedObjectContext:context];
     return _currentData;
 }
 

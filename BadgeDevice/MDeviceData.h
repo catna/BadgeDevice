@@ -7,12 +7,13 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <CoreData/CoreData.h>
 
 ///设备数据模型
-@interface MDeviceData : NSObject
+@interface MDeviceData : NSManagedObject
 @property (nonatomic ,copy) NSString *name;
 @property (nonatomic ,copy) NSString *macAddress;
-@property (nonatomic ,copy) NSString *UVLe, *UVNu, *pres, *humi, *temp;
+@property (nonatomic ,copy) NSString *uvle, *uvnu, *pres, *humi, *temp;
 @property (nonatomic ,strong) NSDate *time;
 
 - (NSString *)generateShowText;
