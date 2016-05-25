@@ -24,6 +24,8 @@
 @property (nonatomic ,strong) NSDictionary *advertisementData;/**< ad*/
 @property (nonatomic ,strong) NSMutableArray <CBCharacteristic *>*characteristicsForData;
 
+@property (nonatomic ,assign) BOOL isConnect;
+
 @property (nonatomic ,strong) TBLEDeviceRawData *currentRawData;/**< 当前数据*/
 - (void)clearAllPropertyData;
 @end
