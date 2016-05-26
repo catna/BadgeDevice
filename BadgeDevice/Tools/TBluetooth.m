@@ -238,7 +238,8 @@ NSString *const kTBLENotificationReadMacAddress = @"kTBLENotificationReadMacAddr
                     dataName = @"大气压";
                     self.devicesDic[peri].currentRawData.PrRawData = characteristic.value;
                 }
-//                NSLog(@"读取设备%@的%@数据--%@",self.devicesDic[peri].macAddr,dataName,characteristic.value);
+                NSLog(@"读取设备%@的%@数据--%@",self.devicesDic[peri].macAddr,dataName,characteristic.value);
+                
                 [[NSNotificationCenter defaultCenter] postNotificationName:kTBLENotificationDataUpdate object:nil];
             }
         }

@@ -12,17 +12,11 @@
 		E11FF63D1CE74DFB00907206 /* BadgeBLE.m in Sources */ = {isa = PBXBuildFile; fileRef = E11FF63C1CE74DFB00907206 /* BadgeBLE.m */; };
 		E11FF6411CE74E1600907206 /* TBluetooth.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = E19E37801CC8C8E800071346 /* TBluetooth.h */; };
 		E11FF6421CE74E1600907206 /* TBluetoothTools.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = E19E37861CC8DFE300071346 /* TBluetoothTools.h */; };
-		E11FF6431CE74E1600907206 /* BluetoothTools.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = E19E378F1CC8E79D00071346 /* BluetoothTools.h */; };
-		E11FF6441CE74E1600907206 /* BluetoothReadWriteHelper.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = E19E37891CC8E76300071346 /* BluetoothReadWriteHelper.h */; };
-		E11FF6451CE74E1600907206 /* StringTool.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = E19E378B1CC8E76300071346 /* StringTool.h */; };
 		E11FF6461CE74E1600907206 /* AppDelegate.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = E19E374C1CC8C71F00071346 /* AppDelegate.h */; };
 		E11FF6471CE74E1600907206 /* ViewController.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = E19E374F1CC8C71F00071346 /* ViewController.h */; };
 		E11FF6481CE74E1600907206 /* MDeviceData.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = E19E37831CC8D8B800071346 /* MDeviceData.h */; };
 		E11FF6491CE74E2400907206 /* TBluetooth.m in Sources */ = {isa = PBXBuildFile; fileRef = E19E37811CC8C8E800071346 /* TBluetooth.m */; };
 		E11FF64A1CE74E2400907206 /* TBluetoothTools.m in Sources */ = {isa = PBXBuildFile; fileRef = E19E37871CC8DFE300071346 /* TBluetoothTools.m */; };
-		E11FF64B1CE74E2400907206 /* BluetoothTools.m in Sources */ = {isa = PBXBuildFile; fileRef = E19E37901CC8E79D00071346 /* BluetoothTools.m */; };
-		E11FF64C1CE74E2400907206 /* BluetoothReadWriteHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = E19E378A1CC8E76300071346 /* BluetoothReadWriteHelper.m */; };
-		E11FF64D1CE74E2400907206 /* StringTool.m in Sources */ = {isa = PBXBuildFile; fileRef = E19E378C1CC8E76300071346 /* StringTool.m */; };
 		E11FF64E1CE74E2400907206 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = E19E374D1CC8C71F00071346 /* AppDelegate.m */; };
 		E11FF64F1CE74E2400907206 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E19E37501CC8C71F00071346 /* ViewController.m */; };
 		E11FF6501CE74E2400907206 /* MDeviceData.m in Sources */ = {isa = PBXBuildFile; fileRef = E19E37841CC8D8B800071346 /* MDeviceData.m */; };
@@ -42,9 +36,6 @@
 		E19E37821CC8C8E800071346 /* TBluetooth.m in Sources */ = {isa = PBXBuildFile; fileRef = E19E37811CC8C8E800071346 /* TBluetooth.m */; };
 		E19E37851CC8D8B800071346 /* MDeviceData.m in Sources */ = {isa = PBXBuildFile; fileRef = E19E37841CC8D8B800071346 /* MDeviceData.m */; };
 		E19E37881CC8DFE300071346 /* TBluetoothTools.m in Sources */ = {isa = PBXBuildFile; fileRef = E19E37871CC8DFE300071346 /* TBluetoothTools.m */; };
-		E19E378D1CC8E76300071346 /* BluetoothReadWriteHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = E19E378A1CC8E76300071346 /* BluetoothReadWriteHelper.m */; };
-		E19E378E1CC8E76300071346 /* StringTool.m in Sources */ = {isa = PBXBuildFile; fileRef = E19E378C1CC8E76300071346 /* StringTool.m */; };
-		E19E37911CC8E79D00071346 /* BluetoothTools.m in Sources */ = {isa = PBXBuildFile; fileRef = E19E37901CC8E79D00071346 /* BluetoothTools.m */; };
 		E1F03A3F1CEB0C1B007AD562 /* libz.1.2.5.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = E1F03A3E1CEB0C1B007AD562 /* libz.1.2.5.tbd */; };
 		E1F03A411CEB0C29007AD562 /* libsqlite3.0.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = E1F03A401CEB0C29007AD562 /* libsqlite3.0.tbd */; };
 		E1F03A491CEB1B88007AD562 /* FLEXDebug.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E1F03A481CEB1B88007AD562 /* FLEXDebug.framework */; };
@@ -77,9 +68,6 @@
 			files = (
 				E11FF6411CE74E1600907206 /* TBluetooth.h in CopyFiles */,
 				E11FF6421CE74E1600907206 /* TBluetoothTools.h in CopyFiles */,
-				E11FF6431CE74E1600907206 /* BluetoothTools.h in CopyFiles */,
-				E11FF6441CE74E1600907206 /* BluetoothReadWriteHelper.h in CopyFiles */,
-				E11FF6451CE74E1600907206 /* StringTool.h in CopyFiles */,
 				E11FF6461CE74E1600907206 /* AppDelegate.h in CopyFiles */,
 				E11FF6471CE74E1600907206 /* ViewController.h in CopyFiles */,
 				E11FF6481CE74E1600907206 /* MDeviceData.h in CopyFiles */,
@@ -120,12 +108,6 @@
 		E19E37841CC8D8B800071346 /* MDeviceData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MDeviceData.m; sourceTree = "<group>"; };
 		E19E37861CC8DFE300071346 /* TBluetoothTools.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TBluetoothTools.h; sourceTree = "<group>"; };
 		E19E37871CC8DFE300071346 /* TBluetoothTools.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TBluetoothTools.m; sourceTree = "<group>"; };
-		E19E37891CC8E76300071346 /* BluetoothReadWriteHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BluetoothReadWriteHelper.h; sourceTree = "<group>"; };
-		E19E378A1CC8E76300071346 /* BluetoothReadWriteHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BluetoothReadWriteHelper.m; sourceTree = "<group>"; };
-		E19E378B1CC8E76300071346 /* StringTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StringTool.h; sourceTree = "<group>"; };
-		E19E378C1CC8E76300071346 /* StringTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StringTool.m; sourceTree = "<group>"; };
-		E19E378F1CC8E79D00071346 /* BluetoothTools.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BluetoothTools.h; sourceTree = "<group>"; };
-		E19E37901CC8E79D00071346 /* BluetoothTools.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BluetoothTools.m; sourceTree = "<group>"; };
 		E1F03A3E1CEB0C1B007AD562 /* libz.1.2.5.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.1.2.5.tbd; path = usr/lib/libz.1.2.5.tbd; sourceTree = SDKROOT; };
 		E1F03A401CEB0C29007AD562 /* libsqlite3.0.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.0.tbd; path = usr/lib/libsqlite3.0.tbd; sourceTree = SDKROOT; };
 		E1F03A481CEB1B88007AD562 /* FLEXDebug.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FLEXDebug.framework; sourceTree = "<group>"; };
@@ -270,12 +252,6 @@
 				E19E37811CC8C8E800071346 /* TBluetooth.m */,
 				E19E37861CC8DFE300071346 /* TBluetoothTools.h */,
 				E19E37871CC8DFE300071346 /* TBluetoothTools.m */,
-				E19E378F1CC8E79D00071346 /* BluetoothTools.h */,
-				E19E37901CC8E79D00071346 /* BluetoothTools.m */,
-				E19E37891CC8E76300071346 /* BluetoothReadWriteHelper.h */,
-				E19E378A1CC8E76300071346 /* BluetoothReadWriteHelper.m */,
-				E19E378B1CC8E76300071346 /* StringTool.h */,
-				E19E378C1CC8E76300071346 /* StringTool.m */,
 			);
 			path = Tools;
 			sourceTree = "<group>";
@@ -496,9 +472,6 @@
 			files = (
 				E11FF6491CE74E2400907206 /* TBluetooth.m in Sources */,
 				E11FF64A1CE74E2400907206 /* TBluetoothTools.m in Sources */,
-				E11FF64B1CE74E2400907206 /* BluetoothTools.m in Sources */,
-				E11FF64C1CE74E2400907206 /* BluetoothReadWriteHelper.m in Sources */,
-				E11FF64D1CE74E2400907206 /* StringTool.m in Sources */,
 				E11FF64E1CE74E2400907206 /* AppDelegate.m in Sources */,
 				E11FF64F1CE74E2400907206 /* ViewController.m in Sources */,
 				E11FF6501CE74E2400907206 /* MDeviceData.m in Sources */,
@@ -513,11 +486,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E19E378E1CC8E76300071346 /* StringTool.m in Sources */,
 				E19E37881CC8DFE300071346 /* TBluetoothTools.m in Sources */,
 				E19E37511CC8C71F00071346 /* ViewController.m in Sources */,
-				E19E378D1CC8E76300071346 /* BluetoothReadWriteHelper.m in Sources */,
-				E19E37911CC8E79D00071346 /* BluetoothTools.m in Sources */,
 				E19E374E1CC8C71F00071346 /* AppDelegate.m in Sources */,
 				E1F03A4D1CEB24F1007AD562 /* TBLEDevice.m in Sources */,
 				E19E374B1CC8C71F00071346 /* main.m in Sources */,
