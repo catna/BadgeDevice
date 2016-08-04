@@ -7,17 +7,19 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "TBluetooth.h"
-@class CBCharacteristic;
-
+/*!
+ *	@brief 是一个数据格式转换的工具
+ */
 @interface TBluetoothTools : NSObject
-+ (NSString *)macWithCharacteristic:(CBCharacteristic *)characteristic;
+/*!
+ *	@brief 把 characteristic 的 value 转换为 mac 地址的字符串
+ *
+ *	@param macData	characteristic 的 value
+ *
+ *	@return 如果参数是空，返回的是空字符串
+ */
++ (NSString *)macWithCharacteristicData:(NSData *)macData;
 
-/** 先写入 0x01 到 config 的 characteristic 中，之后再去 data 的 characteristic 去读取数据 */
-+ (void)writeValueForCBPeripheral:(CBPeripheral *)peripheral CBCharacteristic:(CBCharacteristic *)characteristic;
-@end
-
-@interface TBluetoothTools (DataConvert)
 /*!
  *	@brief 返回数据单位百帕斯卡
  *

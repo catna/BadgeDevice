@@ -62,7 +62,7 @@
 #pragma mark - private methods
 - (void)addListener {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(eReadDeviceMacAddr) name:kTBLENotificationReadMacAddress object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(eDisConn) name:kTBLENotificationDisConnect object:nil];
+//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(eDisConn) name:kTBLENotificationDisConnect object:nil];
 }
 
 - (void)removeListener {

@@ -14,6 +14,12 @@
 @end
 
 @implementation TBLEDevice
+@synthesize isConnect = _isConnect;
+
+- (void)setConnectStatus:(BOOL)connect {
+    _isConnect = connect;
+}
+
 - (void)clearAllPropertyData {
     self.name = nil;
     self.macAddr = nil;
