@@ -27,6 +27,7 @@
     [self addListener];
 
     [self.ble scanAndConnect:YES];
+    self.view.backgroundColor = [UIColor cyanColor];
 }
 
 - (void)dealloc {
@@ -59,10 +60,19 @@
     }
 }
 
+- (void)eUpdateData {
+    NSLog(@"||||%@", self.ble.devicesDic.allValues[0].currentRawData.THRawData);
+    TBLEDeviceRawData *rd = self.ble.devicesDic.allValues[0].currentRawData;
+    self.textView.text = [NSString stringWithFormat:@"%@\n%@\n%@\n%@", rd.Peri, rd.UVLe, rd.Temp, rd.Humi];
+}
+
 #pragma mark - private methods
 - (void)addListener {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(eReadDeviceMacAddr) name:kTBLENotificationReadMacAddress object:nil];
-//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(eDisConn) name:kTBLENotificationDisConnect object:nil];
+//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(eDisConn) name:kTBLENotificationConnectingChanged object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(eUpdateData) name:kTBLENotificationDataUpdate object:nil];
+    
 }
 
 - (void)removeListener {

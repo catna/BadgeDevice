@@ -8,9 +8,33 @@
 
 #import "TBLEDevice.h"
 #import <CoreBluetooth/CoreBluetooth.h>
+#import "TBluetoothTools.h"
 
 @implementation TBLEDeviceRawData
+@synthesize Temp = _Temp;
+@synthesize Humi = _Humi;
+@synthesize Peri = _Peri;
+@synthesize UVLe = _UVLe;
 
+- (void)setTHRawData:(NSData *)THRawData {
+    _THRawData = THRawData;
+    double t = [TBluetoothTools convertTempData:THRawData];
+    double h = [TBluetoothTools convertHumiData:THRawData];
+    _Temp = [NSString stringWithFormat:@"%.2f", t];
+    _Humi = [NSString stringWithFormat:@"%.2f", h];
+}
+
+- (void)setPrRawData:(NSData *)PrRawData {
+    _PrRawData = PrRawData;
+    double p = [TBluetoothTools convertPresData:PrRawData];
+    _Peri = [NSString stringWithFormat:@"%.2f", p];
+}
+
+- (void)setUVRawData:(NSData *)UVRawData {
+    _UVRawData = UVRawData;
+    double uv = [TBluetoothTools convertUVNuData:UVRawData];
+    _UVLe = [NSString stringWithFormat:@"%d", [TBluetoothTools matchUVLeWithUVNu:uv]];
+}
 @end
 
 @implementation TBLEDevice
@@ -34,7 +58,7 @@
     return _characteristicsForData;
 }
 
-- (TBLEDeviceRawData *)currentData {
+- (TBLEDeviceRawData *)currentRawData {
     if (!_currentRawData) {
         _currentRawData = [[TBLEDeviceRawData alloc] init];
     }

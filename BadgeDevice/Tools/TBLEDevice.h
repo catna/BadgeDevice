@@ -14,6 +14,11 @@
 @property (nonatomic ,strong) NSData *UVRawData;/**< 紫外线数据*/
 @property (nonatomic ,strong) NSData *THRawData;/**< 温湿度数据*/
 @property (nonatomic ,strong) NSData *PrRawData;/**< 大气压数据*/
+
+@property (nonatomic ,strong, readonly) NSString *UVLe;
+@property (nonatomic ,strong, readonly) NSString *Peri;
+@property (nonatomic ,strong, readonly) NSString *Temp;
+@property (nonatomic ,strong, readonly) NSString *Humi;
 @end
 
 @interface TBLEDevice : NSObject

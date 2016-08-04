@@ -44,7 +44,7 @@
     const void *rawData = data.bytes;
     int a = 0;
     char *b = (char *)&a;
-    for (int i = 0; i < sizeof(int); i ++) {
+    for (int i = 0; i < sizeof(int) - 2; i ++) {
         *(b + i) = *(char *)(rawData + 2 + i);
     }
     return (double)a * 125.0 / 65536 - 6;
@@ -54,7 +54,7 @@
     const void *rawData = data.bytes;
     int a = 0;
     char *b = (char *)&a;
-    for (int i = 0; i < sizeof(int); i ++) {
+    for (int i = 0; i < sizeof(int) - 2; i ++) {
         *(b + i) = *(char *)(rawData + i);
     }
     return (double) a * 175.72 / 65536 - 46.85;

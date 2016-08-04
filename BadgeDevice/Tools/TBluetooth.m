@@ -146,9 +146,10 @@ NSString *const kTBLENotificationReadMacAddress = @"kTBLENotificationReadMacAddr
         if ([strongSelf.devicesDic.allKeys containsObject:peripheral]) {
             [strongSelf.devicesDic[peripheral] setConnectStatus:YES];
             
-            NSNotification *notification = [NSNotification notificationWithName:kTBLENotificationConnectingChanged object:nil userInfo:@{kTBLENotificationConnectingChanged:strongSelf.devicesDic[peripheral]}];
-            [[NSNotificationCenter defaultCenter] postNotification:notification];
+            [[NSNotificationCenter defaultCenter] postNotificationName:kTBLENotificationConnectingChanged object:nil];
+//             userInfo:@{kTBLENotificationConnectingChanged:strongSelf.devicesDic[peripheral]}
         }
+        
     }];
 
     // 设备断开连接的委托
@@ -157,8 +158,8 @@ NSString *const kTBLENotificationReadMacAddress = @"kTBLENotificationReadMacAddr
         __strong typeof(self) strongSelf = weakSelf;
         if ([strongSelf.devicesDic.allKeys containsObject:peripheral]) {
             [strongSelf.devicesDic[peripheral] setConnectStatus:NO];
-            NSNotification *notification = [NSNotification notificationWithName:kTBLENotificationConnectingChanged object:nil userInfo:@{kTBLENotificationConnectingChanged:strongSelf.devicesDic[peripheral]}];
-            [[NSNotificationCenter defaultCenter] postNotification:notification];
+            
+            [[NSNotificationCenter defaultCenter] postNotificationName:kTBLENotificationConnectingChanged object:nil userInfo:@{kTBLENotificationConnectingChanged:strongSelf.devicesDic[peripheral]}];
         }
     }];
 
@@ -271,9 +272,9 @@ NSString *const kTBLENotificationReadMacAddress = @"kTBLENotificationReadMacAddr
                     self.devicesDic[peri].currentRawData.UVRawData = characteristic.value;
                 } else if ([UUIDStr isEqualToString:PrData]) {
                     dataName = @"大气压";
-                    self.devicesDic[peri].currentRawData.PrRawData = characteristic.value;
+                    self.devicesDic[peri].currentRawData.PrRawData = [characteristic.value copy];
                 }
-                NSLog(@"读取设备%@的%@数据--%@",self.devicesDic[peri].macAddr,dataName,characteristic.value);
+//                NSLog(@"读取设备%@的%@数据--%@",self.devicesDic[peri].macAddr,dataName, self.devicesDic[peri].currentRawData);
                 
                 [[NSNotificationCenter defaultCenter] postNotificationName:kTBLENotificationDataUpdate object:nil];
             }
