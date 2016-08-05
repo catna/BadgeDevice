@@ -147,7 +147,6 @@ NSString *const kTBLENotificationReadMacAddress = @"kTBLENotificationReadMacAddr
             [strongSelf.devicesDic[peripheral] setConnectStatus:YES];
             
             [[NSNotificationCenter defaultCenter] postNotificationName:kTBLENotificationConnectingChanged object:nil];
-//             userInfo:@{kTBLENotificationConnectingChanged:strongSelf.devicesDic[peripheral]}
         }
         
     }];
@@ -160,6 +159,7 @@ NSString *const kTBLENotificationReadMacAddress = @"kTBLENotificationReadMacAddr
             [strongSelf.devicesDic[peripheral] setConnectStatus:NO];
             
             [[NSNotificationCenter defaultCenter] postNotificationName:kTBLENotificationConnectingChanged object:nil userInfo:@{kTBLENotificationConnectingChanged:strongSelf.devicesDic[peripheral]}];
+            [strongSelf.devicesDic removeObjectForKey:peripheral];
         }
     }];
 

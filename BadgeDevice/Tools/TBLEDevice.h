@@ -15,6 +15,7 @@
 @property (nonatomic ,strong) NSData *THRawData;/**< 温湿度数据*/
 @property (nonatomic ,strong) NSData *PrRawData;/**< 大气压数据*/
 
+@property (nonatomic, assign, readonly) BOOL dataValidity;/**< 数据有效性*/
 @property (nonatomic ,strong, readonly) NSString *UVLe;
 @property (nonatomic ,strong, readonly) NSString *Peri;
 @property (nonatomic ,strong, readonly) NSString *Temp;
@@ -23,7 +24,8 @@
 
 @interface TBLEDevice : NSObject
 @property (nonatomic ,copy) NSString *name;
-@property (nonatomic ,copy) NSString *macAddr;
+@property (nonatomic ,copy, readonly) NSString *macAddr;
+- (void)setMacAddr:(NSString *)macAddr;
 @property (nonatomic ,strong) CBPeripheral *peri;
 
 @property (nonatomic ,strong) NSDictionary *advertisementData;/**< ad*/

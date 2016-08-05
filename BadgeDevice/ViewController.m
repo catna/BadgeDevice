@@ -36,34 +36,35 @@
 
 #pragma mark - event
 - (void)eReadDeviceMacAddr {
-    if (YES) {
-        for (TBLEDevice *dev in self.ble.devicesDic.allValues) {
-            if (dev.isConnect) {
-                for (CBService *ser in dev.peri.services) {
-                    [self.ble dataGalleryOpen:YES peri:dev.peri service:ser];
-                }
-            }
-        }
-    }
+//    if (YES) {
+//        for (TBLEDevice *dev in self.ble.devicesDic.allValues) {
+//            if (dev.isConnect) {
+//                for (CBService *ser in dev.peri.services) {
+//                    [self.ble dataGalleryOpen:YES peri:dev.peri service:ser];
+//                }
+//            }
+//        }
+//    }
 }
 
 - (void)eDisConn {
     NSLog(@"断开了连接------------------------");
-    if (YES) {
-        for (TBLEDevice *dev in self.ble.devicesDic.allValues) {
-            if (dev.isConnect) {
-                for (CBService *ser in dev.peri.services) {
-                    [self.ble dataGalleryOpen:NO peri:dev.peri service:ser];
-                }
-            }
-        }
-    }
+//    if (YES) {
+//        for (TBLEDevice *dev in self.ble.devicesDic.allValues) {
+//            if (dev.isConnect) {
+//                for (CBService *ser in dev.peri.services) {
+//                    [self.ble dataGalleryOpen:NO peri:dev.peri service:ser];
+//                }
+//            }
+//        }
+//    }
 }
 
 - (void)eUpdateData {
-    NSLog(@"||||%@", self.ble.devicesDic.allValues[0].currentRawData.THRawData);
     TBLEDeviceRawData *rd = self.ble.devicesDic.allValues[0].currentRawData;
-    self.textView.text = [NSString stringWithFormat:@"%@\n%@\n%@\n%@", rd.Peri, rd.UVLe, rd.Temp, rd.Humi];
+    if (rd.dataValidity) {
+        self.textView.text = [NSString stringWithFormat:@"%@\n%@\n%@\n%@", rd.Peri, rd.UVLe, rd.Temp, rd.Humi];
+    }
 }
 
 #pragma mark - private methods
