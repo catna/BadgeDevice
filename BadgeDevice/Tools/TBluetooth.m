@@ -261,7 +261,7 @@ NSString *const kTBLENotificationReadMacAddress = @"kTBLENotificationReadMacAddr
         NSString *macAddress = [TBluetoothTools macWithCharacteristicData:ch.value];
         NSLog(@"读取到设备mac地址:%@",macAddress);
         if ([self.devicesDic.allKeys containsObject:peri]) {
-            self.devicesDic[peri].macAddr = macAddress;
+            [self.devicesDic[peri] setMacAddr:macAddress];
             [[NSNotificationCenter defaultCenter] postNotificationName:kTBLENotificationReadMacAddress object:nil];
         }
     }
