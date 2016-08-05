@@ -63,6 +63,15 @@ NSString *const kTBLENotificationReadMacAddress = @"kTBLENotificationReadMacAddr
     }
 }
 
+- (void)removeDevice:(TBLEDevice *)device {
+    if (device.isConnect) {
+        [self.babyBluetooth cancelPeripheralConnection:device.peri];
+    }
+//    if ([self.devicesDic.allKeys containsObject:device.peri]) {
+//        [self.devicesDic removeObjectForKey:device.peri];
+//    }
+}
+
 - (void)stop {
     self.babyBluetooth.stop(1);
     [self.devicesDic removeAllObjects];

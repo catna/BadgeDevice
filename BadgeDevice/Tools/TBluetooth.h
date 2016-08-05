@@ -41,6 +41,14 @@ CB_EXTERN NSString *const kTBLENotificationConnectingChanged;/** <连接状态�
  */
 - (void)scanAndConnect:(BOOL)autoSearch;
 
+/*!
+ *	@brief 断开指定设备
+ *
+ */
+- (void)removeDevice:(TBLEDevice *)device;
+/*!
+ *	@brief 停止蓝牙功能相关的运行
+ */
 - (void)stop;
 
 //我觉得这个应该放在设备里面来判定是否打开数据的通道，或者说，应该在设备里面放个接口，用来更新设备通道开关的状态
