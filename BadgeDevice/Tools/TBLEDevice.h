@@ -17,7 +17,7 @@
 
 @property (nonatomic, assign, readonly) BOOL dataValidity;/**< 数据有效性*/
 @property (nonatomic ,strong, readonly) NSString *UVLe;
-@property (nonatomic ,strong, readonly) NSString *Peri;
+@property (nonatomic ,strong, readonly) NSString *Pres;
 @property (nonatomic ,strong, readonly) NSString *Temp;
 @property (nonatomic ,strong, readonly) NSString *Humi;
 @end

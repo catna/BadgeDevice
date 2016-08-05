@@ -17,7 +17,7 @@
 @synthesize dataValidity = _dataValidity;
 @synthesize Temp = _Temp;
 @synthesize Humi = _Humi;
-@synthesize Peri = _Peri;
+@synthesize Pres = _Pres;
 @synthesize UVLe = _UVLe;
 
 - (void)setTHRawData:(NSData *)THRawData {
@@ -35,7 +35,7 @@
     _PrRawData = PrRawData;
     double p = [TBluetoothTools convertPresData:PrRawData];
     _pV = p > 10;
-    _Peri = [NSString stringWithFormat:@"%.2f", p];
+    _Pres = [NSString stringWithFormat:@"%.2f", p];
 }
 
 - (void)setUVRawData:(NSData *)UVRawData {

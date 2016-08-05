@@ -63,7 +63,22 @@
 - (void)eUpdateData {
     TBLEDeviceRawData *rd = self.ble.devicesDic.allValues[0].currentRawData;
     if (rd.dataValidity) {
-        self.textView.text = [NSString stringWithFormat:@"%@\n%@\n%@\n%@", rd.Peri, rd.UVLe, rd.Temp, rd.Humi];
+        self.textView.text = [NSString stringWithFormat:@"%@\n%@\n%@\n%@", rd.Pres, rd.UVLe, rd.Temp, rd.Humi];
+    
+        self.currentData.pres = rd.Pres;
+        self.currentData.temp = rd.Temp;
+        self.currentData.uvle = rd.UVLe;
+        self.currentData.humi = rd.Humi;
+        self.currentData.macAddress = self.ble.devicesDic.allValues[0].macAddr;
+        
+        NSDate *date = [NSDate date];
+//        NSDateFormatter *f = [[NSDateFormatter alloc] init];
+//        f.dateFormat = @"YY-mm-dd HH:MM:SS";
+//        NSString *stringDate = [f stringFromDate:date];
+        
+        self.currentData.time = date;
+        AppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+        [delegate saveContext];
     }
 }
 
