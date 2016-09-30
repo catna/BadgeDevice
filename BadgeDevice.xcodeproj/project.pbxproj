@@ -13,9 +13,6 @@
 		E103F5871D991BB5000AC300 /* BadgeDeviceLib.h in Headers */ = {isa = PBXBuildFile; fileRef = E103F5771D991BB5000AC300 /* BadgeDeviceLib.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E103F58A1D991BB5000AC300 /* BadgeDeviceLib.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E103F5751D991BB5000AC300 /* BadgeDeviceLib.framework */; };
 		E103F58B1D991BB5000AC300 /* BadgeDeviceLib.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = E103F5751D991BB5000AC300 /* BadgeDeviceLib.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		E103F5951D992071000AC300 /* TBLEDevice.m in Sources */ = {isa = PBXBuildFile; fileRef = E1F03A4C1CEB24F1007AD562 /* TBLEDevice.m */; };
-		E103F5971D992071000AC300 /* TBluetooth.m in Sources */ = {isa = PBXBuildFile; fileRef = E19E37811CC8C8E800071346 /* TBluetooth.m */; };
-		E103F5991D992071000AC300 /* TBluetoothTools.m in Sources */ = {isa = PBXBuildFile; fileRef = E19E37871CC8DFE300071346 /* TBluetoothTools.m */; };
 		E19E374B1CC8C71F00071346 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = E19E374A1CC8C71F00071346 /* main.m */; };
 		E19E374E1CC8C71F00071346 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = E19E374D1CC8C71F00071346 /* AppDelegate.m */; };
 		E19E37511CC8C71F00071346 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E19E37501CC8C71F00071346 /* ViewController.m */; };
@@ -27,6 +24,13 @@
 		E19E37721CC8C71F00071346 /* BadgeDeviceUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = E19E37711CC8C71F00071346 /* BadgeDeviceUITests.m */; };
 		E19E37851CC8D8B800071346 /* MDeviceData.m in Sources */ = {isa = PBXBuildFile; fileRef = E19E37841CC8D8B800071346 /* MDeviceData.m */; };
 		E1DA861D1D9E1B7E00F2159E /* TDataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = E1DA861C1D9E1B7E00F2159E /* TDataManager.m */; };
+		E1DA862E1D9E794500F2159E /* TBLEDefine.h in Headers */ = {isa = PBXBuildFile; fileRef = E1DA86271D9E794500F2159E /* TBLEDefine.h */; };
+		E1DA862F1D9E794500F2159E /* TBLEDevice.h in Headers */ = {isa = PBXBuildFile; fileRef = E1DA86281D9E794500F2159E /* TBLEDevice.h */; };
+		E1DA86301D9E794500F2159E /* TBLEDevice.m in Sources */ = {isa = PBXBuildFile; fileRef = E1DA86291D9E794500F2159E /* TBLEDevice.m */; };
+		E1DA86311D9E794500F2159E /* TBluetooth.h in Headers */ = {isa = PBXBuildFile; fileRef = E1DA862A1D9E794500F2159E /* TBluetooth.h */; };
+		E1DA86321D9E794500F2159E /* TBluetooth.m in Sources */ = {isa = PBXBuildFile; fileRef = E1DA862B1D9E794500F2159E /* TBluetooth.m */; };
+		E1DA86331D9E794500F2159E /* TBluetoothTools.h in Headers */ = {isa = PBXBuildFile; fileRef = E1DA862C1D9E794500F2159E /* TBluetoothTools.h */; };
+		E1DA86341D9E794500F2159E /* TBluetoothTools.m in Sources */ = {isa = PBXBuildFile; fileRef = E1DA862D1D9E794500F2159E /* TBluetoothTools.m */; };
 		E1F03A3F1CEB0C1B007AD562 /* libz.1.2.5.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = E1F03A3E1CEB0C1B007AD562 /* libz.1.2.5.tbd */; };
 		E1F03A411CEB0C29007AD562 /* libsqlite3.0.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = E1F03A401CEB0C29007AD562 /* libsqlite3.0.tbd */; };
 		E1F03A491CEB1B88007AD562 /* FLEXDebug.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E1F03A481CEB1B88007AD562 /* FLEXDebug.framework */; };
@@ -112,20 +116,21 @@
 		E19E376D1CC8C71F00071346 /* BadgeDeviceUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BadgeDeviceUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		E19E37711CC8C71F00071346 /* BadgeDeviceUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BadgeDeviceUITests.m; sourceTree = "<group>"; };
 		E19E37731CC8C71F00071346 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		E19E37801CC8C8E800071346 /* TBluetooth.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TBluetooth.h; sourceTree = "<group>"; };
-		E19E37811CC8C8E800071346 /* TBluetooth.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TBluetooth.m; sourceTree = "<group>"; };
 		E19E37831CC8D8B800071346 /* MDeviceData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MDeviceData.h; sourceTree = "<group>"; };
 		E19E37841CC8D8B800071346 /* MDeviceData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MDeviceData.m; sourceTree = "<group>"; };
-		E19E37861CC8DFE300071346 /* TBluetoothTools.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TBluetoothTools.h; sourceTree = "<group>"; };
-		E19E37871CC8DFE300071346 /* TBluetoothTools.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TBluetoothTools.m; sourceTree = "<group>"; };
 		E1DA861B1D9E1B7E00F2159E /* TDataManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDataManager.h; sourceTree = "<group>"; };
 		E1DA861C1D9E1B7E00F2159E /* TDataManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDataManager.m; sourceTree = "<group>"; };
+		E1DA86221D9E785700F2159E /* BadgeDeviceLib.modulemap */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = "sourcecode.module-map"; path = BadgeDeviceLib.modulemap; sourceTree = "<group>"; };
+		E1DA86271D9E794500F2159E /* TBLEDefine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TBLEDefine.h; sourceTree = "<group>"; };
+		E1DA86281D9E794500F2159E /* TBLEDevice.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TBLEDevice.h; sourceTree = "<group>"; };
+		E1DA86291D9E794500F2159E /* TBLEDevice.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TBLEDevice.m; sourceTree = "<group>"; };
+		E1DA862A1D9E794500F2159E /* TBluetooth.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TBluetooth.h; sourceTree = "<group>"; };
+		E1DA862B1D9E794500F2159E /* TBluetooth.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TBluetooth.m; sourceTree = "<group>"; };
+		E1DA862C1D9E794500F2159E /* TBluetoothTools.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TBluetoothTools.h; sourceTree = "<group>"; };
+		E1DA862D1D9E794500F2159E /* TBluetoothTools.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TBluetoothTools.m; sourceTree = "<group>"; };
 		E1F03A3E1CEB0C1B007AD562 /* libz.1.2.5.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.1.2.5.tbd; path = usr/lib/libz.1.2.5.tbd; sourceTree = SDKROOT; };
 		E1F03A401CEB0C29007AD562 /* libsqlite3.0.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.0.tbd; path = usr/lib/libsqlite3.0.tbd; sourceTree = SDKROOT; };
 		E1F03A481CEB1B88007AD562 /* FLEXDebug.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FLEXDebug.framework; sourceTree = "<group>"; };
-		E1F03A4A1CEB22F8007AD562 /* TBLEDefine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TBLEDefine.h; sourceTree = "<group>"; };
-		E1F03A4B1CEB24F1007AD562 /* TBLEDevice.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TBLEDevice.h; sourceTree = "<group>"; };
-		E1F03A4C1CEB24F1007AD562 /* TBLEDevice.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TBLEDevice.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -185,7 +190,15 @@
 		E103F5761D991BB5000AC300 /* BadgeDeviceLib */ = {
 			isa = PBXGroup;
 			children = (
+				E1DA86271D9E794500F2159E /* TBLEDefine.h */,
+				E1DA86281D9E794500F2159E /* TBLEDevice.h */,
+				E1DA86291D9E794500F2159E /* TBLEDevice.m */,
+				E1DA862A1D9E794500F2159E /* TBluetooth.h */,
+				E1DA862B1D9E794500F2159E /* TBluetooth.m */,
+				E1DA862C1D9E794500F2159E /* TBluetoothTools.h */,
+				E1DA862D1D9E794500F2159E /* TBluetoothTools.m */,
 				E103F5771D991BB5000AC300 /* BadgeDeviceLib.h */,
+				E1DA86221D9E785700F2159E /* BadgeDeviceLib.modulemap */,
 				E103F5781D991BB5000AC300 /* Info.plist */,
 			);
 			path = BadgeDeviceLib;
@@ -230,7 +243,6 @@
 			isa = PBXGroup;
 			children = (
 				E1F03A481CEB1B88007AD562 /* FLEXDebug.framework */,
-				E19E377F1CC8C8CA00071346 /* Tools */,
 				E19E374C1CC8C71F00071346 /* AppDelegate.h */,
 				E19E374D1CC8C71F00071346 /* AppDelegate.m */,
 				E19E374F1CC8C71F00071346 /* ViewController.h */,
@@ -275,20 +287,6 @@
 			path = BadgeDeviceUITests;
 			sourceTree = "<group>";
 		};
-		E19E377F1CC8C8CA00071346 /* Tools */ = {
-			isa = PBXGroup;
-			children = (
-				E1F03A4A1CEB22F8007AD562 /* TBLEDefine.h */,
-				E1F03A4B1CEB24F1007AD562 /* TBLEDevice.h */,
-				E1F03A4C1CEB24F1007AD562 /* TBLEDevice.m */,
-				E19E37801CC8C8E800071346 /* TBluetooth.h */,
-				E19E37811CC8C8E800071346 /* TBluetooth.m */,
-				E19E37861CC8DFE300071346 /* TBluetoothTools.h */,
-				E19E37871CC8DFE300071346 /* TBluetoothTools.m */,
-			);
-			path = Tools;
-			sourceTree = "<group>";
-		};
 		E7C286D3F623DA1061FD92D9 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -307,6 +305,10 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E1DA86311D9E794500F2159E /* TBluetooth.h in Headers */,
+				E1DA862F1D9E794500F2159E /* TBLEDevice.h in Headers */,
+				E1DA862E1D9E794500F2159E /* TBLEDefine.h in Headers */,
+				E1DA86331D9E794500F2159E /* TBluetoothTools.h in Headers */,
 				E103F5871D991BB5000AC300 /* BadgeDeviceLib.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -557,9 +559,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E103F5951D992071000AC300 /* TBLEDevice.m in Sources */,
-				E103F5971D992071000AC300 /* TBluetooth.m in Sources */,
-				E103F5991D992071000AC300 /* TBluetoothTools.m in Sources */,
+				E1DA86301D9E794500F2159E /* TBLEDevice.m in Sources */,
+				E1DA86341D9E794500F2159E /* TBluetoothTools.m in Sources */,
+				E1DA86321D9E794500F2159E /* TBluetooth.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -671,6 +673,7 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MACH_O_TYPE = staticlib;
 				PODS_ROOT = "${SRCROOT}/Pods";
 				PRODUCT_BUNDLE_IDENTIFIER = com.mx.BadgeDeviceLib;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -701,6 +704,7 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MACH_O_TYPE = staticlib;
 				PODS_ROOT = "${SRCROOT}/Pods";
 				PRODUCT_BUNDLE_IDENTIFIER = com.mx.BadgeDeviceLib;
 				PRODUCT_NAME = "$(TARGET_NAME)";
