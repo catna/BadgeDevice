@@ -23,19 +23,18 @@
 }
 #pragma mark - life cycle
 - (void)viewDidLoad {
-    [super viewDidLoad];
-    [self addListener];
-
-    [self.ble scanAndConnect:YES];
-    self.view.backgroundColor = [UIColor cyanColor];
+//    [super viewDidLoad];
+//    [self addListener];
+//    self.view.backgroundColor = [UIColor cyanColor];
 }
 
 - (void)dealloc {
-    [self removeListener];
+//    [self removeListener];
 }
 
 #pragma mark - event
 - (void)eReadDeviceMacAddr {
+    
 //    if (YES) {
 //        for (TBLEDevice *dev in self.ble.devicesDic.allValues) {
 //            if (dev.isConnect) {
@@ -61,53 +60,52 @@
 }
 
 - (void)eUpdateData {
-    TBLEDeviceRawData *rd = self.ble.devicesDic.allValues[0].currentRawData;
-    if (rd.dataValidity) {
-        self.textView.text = [NSString stringWithFormat:@"%@\n%@\n%@\n%@", rd.Pres, rd.UVLe, rd.Temp, rd.Humi];
-    
-        self.currentData.pres = rd.Pres;
-        self.currentData.temp = rd.Temp;
-        self.currentData.uvle = rd.UVLe;
-        self.currentData.humi = rd.Humi;
-        self.currentData.macAddress = self.ble.devicesDic.allValues[0].macAddr;
-        
-        NSDate *date = [NSDate date];
-//        NSDateFormatter *f = [[NSDateFormatter alloc] init];
-//        f.dateFormat = @"YY-mm-dd HH:MM:SS";
-//        NSString *stringDate = [f stringFromDate:date];
-        
-        self.currentData.time = date;
-        AppDelegate *delegate = [[UIApplication sharedApplication] delegate];
-        [delegate saveContext];
-    }
+
+//    TBLEDeviceRawData *rd = self.ble.devicesDic.allValues[0].currentRawData;
+//    if (rd.dataValidity) {
+//        self.textView.text = [NSString stringWithFormat:@"%@\n%@\n%@\n%@", rd.Pres, rd.UVLe, rd.Temp, rd.Humi];
+//    
+//        NSLog(@"1:%@-2:%@-3:%@-4:%@", rd.Pres, rd.Temp, rd.UVLe, rd.Humi);
+//        self.currentData.pres = rd.Pres;
+//        self.currentData.temp = rd.Temp;
+//        self.currentData.uvle = rd.UVLe;
+//        self.currentData.humi = rd.Humi;
+//        self.currentData.macAddress = self.ble.devicesDic.allValues[0].macAddr;
+//        
+//        NSDate *date = [NSDate date];
+////        NSDateFormatter *f = [[NSDateFormatter alloc] init];
+////        f.dateFormat = @"YY-mm-dd HH:MM:SS";
+////        NSString *stringDate = [f stringFromDate:date];
+//        
+//        self.currentData.time = date;
+//        AppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+//        [delegate saveContext];
+//        self.currentData = nil;
+//    }
 }
 
 #pragma mark - private methods
 - (void)addListener {
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(eReadDeviceMacAddr) name:kTBLENotificationReadMacAddress object:nil];
-//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(eDisConn) name:kTBLENotificationConnectingChanged object:nil];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(eUpdateData) name:kTBLENotificationDataUpdate object:nil];
-    
 }
 
 - (void)removeListener {
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 #pragma mark - getter
-- (TBluetooth *)ble {
-    if (!_ble) {
-        _ble = [TBluetooth sharedBluetooth];
-    }
-    return _ble;
-}
-
-- (MDeviceData *)currentData {
-    AppDelegate *delegate = [[UIApplication sharedApplication] delegate];
-    NSManagedObjectContext *context = delegate.managedObjectContext;
-    _currentData = [NSEntityDescription insertNewObjectForEntityForName:@"MDeviceData" inManagedObjectContext:context];
-    return _currentData;
-}
+//- (TBluetooth *)ble {
+//    if (!_ble) {
+//        _ble = [TBluetooth sharedBluetooth];
+//    }
+//    return _ble;
+//}
+//
+//- (MDeviceData *)currentData {
+//    AppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+////    NSManagedObjectContext *context = delegate.managedObjectContext;
+////    if (!_currentData) {
+////        _currentData = [NSEntityDescription insertNewObjectForEntityForName:@"MDeviceData" inManagedObjectContext:context];
+////    }
+//    return _currentData;
+//}
 
 @end

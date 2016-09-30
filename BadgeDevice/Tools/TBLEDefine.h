@@ -29,3 +29,11 @@
 #define AutoSearchTimeGap 5 /**<自动搜索时间间隔*/
 
 #endif /* TBLEDefine_h */
+
+///define block declare
+#define weakify(var) __weak typeof(var) AHKWeak_##var = var;
+#define strongify(var) \
+_Pragma("clang diagnostic push") \
+_Pragma("clang diagnostic ignored \"-Wshadow\"") \
+__strong typeof(var) var = AHKWeak_##var; \
+_Pragma("clang diagnostic pop")

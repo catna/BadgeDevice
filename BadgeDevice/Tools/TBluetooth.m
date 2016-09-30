@@ -11,22 +11,11 @@
 #import "TBLEDevice.h"
 
 #import <BabyBluetooth.h>
-#import <SVProgressHUD.h>
-
 #import "TBluetoothTools.h"
 
-// NSString *const kTBluetoothConnectSuccess = @"kTBluetoothConnectSuccess";
-
-NSString *const kTBLENotificationConnectingChanged = @"kTBLENotificationConnectingChanged";
-
-NSString *const kTBLENotificationDataUpdate = @"kTBLENotificationDataUpdate";
-NSString *const kTBLENotificationReadMacAddress = @"kTBLENotificationReadMacAddress";
-
-
 @interface TBluetooth ()
-
+@property (nonatomic ,strong ,readonly) BabyBluetooth *babyBluetooth;/**<babyBluetooth tool*/
 @property (nonatomic ,strong) NSDictionary <NSString *,NSArray<NSString *>*>* seConfDataDic;
-@property (nonatomic ,strong ,readonly) NSTimer *timer;
 @end
 
 
@@ -37,11 +26,18 @@ NSString *const kTBLENotificationReadMacAddress = @"kTBLENotificationReadMacAddr
 
 
 @implementation TBluetooth
-@synthesize timer = _timer;
 @synthesize devicesDic = _devicesDic;
 @synthesize babyBluetooth = _babyBluetooth;
 
 #pragma mark - life cycle
+- (id)init {
+    if (self = [super init]) {
+        _babyBluetooth = [BabyBluetooth shareBabyBluetooth];
+        [self cancelConnectingAndConfig];
+        [self setupWorkFlow];
+    }
+    return self;
+}
 
 #pragma mark - Public methods
 + (instancetype)sharedBluetooth {
@@ -53,30 +49,22 @@ NSString *const kTBLENotificationReadMacAddress = @"kTBLENotificationReadMacAddr
     return sharedInstance;
 }
 
-- (void)scanAndConnect:(BOOL)autoSearch {
-    [self cancelConnectingAndConfig];
-    [self setupWorkFlow];
-    if (autoSearch) {
-        [self.timer fire];
-    } else {
-        [self search];
-    }
+- (void)scanAndConnect {
+    [self search];
 }
 
 - (void)removeDevice:(TBLEDevice *)device {
+    if ([self.devicesDic.allKeys containsObject:device.peri]) {
+        [self.devicesDic removeObjectForKey:device.peri];
+    }
     if (device.isConnect) {
         [self.babyBluetooth cancelPeripheralConnection:device.peri];
     }
-//    if ([self.devicesDic.allKeys containsObject:device.peri]) {
-//        [self.devicesDic removeObjectForKey:device.peri];
-//    }
 }
 
 - (void)stop {
     self.babyBluetooth.stop(1);
     [self.devicesDic removeAllObjects];
-    [self.timer invalidate];
-    _timer = nil;
 }
 
 #pragma mark - private methods
@@ -91,71 +79,42 @@ NSString *const kTBLENotificationReadMacAddress = @"kTBLENotificationReadMacAddr
 }
 
 - (void)setupWorkFlow {
-    __block typeof(self) weakSelf = self;
-    // 蓝牙设备开启状态的委托
-    [self.babyBluetooth setBlockOnCentralManagerDidUpdateState:^(CBCentralManager *central) {
-        switch (central.state) {
-            case CBCentralManagerStateUnknown:
-                [SVProgressHUD showInfoWithStatus:@"CBCentralManagerStateUnknown"];
-                break;
-            case CBCentralManagerStateResetting:
-                [SVProgressHUD showInfoWithStatus:@"CBCentralManagerStateResetting"];
-                break;
-            case CBCentralManagerStateUnsupported:
-                [SVProgressHUD showInfoWithStatus:@"CBCentralManagerStateUnsupported"];
-                break;
-            case CBCentralManagerStateUnauthorized:
-                [SVProgressHUD showInfoWithStatus:@"CBCentralManagerStateUnauthorized"];
-                break;
-            case CBCentralManagerStatePoweredOff:
-                [SVProgressHUD showInfoWithStatus:@"蓝牙已关闭"];
-                break;
-            case CBCentralManagerStatePoweredOn:
-                [SVProgressHUD showInfoWithStatus:@"蓝牙已打开，开始扫描设备"];
-                break;
-            default:
-                break;
-        }
-    }];
+    weakify(self);
 
     //只发现名字符合要求的设备，其他的一律忽略
     [self.babyBluetooth setFilterOnDiscoverPeripherals:^BOOL(NSString *peripheralName, NSDictionary *advertisementData, NSNumber *RSSI) {
          if ([peripheralName isEqualToString:DeviceNameOne] || [peripheralName isEqualToString:DeviceNameTwo]) {
              return YES;
-         } else {
-             return NO;
          }
+         return NO;
      }];
 
     // 扫描到设备的委托
     [self.babyBluetooth setBlockOnDiscoverToPeripherals:^(CBCentralManager *central, CBPeripheral *peripheral, NSDictionary *advertisementData, NSNumber *RSSI) {
-        __strong typeof(self) strongSelf = weakSelf;
+        strongify(self);
         NSLog(@"已扫描的设备:%@",peripheral.name);
 
-        if (![strongSelf.devicesDic.allKeys containsObject:peripheral]) {
-            [strongSelf.devicesDic setObject:[[TBLEDevice alloc] init] forKey:peripheral];
+        if (![self.devicesDic.allKeys containsObject:peripheral]) {
+            [self.devicesDic setObject:[[TBLEDevice alloc] init] forKey:peripheral];
         }
-        strongSelf.devicesDic[peripheral].name = peripheral.name;
-        strongSelf.devicesDic[peripheral].peri = peripheral;
-        strongSelf.devicesDic[peripheral].advertisementData = advertisementData;
+        self.devicesDic[peripheral].name = peripheral.name;
+        self.devicesDic[peripheral].peri = peripheral;
+        self.devicesDic[peripheral].advertisementData = advertisementData;
     }];
 
     [self.babyBluetooth setFilterOnConnectToPeripherals:^BOOL(NSString *peripheralName, NSDictionary *advertisementData, NSNumber *RSSI) {
         if ([peripheralName isEqualToString:DeviceNameOne] || [peripheralName isEqualToString:DeviceNameTwo]) {
             return YES;
-        } else {
-            return NO;
         }
+        return NO;
     }];
 
     // 连接到设备成功的委托
     [self.babyBluetooth setBlockOnConnected:^(CBCentralManager *central, CBPeripheral *peripheral) {
-        __strong typeof(self) strongSelf = weakSelf;
+        strongify(self);
         NSLog(@"连接成功---%@",peripheral.name);
-        if ([strongSelf.devicesDic.allKeys containsObject:peripheral]) {
-            [strongSelf.devicesDic[peripheral] setConnectStatus:YES];
-            
-            [[NSNotificationCenter defaultCenter] postNotificationName:kTBLENotificationConnectingChanged object:nil];
+        if ([self.devicesDic.allKeys containsObject:peripheral]) {
+            [self.devicesDic[peripheral] setConnectStatus:YES];
         }
         
     }];
@@ -163,36 +122,23 @@ NSString *const kTBLENotificationReadMacAddress = @"kTBLENotificationReadMacAddr
     // 设备断开连接的委托
     [self.babyBluetooth setBlockOnDisconnect:^(CBCentralManager *central, CBPeripheral *peripheral, NSError *error) {
         NSLog(@"断开%@连接", peripheral.name);
-        __strong typeof(self) strongSelf = weakSelf;
-        if ([strongSelf.devicesDic.allKeys containsObject:peripheral]) {
-            [strongSelf.devicesDic[peripheral] setConnectStatus:NO];
-            
-            [[NSNotificationCenter defaultCenter] postNotificationName:kTBLENotificationConnectingChanged object:nil userInfo:@{kTBLENotificationConnectingChanged:strongSelf.devicesDic[peripheral]}];
-            [strongSelf.devicesDic removeObjectForKey:peripheral];
+        strongify(self);
+        if ([self.devicesDic.allKeys containsObject:peripheral]) {
+            [self.devicesDic[peripheral] setConnectStatus:NO];
         }
     }];
 
-//    // 扫描到设备的 service 的委托
-//    [self.babyBluetooth setBlockOnDiscoverServices:^(CBPeripheral *peripheral, NSError *error) {
-//        #ifndef DEBUG
-//        for (CBService *service in peripheral.services) {
-//           NSLog(@"CBService, UUID:%@", service.UUID.UUIDString);
-//        }
-//        #endif
-//    }];
-
-////     扫描到设备某个 service 下的 characteristic 的委托
-//    [self.babyBluetooth setBlockOnDiscoverCharacteristics:^(CBPeripheral *peripheral, CBService *service, NSError *error) {
-//        __strong typeof(weakSelf) strongSelf = weakSelf;
-//
-//        [strongSelf openPeri:peripheral dataGalleryService:service];
-//    }];
+//     扫描到设备某个 service 下的 characteristic 的委托
+    [self.babyBluetooth setBlockOnDiscoverCharacteristics:^(CBPeripheral *peripheral, CBService *service, NSError *error) {
+        strongify(self);
+        [self dataGalleryOpen:YES peri:peripheral service:service];
+    }];
 
     [self.babyBluetooth setBlockOnReadValueForCharacteristic:^(CBPeripheral *peripheral, CBCharacteristic *characteristic, NSError *error) {
-        __strong typeof(self) strongSelf = weakSelf;
+        strongify(self);
         //筛选出可以设备的mac地址
-        [strongSelf distillMacAddr:peripheral ch:characteristic];
-        [strongSelf readValueForCh:characteristic inPeri:peripheral];
+        [self distillMacAddr:peripheral ch:characteristic];
+        [self readValueForCh:characteristic inPeri:peripheral];
     }];
 }
 
@@ -204,14 +150,15 @@ NSString *const kTBLENotificationReadMacAddress = @"kTBLENotificationReadMacAddr
 - (void)dataGalleryOpen:(BOOL)open peri:(CBPeripheral *)peri service:(CBService *)service{
     for (NSString *key in self.seConfDataDic.allKeys) {
         if ([service.UUID.UUIDString isEqualToString:key]) {
+            NSArray *serviceConfigAndData = self.seConfDataDic[key];
             for (CBCharacteristic *ch in service.characteristics) {
-                if ([ch.UUID.UUIDString isEqualToString:self.seConfDataDic[key][0]]) {
+                if ([ch.UUID.UUIDString isEqualToString:serviceConfigAndData.firstObject]) {
                     Byte b = open ? 0x01 : 0x00;
                     NSData *data = [NSData dataWithBytes:&b length:sizeof(b)];
                     [peri writeValue:data forCharacteristic:ch type:CBCharacteristicWriteWithResponse];
                 }
-                if ([ch.UUID.UUIDString isEqualToString:self.seConfDataDic[key][1]]) {
-#ifdef DEBUG
+                if ([ch.UUID.UUIDString isEqualToString:serviceConfigAndData.lastObject]) {
+#if DEBUG
                     NSDictionary *nameDic = @{UVService:@"紫外线",THService:@"温湿度",PrService:@"大气压"};
                     NSString *str = nameDic[key];
                     NSLog(@"读取到%@数据--%@",str,ch.value);
@@ -239,13 +186,6 @@ NSString *const kTBLENotificationReadMacAddress = @"kTBLENotificationReadMacAddr
     return _babyBluetooth;
 }
 
-- (NSTimer *)timer {
-    if (!_timer) {
-        _timer = [NSTimer scheduledTimerWithTimeInterval:AutoSearchTimeGap target:self selector:@selector(search) userInfo:nil repeats:YES];
-    }
-    return _timer;
-}
-
 - (NSDictionary <NSString *,NSArray <NSString *>*>*)seConfDataDic {
     if (!_seConfDataDic) {
         _seConfDataDic = @{UVService:@[UVConfig,UVData],THService:@[THConfig,THData],PrService:@[PrConfig,PrData]};
@@ -262,7 +202,6 @@ NSString *const kTBLENotificationReadMacAddress = @"kTBLENotificationReadMacAddr
         NSLog(@"读取到设备mac地址:%@",macAddress);
         if ([self.devicesDic.allKeys containsObject:peri]) {
             [self.devicesDic[peri] setMacAddr:macAddress];
-            [[NSNotificationCenter defaultCenter] postNotificationName:kTBLENotificationReadMacAddress object:nil];
         }
     }
 }
@@ -283,9 +222,7 @@ NSString *const kTBLENotificationReadMacAddress = @"kTBLENotificationReadMacAddr
                     dataName = @"大气压";
                     self.devicesDic[peri].currentRawData.PrRawData = [characteristic.value copy];
                 }
-//                NSLog(@"读取设备%@的%@数据--%@",self.devicesDic[peri].macAddr,dataName, self.devicesDic[peri].currentRawData);
-                
-                [[NSNotificationCenter defaultCenter] postNotificationName:kTBLENotificationDataUpdate object:nil];
+                NSLog(@"读取设备%@的%@数据--%@",self.devicesDic[peri].macAddr,dataName, self.devicesDic[peri].currentRawData);
             }
         }
     }

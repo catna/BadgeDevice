@@ -24,16 +24,20 @@
 
 @interface TBLEDevice : NSObject
 @property (nonatomic ,copy) NSString *name;
+@property (nonatomic ,strong) NSDictionary *advertisementData;/**< ad*/
+
 @property (nonatomic ,copy, readonly) NSString *macAddr;
 - (void)setMacAddr:(NSString *)macAddr;
-@property (nonatomic ,strong) CBPeripheral *peri;
+@property (nonatomic, strong) void (^macAddressReaded)(NSString *macAddress);
 
-@property (nonatomic ,strong) NSDictionary *advertisementData;/**< ad*/
+@property (nonatomic ,strong) CBPeripheral *peri;
 @property (nonatomic ,strong) NSMutableArray <CBCharacteristic *>*characteristicsForData;
 
 @property (nonatomic ,assign ,readonly) BOOL isConnect;
 - (void)setConnectStatus:(BOOL)connect;
+@property (nonatomic, strong) void (^connectStatusChanged)(BOOL isConnect);
 
 @property (nonatomic ,strong) TBLEDeviceRawData *currentRawData;/**< 当前数据*/
+@property (nonatomic, strong) void (^DataUpdateHandler)(BOOL dataValidity);
 - (void)clearAllPropertyData;
 @end
