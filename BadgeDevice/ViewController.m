@@ -7,14 +7,17 @@
 //
 
 #import "ViewController.h"
-#import "TBluetooth.h"
 #import "MDeviceData.h"
 #import "AppDelegate.h"
-#import "TBLEDevice.h"
+#import "TDataManager.h"
+
+#import <BadgeDeviceLib/TBluetooth.h>
+
+
+
 
 @interface ViewController ()
 @property (weak, nonatomic) IBOutlet UITextView *textView;
-@property (nonatomic ,strong) TBluetooth *ble;
 @property (nonatomic ,strong) MDeviceData *currentData;
 @end
 
@@ -22,45 +25,12 @@
     BOOL d;
 }
 #pragma mark - life cycle
-- (void)viewDidLoad {
-//    [super viewDidLoad];
-//    [self addListener];
-//    self.view.backgroundColor = [UIColor cyanColor];
-}
-
-- (void)dealloc {
-//    [self removeListener];
-}
 
 #pragma mark - event
-- (void)eReadDeviceMacAddr {
-    
-//    if (YES) {
-//        for (TBLEDevice *dev in self.ble.devicesDic.allValues) {
-//            if (dev.isConnect) {
-//                for (CBService *ser in dev.peri.services) {
-//                    [self.ble dataGalleryOpen:YES peri:dev.peri service:ser];
-//                }
-//            }
-//        }
-//    }
-}
-
-- (void)eDisConn {
-    NSLog(@"断开了连接------------------------");
-//    if (YES) {
-//        for (TBLEDevice *dev in self.ble.devicesDic.allValues) {
-//            if (dev.isConnect) {
-//                for (CBService *ser in dev.peri.services) {
-//                    [self.ble dataGalleryOpen:NO peri:dev.peri service:ser];
-//                }
-//            }
-//        }
-//    }
-}
 
 - (void)eUpdateData {
 
+    
 //    TBLEDeviceRawData *rd = self.ble.devicesDic.allValues[0].currentRawData;
 //    if (rd.dataValidity) {
 //        self.textView.text = [NSString stringWithFormat:@"%@\n%@\n%@\n%@", rd.Pres, rd.UVLe, rd.Temp, rd.Humi];
@@ -92,20 +62,14 @@
 }
 
 #pragma mark - getter
-//- (TBluetooth *)ble {
-//    if (!_ble) {
-//        _ble = [TBluetooth sharedBluetooth];
-//    }
-//    return _ble;
-//}
-//
-//- (MDeviceData *)currentData {
-//    AppDelegate *delegate = [[UIApplication sharedApplication] delegate];
-////    NSManagedObjectContext *context = delegate.managedObjectContext;
-////    if (!_currentData) {
-////        _currentData = [NSEntityDescription insertNewObjectForEntityForName:@"MDeviceData" inManagedObjectContext:context];
-////    }
-//    return _currentData;
-//}
+
+- (MDeviceData *)currentData {
+    AppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+    NSManagedObjectContext *context = [TDataManager sharedDataManager].managedObjectContext;
+    if (!_currentData) {
+        _currentData = [NSEntityDescription insertNewObjectForEntityForName:@"MDeviceData" inManagedObjectContext:context];
+    }
+    return _currentData;
+}
 
 @end

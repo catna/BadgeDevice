@@ -8,7 +8,6 @@
 
 #import "AppDelegate.h"
 #import "TDataManager.h"
-#import "TBluetooth.h"
 
 @interface AppDelegate ()
 
@@ -20,7 +19,6 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
     NSLog(@"%@",NSHomeDirectory());
-    [[TBluetooth sharedBluetooth] scanAndConnect];
     return YES;
 }
 

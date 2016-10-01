@@ -8,6 +8,11 @@
 
 #import <UIKit/UIKit.h>
 
+#import "TBLEDefine.h"
+#import "TBLEDevice.h"
+#import "TBluetooth.h"
+#import "TBluetoothTools.h"
+
 //! Project version number for BadgeDeviceLib.
 FOUNDATION_EXPORT double BadgeDeviceLibVersionNumber;
 
