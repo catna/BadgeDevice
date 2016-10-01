@@ -33,11 +33,42 @@
 @property (nonatomic ,strong) CBPeripheral *peri;
 @property (nonatomic ,strong) NSMutableArray <CBCharacteristic *>*characteristicsForData;
 
+/*!
+ *	@brief 这个是设备的连接状态，只是在连接成功或者连接失败的时候变化，外部最好不要随便修改它的数据
+ */
 @property (nonatomic ,assign ,readonly) BOOL isConnect;
 - (void)setConnectStatus:(BOOL)connect;
+/*!
+ *	@brief 当连接状态变化时的回调
+ */
 @property (nonatomic, strong) void (^connectStatusChanged)(BOOL isConnect);
+
+/*!
+ *	@brief 这个是设备是否属于手机，并且有权限重新连接的一个凭证，在网络端申请进行一下判断，当这个值为NO的时候，会自动断掉这个设备的连接;当为YES的时候，会设置该设备为自动重连状态
+ */
+@property (nonatomic, assign) BOOL selected;
 
 @property (nonatomic ,strong) TBLEDeviceRawData *currentRawData;/**< 当前数据*/
 @property (nonatomic, strong) void (^DataUpdateHandler)(BOOL dataValidity);
 - (void)clearAllPropertyData;
+@end
+
+@interface TBLEDevice (DataDistill)
+@property (nonatomic, strong) CBCharacteristic *DataStoreCharacteristic;
+- (void)startDistill;
+
+/*!
+ *	@brief 筛选当前读取到的数据
+ */
+- (void)distillData:(CBCharacteristic *)characteristic;
+
+/*!
+ *	@brief 时间校准
+ */
+- (void)timeCalibration:(CBCharacteristic *)characteristic;
+
+/*!
+ *	@brief 制造一个满足文档中需要写入的当前时间的数据
+ */
+- (NSData *)createCurrentTimeData;
 @end

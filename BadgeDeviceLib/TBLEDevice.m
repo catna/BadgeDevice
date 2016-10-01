@@ -10,6 +10,8 @@
 #import <CoreBluetooth/CoreBluetooth.h>
 #import "TBluetoothTools.h"
 #import "TBluetooth.h"
+#import <objc/runtime.h>
+#import <BabyBluetooth.h>
 
 @interface TBLEDeviceRawData ()
 @property (nonatomic, strong) void (^DataUpdateHandler)(BOOL dataValidity);
@@ -90,6 +92,15 @@
     }
 }
 
+- (void)setSelected:(BOOL)selected {
+    _selected = selected;
+    BabyBluetooth *BLE = [[TBluetooth sharedBluetooth] valueForKeyPath:@"babyBluetooth"];
+    _selected ? [BLE AutoReconnect:self.peri] : [BLE AutoReconnectCancel:self.peri];
+    if (!_selected) {
+        [BLE cancelPeripheralConnection:self.peri];
+    }
+}
+
 - (void)setMacAddr:(NSString *)macAddr {
     _macAddr = [macAddr mutableCopy];
     if (self.macAddressReaded) {
@@ -122,4 +133,65 @@
     }
     return _currentRawData;
 }
+@end
+
+static const void *TBLEDeviceDataStoreCharacteristicKey = @"TBLEDeviceDataStoreCharacteristicKey";
+@implementation TBLEDevice(DataDistill)
+- (void)startDistill {
+    if (nil != self.DataStoreCharacteristic && nil != self.peri) {
+        [self.peri readValueForCharacteristic:self.DataStoreCharacteristic];
+    }
+}
+
+- (void)distillData:(CBCharacteristic *)characteristic {
+    if (characteristic == self.DataStoreCharacteristic) {
+        unsigned int const allFF = ~0;
+        int compareResult = bcmp(characteristic.value.bytes, &allFF, sizeof(allFF));
+        if (0 != compareResult) {
+            NSLog(@"\r\n读取到的历史和电量信息%@\r\n", characteristic.value);
+        }
+    }
+    [self startDistill];
+}
+
+- (void)timeCalibration:(CBCharacteristic *)characteristic {
+    if (nil != self.peri) {
+        NSData *data = [self createCurrentTimeData];
+        
+        [self.peri writeValue:data forCharacteristic:characteristic type:CBCharacteristicWriteWithoutResponse];
+    }
+}
+
+- (NSData *)createCurrentTimeData {
+    NSDate *date = [NSDate date];
+    NSDateFormatter *formatter = [NSDateFormatter new];
+    formatter.dateFormat = @"yyyy|MM|dd|HH|mm";
+    NSString *dateString = [formatter stringFromDate:date];
+    NSArray <NSString *>*dateArray = [dateString componentsSeparatedByString:@"|"];
+    
+    unsigned long long year   = [[dateArray[0] substringFromIndex:2] intValue];
+    unsigned long long month  = [dateArray[1] intValue];
+    unsigned long long day    = [dateArray[2] intValue];
+    unsigned long long hour   = [dateArray[3] intValue];
+    unsigned long long minute = [dateArray[4] intValue];
+    
+    unsigned long long dateBytes = 0;
+    dateBytes = dateBytes | year;
+    dateBytes = dateBytes | month << 8;
+    dateBytes = dateBytes | day << 16;
+    dateBytes = dateBytes | hour << 24;
+    dateBytes = dateBytes | minute << 32;
+    
+    NSData *data = [NSData dataWithBytes:&dateBytes length:sizeof(dateBytes)];
+    return data;
+}
+
+- (void)setDataStoreCharacteristic:(CBCharacteristic *)DataStoreCharacteristic {
+    objc_setAssociatedObject(self, TBLEDeviceDataStoreCharacteristicKey, DataStoreCharacteristic, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
+- (CBCharacteristic *)DataStoreCharacteristic {
+    return objc_getAssociatedObject(self, TBLEDeviceDataStoreCharacteristicKey);
+}
+
 @end

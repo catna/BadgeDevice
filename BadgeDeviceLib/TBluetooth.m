@@ -81,6 +81,27 @@
 - (void)setupWorkFlow {
     weakify(self);
 
+    [self.babyBluetooth setBlockOnCentralManagerDidUpdateState:^(CBCentralManager *central) {
+        strongify(self);
+        switch (central.state) {
+            case CBCentralManagerStatePoweredOn:
+                NSLog(@"电源开启%@", self.devicesDic);
+                for (TBLEDevice *d in self.devicesDic.allValues) {
+                    if (d.selected) {
+                        self.babyBluetooth.having(d.peri).connectToPeripherals().discoverServices().discoverCharacteristics().readValueForCharacteristic().begin();
+                    }
+                }
+                break;
+                
+            case CBCentralManagerStatePoweredOff:
+                NSLog(@"电源关闭%@", self.devicesDic);
+                break;
+                
+            default:
+                break;
+        }
+    }];
+    
     //只发现名字符合要求的设备，其他的一律忽略
     [self.babyBluetooth setFilterOnDiscoverPeripherals:^BOOL(NSString *peripheralName, NSDictionary *advertisementData, NSNumber *RSSI) {
          if ([peripheralName isEqualToString:DeviceNameOne] || [peripheralName isEqualToString:DeviceNameTwo]) {
@@ -132,6 +153,18 @@
     [self.babyBluetooth setBlockOnDiscoverCharacteristics:^(CBPeripheral *peripheral, CBService *service, NSError *error) {
         strongify(self);
         [self dataGalleryOpen:YES peri:peripheral service:service];
+        if ([service.UUID.UUIDString isEqualToString:ConnectService]) {
+            for (CBCharacteristic *characteristic in service.characteristics) {
+                if ([characteristic.UUID.UUIDString isEqualToString:ConnectData]) {
+                    self.devicesDic[peripheral].DataStoreCharacteristic = characteristic;
+                    [self.devicesDic[peripheral] startDistill];
+                }
+                
+                if ([characteristic.UUID.UUIDString isEqualToString:ConnectTimeConfig]) {
+                    [self.devicesDic[peripheral] timeCalibration:characteristic];
+                }
+            }
+        }
     }];
 
     [self.babyBluetooth setBlockOnReadValueForCharacteristic:^(CBPeripheral *peripheral, CBCharacteristic *characteristic, NSError *error) {
@@ -139,6 +172,7 @@
         //筛选出可以设备的mac地址
         [self distillMacAddr:peripheral ch:characteristic];
         [self readValueForCh:characteristic inPeri:peripheral];
+        [self.devicesDic[peripheral] distillData:characteristic];
     }];
 }
 
@@ -164,7 +198,6 @@
                     NSLog(@"读取到%@数据--%@",str,ch.value);
 #endif
                     [peri setNotifyValue:open forCharacteristic:ch];
-                    open ? [self.babyBluetooth AutoReconnect:peri] : [self.babyBluetooth AutoReconnectCancel:peri];
                 }
             }
         }

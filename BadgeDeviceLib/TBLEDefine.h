@@ -23,6 +23,10 @@
 #define PrData    @"F000AA41-0451-4000-B000-000000000000"
 #define PrConfig  @"F000AA42-0451-4000-B000-000000000000"
 
+#define ConnectService    @"F000CCC0-0451-4000-B000-000000000000"
+#define ConnectData       @"F000CCC1-0451-4000-B000-000000000000"
+#define ConnectTimeConfig @"F000CCC1-0451-4000-B000-000000000000"
+
 #define DeviceNameOne @"SensorTag"
 #define DeviceNameTwo @"TI BLE Sensor Tag"
 
