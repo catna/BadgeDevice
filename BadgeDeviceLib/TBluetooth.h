@@ -12,6 +12,8 @@
 @class TBLEDevice;
 
 @interface TBluetooth : NSObject
+@property (nonatomic, strong) void (^BluetoothStatusChanged)(BOOL usable);
+
 @property (nonatomic ,strong ,readonly) NSMutableDictionary <CBPeripheral *,TBLEDevice *> *devicesDic;
 @property (nonatomic, strong) void (^devicesChanged)(void);
 

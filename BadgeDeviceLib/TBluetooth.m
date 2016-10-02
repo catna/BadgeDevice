@@ -104,13 +104,16 @@
                         self.babyBluetooth.having(d.peri).connectToPeripherals().discoverServices().discoverCharacteristics().readValueForCharacteristic().begin();
                     }
                 }
-                break;
-                
-            case CBCentralManagerStatePoweredOff:
-                NSLog(@"电源关闭%@", self.devicesDic);
+                if (self.BluetoothStatusChanged) {
+                    self.BluetoothStatusChanged(YES);
+                }
                 break;
                 
             default:
+                NSLog(@"电源关闭或者不可用%@", self.devicesDic);
+                if (self.BluetoothStatusChanged) {
+                    self.BluetoothStatusChanged(NO);
+                }
                 break;
         }
     }];
