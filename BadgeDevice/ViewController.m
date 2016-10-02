@@ -12,6 +12,8 @@
 #import "TDataManager.h"
 
 #import <BadgeDeviceLib/TBluetooth.h>
+#import <BadgeDeviceLib/TBLEDevice.h>
+#import <BadgeDeviceLib/TBLEDefine.h>
 
 
 
@@ -25,7 +27,32 @@
     BOOL d;
 }
 #pragma mark - life cycle
-
+- (void)viewDidLoad {
+    [[TBluetooth sharedBluetooth] scanAndConnect:YES];
+    [TBluetooth sharedBluetooth].devicesChanged = ^{
+        for (TBLEDevice *device in [TBluetooth sharedBluetooth].devicesDic.allValues) {
+            weakify(device);
+            device.connectStatusChanged = ^(BOOL isConnect) {
+                strongify(device);
+                
+                if ([device.macAddr isEqualToString:@"04:A3:16:37:E5:27"]) {
+                    device.selected = NO;
+                    return;
+                }
+                
+                device.macAddressReaded = ^(NSString *macaddress) {
+                    strongify(device);
+                    if ([macaddress isEqualToString:@"04:A3:16:37:E5:27"]) {
+                        device.selected = NO;
+                        return;
+                    }
+                };
+                device.selected = YES;
+                
+            };
+        }
+    };
+}
 #pragma mark - event
 
 - (void)eUpdateData {

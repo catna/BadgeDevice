@@ -146,8 +146,10 @@ static const void *TBLEDeviceDataStoreCharacteristicKey = @"TBLEDeviceDataStoreC
 - (void)distillData:(CBCharacteristic *)characteristic {
     if (characteristic == self.DataStoreCharacteristic) {
         unsigned int const allFF = ~0;
-        int compareResult = bcmp(characteristic.value.bytes, &allFF, sizeof(allFF));
-        if (0 != compareResult) {
+        unsigned long long all00 = 0;
+        int compareFFResult = bcmp(characteristic.value.bytes, &allFF, sizeof(allFF));
+        int compare00Result = bcmp(characteristic.value.bytes, &all00, characteristic.value.length);
+        if (0 != compareFFResult && 0 != compare00Result) {
             NSLog(@"\r\n读取到的历史和电量信息%@\r\n", characteristic.value);
         }
     }

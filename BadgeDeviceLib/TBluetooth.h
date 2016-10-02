@@ -13,7 +13,9 @@
 
 @interface TBluetooth : NSObject
 @property (nonatomic ,strong ,readonly) NSMutableDictionary <CBPeripheral *,TBLEDevice *> *devicesDic;
+@property (nonatomic, strong) void (^devicesChanged)(void);
 
+@property (nonatomic, assign) BOOL autoSearchEnable;
 /*!
  *	初始化一个单例就可以打开蓝牙的相关东西了
  */
@@ -22,7 +24,7 @@
 /*!
  *	@brief 开始扫描设备，并且连接设备
  */
-- (void)scanAndConnect;
+- (void)scanAndConnect:(BOOL)autoSearch;
 
 /*!
  *	@brief 断开指定设备

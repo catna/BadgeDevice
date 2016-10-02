@@ -14,8 +14,10 @@
 #import "TBluetoothTools.h"
 
 @interface TBluetooth ()
-@property (nonatomic ,strong ,readonly) BabyBluetooth *babyBluetooth;/**<babyBluetooth tool*/
-@property (nonatomic ,strong) NSDictionary <NSString *,NSArray<NSString *>*>* seConfDataDic;
+@property (nonatomic, strong, readonly) BabyBluetooth *babyBluetooth;/**<babyBluetooth tool*/
+@property (nonatomic, strong) NSDictionary <NSString *,NSArray<NSString *>*>* seConfDataDic;
+
+@property (nonatomic, strong) NSTimer *timer;
 @end
 
 
@@ -35,6 +37,7 @@
         _babyBluetooth = [BabyBluetooth shareBabyBluetooth];
         [self cancelConnectingAndConfig];
         [self setupWorkFlow];
+        [self timer];
     }
     return self;
 }
@@ -49,13 +52,17 @@
     return sharedInstance;
 }
 
-- (void)scanAndConnect {
+- (void)scanAndConnect:(BOOL)autoSearch {
+    _autoSearchEnable = autoSearch;
     [self search];
 }
 
 - (void)removeDevice:(TBLEDevice *)device {
     if ([self.devicesDic.allKeys containsObject:device.peri]) {
         [self.devicesDic removeObjectForKey:device.peri];
+        if (self.devicesChanged) {
+            self.devicesChanged();
+        }
     }
     if (device.isConnect) {
         [self.babyBluetooth cancelPeripheralConnection:device.peri];
@@ -65,6 +72,12 @@
 - (void)stop {
     self.babyBluetooth.stop(1);
     [self.devicesDic removeAllObjects];
+}
+
+- (void)eTimer {
+    if (self.autoSearchEnable) {
+        [self search];
+    }
 }
 
 #pragma mark - private methods
@@ -121,6 +134,9 @@
         self.devicesDic[peripheral].name = peripheral.name;
         self.devicesDic[peripheral].peri = peripheral;
         self.devicesDic[peripheral].advertisementData = advertisementData;
+        if (self.devicesChanged) {
+            self.devicesChanged();
+        }
     }];
 
     [self.babyBluetooth setFilterOnConnectToPeripherals:^BOOL(NSString *peripheralName, NSDictionary *advertisementData, NSNumber *RSSI) {
@@ -224,6 +240,13 @@
         _seConfDataDic = @{UVService:@[UVConfig,UVData],THService:@[THConfig,THData],PrService:@[PrConfig,PrData]};
     }
     return _seConfDataDic;
+}
+
+- (NSTimer *)timer {
+    if (!_timer) {
+        _timer = [NSTimer scheduledTimerWithTimeInterval:AutoSearchTimeGap target:self selector:@selector(eTimer) userInfo:nil repeats:YES];
+    }
+    return _timer;
 }
 
 @end
