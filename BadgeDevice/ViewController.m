@@ -29,19 +29,19 @@
             device.connectStatusChanged = ^(BOOL isConnect) {
                 strongify(device);
                 
-//                if ([device.macAddr isEqualToString:@"04:A3:16:37:E5:27"]) {
-//                    device.selected = NO;
-//                    return;
-//                }
-//                
-//                weakify(device);
-//                device.macAddressReaded = ^(NSString *macaddress) {
-//                    strongify(device);
-//                    if ([macaddress isEqualToString:@"04:A3:16:37:E5:27"]) {
-//                        device.selected = NO;
-//                        return;
-//                    }
-//                };
+                if ([device.macAddr isEqualToString:@"04:A3:16:37:E5:27"]) {
+                    device.selected = NO;
+                    return;
+                }
+                
+                weakify(device);
+                device.macAddressReaded = ^(NSString *macaddress) {
+                    strongify(device);
+                    if ([macaddress isEqualToString:@"04:A3:16:37:E5:27"]) {
+                        device.selected = NO;
+                        return;
+                    }
+                };
                 
                 device.selected = YES;
                 

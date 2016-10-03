@@ -8,10 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
-#import "TBLEDefine.h"
-#import "TBLEDevice.h"
-#import "TBluetooth.h"
-#import "TBluetoothTools.h"
+#import <BadgeDeviceLib/TBLEDefine.h>
+#import <BadgeDeviceLib/TBLEDevice.h>
+#import <BadgeDeviceLib/TBluetooth.h>
+#import <BadgeDeviceLib/TBluetoothTools.h>
 
 //! Project version number for BadgeDeviceLib.
 FOUNDATION_EXPORT double BadgeDeviceLibVersionNumber;
@@ -20,5 +20,3 @@ FOUNDATION_EXPORT double BadgeDeviceLibVersionNumber;
 FOUNDATION_EXPORT const unsigned char BadgeDeviceLibVersionString[];
 
 // In this header, you should import all the public headers of your framework using statements like #import <BadgeDeviceLib/PublicHeader.h>
-
-
