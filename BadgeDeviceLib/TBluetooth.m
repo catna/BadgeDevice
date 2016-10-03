@@ -27,7 +27,9 @@
 @end
 
 
-@implementation TBluetooth
+@implementation TBluetooth {
+    NSUInteger _readDataLimit;//想让CPU运转的时间再少一些，虽然不加这点东西也成
+}
 @synthesize devicesDic = _devicesDic;
 @synthesize babyBluetooth = _babyBluetooth;
 
@@ -266,7 +268,7 @@
 }
 
 - (void)readValueForCh:(CBCharacteristic *)characteristic inPeri:(CBPeripheral *)peri {
-    if ([self.devicesDic.allKeys containsObject:peri]) {
+    if ([self.devicesDic.allKeys containsObject:peri] && _readDataLimit <= 50) {
         NSString *UUIDStr = characteristic.UUID.UUIDString;
         for (NSArray *uuidArr in self.seConfDataDic.allValues) {
             if ([uuidArr containsObject:UUIDStr]) {
@@ -284,7 +286,12 @@
                 NSLog(@"读取设备%@的%@数据--%@",self.devicesDic[peri].macAddr,dataName, self.devicesDic[peri].currentRawData);
             }
         }
+    } else {
+        if (_readDataLimit >= 500) {
+            _readDataLimit = 0;
+        }
     }
+    _readDataLimit ++;
 }
 
 @end

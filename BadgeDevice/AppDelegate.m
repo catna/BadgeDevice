@@ -7,7 +7,6 @@
 //
 
 #import "AppDelegate.h"
-#import "TDataManager.h"
 
 @interface AppDelegate ()
 

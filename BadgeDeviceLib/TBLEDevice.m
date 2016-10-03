@@ -47,7 +47,7 @@
     }
     _PrRawData = PrRawData;
     double p = [TBluetoothTools convertPresData:PrRawData];
-    _pV = p > 10;
+    _pV = p >= 800 && p <= 1100;
     _Pres = [NSString stringWithFormat:@"%.2f", p];
     [self updateData];
 }
@@ -171,18 +171,18 @@ static const void *TBLEDeviceDataStoreCharacteristicKey = @"TBLEDeviceDataStoreC
     NSString *dateString = [formatter stringFromDate:date];
     NSArray <NSString *>*dateArray = [dateString componentsSeparatedByString:@"|"];
     
-    unsigned long long year   = [[dateArray[0] substringFromIndex:2] intValue];
-    unsigned long long month  = [dateArray[1] intValue];
-    unsigned long long day    = [dateArray[2] intValue];
-    unsigned long long hour   = [dateArray[3] intValue];
-    unsigned long long minute = [dateArray[4] intValue];
+    char year   = [[dateArray[0] substringFromIndex:2] intValue];
+    char month  = [dateArray[1] intValue];
+    char day    = [dateArray[2] intValue];
+    char hour   = [dateArray[3] intValue];
+    char minute = [dateArray[4] intValue];
     
-    unsigned long long dateBytes = 0;
-    dateBytes = dateBytes | year;
-    dateBytes = dateBytes | month << 8;
-    dateBytes = dateBytes | day << 16;
-    dateBytes = dateBytes | hour << 24;
-    dateBytes = dateBytes | minute << 32;
+    char dateBytes[8];
+    dateBytes[0] = year;
+    dateBytes[1] = month;
+    dateBytes[2] = day;
+    dateBytes[3] = hour;
+    dateBytes[4] = minute;
     
     NSData *data = [NSData dataWithBytes:&dateBytes length:sizeof(dateBytes)];
     return data;
