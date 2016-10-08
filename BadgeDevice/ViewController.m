@@ -51,4 +51,30 @@
     };
 }
 
+//- (void)viewDidAppear:(BOOL)animated {
+//    [super viewDidAppear:animated];
+////    NSFetchRequest *fetch = [[NSFetchRequest alloc] init];
+////    NSEntityDescription *entityDes = [NSEntityDescription entityForName:@"" inManagedObjectContext:[[TDataManager sharedDataManager] managedObjectContext]];
+//    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+//    NSEntityDescription *entity = [NSEntityDescription entityForName:@"MDeviceData" inManagedObjectContext:[[TDataManager sharedDataManager] managedObjectContext]];
+//    [fetchRequest setEntity:entity];
+//    // Specify criteria for filtering which objects to fetch
+//    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"time >= %@", [NSDate dateWithTimeIntervalSinceNow:-3600]];
+//    [fetchRequest setPredicate:predicate];
+//    // Specify how the fetched objects should be sorted
+////    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"<#key#>"
+////                                                                   ascending:YES];
+////    [fetchRequest setSortDescriptors:[NSArray arrayWithObjects:sortDescriptor, nil]];
+//    
+//    fetchRequest.fetchBatchSize = 100;
+//    NSError *error = nil;
+//    NSArray *fetchedObjects = [[[TDataManager sharedDataManager] managedObjectContext] executeFetchRequest:fetchRequest error:&error];
+//    if (fetchedObjects == nil) {
+//        NSLog(@"some error === --- --- ====");
+//    }
+//    
+//    MDeviceData *d = fetchedObjects.firstObject;
+//    NSLog(@"%@", [d generateShowText]);
+//}
+
 @end

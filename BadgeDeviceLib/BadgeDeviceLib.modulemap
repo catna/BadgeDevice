@@ -1,9 +1,5 @@
 framework module BadgeDeviceLib {
     umbrella header "BadgeDeviceLib.h"
-    umbrella header "TBLEDefine.h"
-    umbrella header "TBLEDevice.h"
-    umbrella header "TBluetooth.h"
-    umbrella header "TBluetoothTools.h"
     
     export *
     module * { export * }

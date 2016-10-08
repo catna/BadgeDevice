@@ -16,6 +16,8 @@
 @property (nonatomic ,copy) NSString *uvle, *uvnu, *pres, *humi, *temp;
 @property (nonatomic ,strong) NSDate *time;
 
+@property (nonatomic, copy) NSString *latitude, *longitude, *locationTimeStamp;
+
 - (NSString *)generateShowText;
 
 @end

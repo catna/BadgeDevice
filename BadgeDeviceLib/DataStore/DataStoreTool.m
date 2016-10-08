@@ -12,10 +12,13 @@
 #import <BadgeDeviceLib/TBluetooth.h>
 #import <BadgeDeviceLib/TBLEDevice.h>
 #import <BadgeDeviceLib/TBLEDefine.h>
+#import "TLocationManager.h"
+#import "JZLocationConverter.h"
 
 @interface DataStoreTool()
 @property (nonatomic, strong) NSMutableArray<TBLEDevice *> *deviceArray;
 @property (nonatomic, strong) NSMutableArray<MDeviceData *> *dataArray;
+@property (nonatomic, strong) NSDateFormatter *dateFormatter;
 @end
 
 @implementation DataStoreTool {
@@ -84,7 +87,44 @@
     d.temp = device.currentRawData.Temp;
     d.uvle = device.currentRawData.UVLe;
     d.macAddress = device.macAddr;
+    TLocationManager *lm = [TLocationManager sharedManager];
+    [self assembleLocation:lm.location toDeviceData:d];
     [self.dataArray addObject:d];
+}
+
+- (void)assembleLocation:(CLLocation *)location toDeviceData:(MDeviceData *)d {
+    if (nil == location) {
+        location = [[CLLocation alloc] initWithLatitude:0 longitude:0];
+        d.locationTimeStamp = @"";
+    } else {
+        d.locationTimeStamp = [self.dateFormatter stringFromDate:location.timestamp];
+    }
+    CLLocationCoordinate2D coor = location.coordinate;
+    coor = [JZLocationConverter gcj02ToWgs84:coor];
+    d.latitude = [NSString stringWithFormat:@"%.5f", coor.latitude];
+    d.longitude = [NSString stringWithFormat:@"%.5f", coor.longitude];
+}
+
+- (NSArray<MDeviceData *> *)readDataWith:(NSTimeInterval)timeInterval {
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"MDeviceData" inManagedObjectContext:[TDataManager sharedDataManager].managedObjectContext];
+    [fetchRequest setEntity:entity];
+    // Specify criteria for filtering which objects to fetch
+    if (0 != timeInterval) {
+        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"time >= %@", [NSDate dateWithTimeIntervalSinceNow:timeInterval]];
+        [fetchRequest setPredicate:predicate];
+    }
+    // Specify how the fetched objects should be sorted
+    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"time"
+                                                                   ascending:YES];
+    [fetchRequest setSortDescriptors:[NSArray arrayWithObjects:sortDescriptor, nil]];
+    
+    NSError *error = nil;
+    NSArray *fetchedObjects = [[TDataManager sharedDataManager].managedObjectContext executeFetchRequest:fetchRequest error:&error];
+    if (fetchedObjects == nil) {
+        NSLog(@"未取得任何数据");
+    }
+    return fetchedObjects;
 }
 
 #pragma mark - getter
@@ -100,6 +140,14 @@
         _dataArray = [[NSMutableArray alloc] initWithCapacity:0];
     }
     return _dataArray;
+}
+
+- (NSDateFormatter *)dateFormatter {
+    if (!_dateFormatter) {
+        _dateFormatter = [[NSDateFormatter alloc] init];
+        _dateFormatter.dateFormat = @"yyyy-MM-dd HH:mm:ss";
+    }
+    return _dateFormatter;
 }
 
 @end

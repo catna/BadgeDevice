@@ -268,7 +268,7 @@
 }
 
 - (void)readValueForCh:(CBCharacteristic *)characteristic inPeri:(CBPeripheral *)peri {
-    if ([self.devicesDic.allKeys containsObject:peri] && _readDataLimit <= 50) {
+    if ([self.devicesDic.allKeys containsObject:peri] && _readDataLimit <= 20) {
         NSString *UUIDStr = characteristic.UUID.UUIDString;
         for (NSArray *uuidArr in self.seConfDataDic.allValues) {
             if ([uuidArr containsObject:UUIDStr]) {
@@ -287,7 +287,7 @@
             }
         }
     } else {
-        if (_readDataLimit >= 500) {
+        if (_readDataLimit >= 50) {
             _readDataLimit = 0;
         }
     }
