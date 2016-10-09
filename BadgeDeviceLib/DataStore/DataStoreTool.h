@@ -7,6 +7,9 @@
 //
 
 #import <Foundation/Foundation.h>
+
+#define DataStoreToolRecordFrequency 1
+
 @class TBLEDevice, MDeviceData;
 
 @interface DataStoreTool : NSObject

@@ -19,15 +19,14 @@
 @property (nonatomic, strong) NSMutableArray<TBLEDevice *> *deviceArray;
 @property (nonatomic, strong) NSMutableArray<MDeviceData *> *dataArray;
 @property (nonatomic, strong) NSDateFormatter *dateFormatter;
+@property (nonatomic, strong) NSTimer *timer;
 @end
 
-@implementation DataStoreTool {
-    NSUInteger _storeCount;
-}
+@implementation DataStoreTool
 
 - (id)init {
     if (self = [super init]) {
-        
+        [self.timer fire];
     }
     return self;
 }
@@ -48,17 +47,6 @@
         if (![self.deviceArray containsObject:device]) {
             [self.deviceArray addObject:device];
         }
-        device.DataUpdateHandler = ^(BOOL dataValidity){
-            if (dataValidity) {
-                strongify(self);
-                strongify(device);
-                if (_storeCount >= 4) {
-                    [self storeDeviceData:device];
-                    _storeCount = 0;
-                }
-                _storeCount ++;
-            }
-        };
         return YES;
     } else {
         return NO;
@@ -127,6 +115,13 @@
     return fetchedObjects;
 }
 
+#pragma mark - events
+- (void)eTimer {
+    for (TBLEDevice *dev in self.deviceArray) {
+        [self storeDeviceData:dev];
+    }
+}
+
 #pragma mark - getter
 - (NSMutableArray<TBLEDevice *> *)deviceArray {
     if (!_deviceArray) {
@@ -148,6 +143,13 @@
         _dateFormatter.dateFormat = @"yyyy-MM-dd HH:mm:ss";
     }
     return _dateFormatter;
+}
+
+- (NSTimer *)timer {
+    if (!_timer) {
+        _timer = [NSTimer scheduledTimerWithTimeInterval:DataStoreToolRecordFrequency target:self selector:@selector(eTimer) userInfo:nil repeats:YES];
+    }
+    return _timer;
 }
 
 @end

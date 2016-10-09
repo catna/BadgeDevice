@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		8D46D32818E2A1B561D7FEC5 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B2B53AB90D7A92F5556D062E /* libPods.a */; };
-		E103C2FB1DA75B9E00C86061 /* BadgeDevice.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = E103C2F91DA75B9E00C86061 /* BadgeDevice.xcdatamodeld */; };
 		E103C30B1DA75D2000C86061 /* DataStoreTool.h in Headers */ = {isa = PBXBuildFile; fileRef = E103C2FD1DA75D2000C86061 /* DataStoreTool.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E103C30C1DA75D2000C86061 /* DataStoreTool.m in Sources */ = {isa = PBXBuildFile; fileRef = E103C2FE1DA75D2000C86061 /* DataStoreTool.m */; };
 		E103C30D1DA75D2000C86061 /* MDeviceData.h in Headers */ = {isa = PBXBuildFile; fileRef = E103C2FF1DA75D2000C86061 /* MDeviceData.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -38,6 +37,7 @@
 		E16ED4C21DA223D400982664 /* BadgeDeviceLib.h in Headers */ = {isa = PBXBuildFile; fileRef = E16ED4B71DA223D400982664 /* BadgeDeviceLib.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E16ED4C31DA223D400982664 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = E16ED4B91DA223D400982664 /* Info.plist */; };
 		E16ED4CE1DA22C4000982664 /* FLEXDebug.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E16ED4CD1DA22C4000982664 /* FLEXDebug.framework */; };
+		E17F62501DAA4DC700EE7FD1 /* BadgeDevice.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = E17F624E1DAA4DC700EE7FD1 /* BadgeDevice.xcdatamodeld */; };
 		E19E374B1CC8C71F00071346 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = E19E374A1CC8C71F00071346 /* main.m */; };
 		E19E374E1CC8C71F00071346 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = E19E374D1CC8C71F00071346 /* AppDelegate.m */; };
 		E19E37511CC8C71F00071346 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E19E37501CC8C71F00071346 /* ViewController.m */; };
@@ -53,7 +53,6 @@
 		3824465E38823669662F7B57 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		B2B53AB90D7A92F5556D062E /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		C06FD762E2E2AFA17CADF243 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
-		E103C2FA1DA75B9E00C86061 /* BadgeDevice.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = BadgeDevice.xcdatamodel; sourceTree = "<group>"; };
 		E103C2FD1DA75D2000C86061 /* DataStoreTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DataStoreTool.h; sourceTree = "<group>"; };
 		E103C2FE1DA75D2000C86061 /* DataStoreTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DataStoreTool.m; sourceTree = "<group>"; };
 		E103C2FF1DA75D2000C86061 /* MDeviceData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MDeviceData.h; sourceTree = "<group>"; };
@@ -78,6 +77,7 @@
 		E16ED4B81DA223D400982664 /* BadgeDeviceLib.modulemap */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = "sourcecode.module-map"; path = BadgeDeviceLib.modulemap; sourceTree = "<group>"; };
 		E16ED4B91DA223D400982664 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E16ED4CD1DA22C4000982664 /* FLEXDebug.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FLEXDebug.framework; path = BadgeDevice/FLEXDebug.framework; sourceTree = "<group>"; };
+		E17F624F1DAA4DC700EE7FD1 /* BadgeDevice.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = BadgeDevice.xcdatamodel; sourceTree = "<group>"; };
 		E19E37461CC8C71F00071346 /* BadgeDevice.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BadgeDevice.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E19E374A1CC8C71F00071346 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		E19E374C1CC8C71F00071346 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -195,7 +195,7 @@
 				E19E374D1CC8C71F00071346 /* AppDelegate.m */,
 				E19E374F1CC8C71F00071346 /* ViewController.h */,
 				E19E37501CC8C71F00071346 /* ViewController.m */,
-				E103C2F91DA75B9E00C86061 /* BadgeDevice.xcdatamodeld */,
+				E17F624E1DAA4DC700EE7FD1 /* BadgeDevice.xcdatamodeld */,
 				E19E37521CC8C71F00071346 /* Main.storyboard */,
 				E19E37581CC8C71F00071346 /* Assets.xcassets */,
 				E19E375A1CC8C71F00071346 /* LaunchScreen.storyboard */,
@@ -425,7 +425,7 @@
 				E19E37511CC8C71F00071346 /* ViewController.m in Sources */,
 				E19E374E1CC8C71F00071346 /* AppDelegate.m in Sources */,
 				E19E374B1CC8C71F00071346 /* main.m in Sources */,
-				E103C2FB1DA75B9E00C86061 /* BadgeDevice.xcdatamodeld in Sources */,
+				E17F62501DAA4DC700EE7FD1 /* BadgeDevice.xcdatamodeld in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -674,12 +674,12 @@
 /* End XCConfigurationList section */
 
 /* Begin XCVersionGroup section */
-		E103C2F91DA75B9E00C86061 /* BadgeDevice.xcdatamodeld */ = {
+		E17F624E1DAA4DC700EE7FD1 /* BadgeDevice.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
-				E103C2FA1DA75B9E00C86061 /* BadgeDevice.xcdatamodel */,
+				E17F624F1DAA4DC700EE7FD1 /* BadgeDevice.xcdatamodel */,
 			);
-			currentVersion = E103C2FA1DA75B9E00C86061 /* BadgeDevice.xcdatamodel */;
+			currentVersion = E17F624F1DAA4DC700EE7FD1 /* BadgeDevice.xcdatamodel */;
 			path = BadgeDevice.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
