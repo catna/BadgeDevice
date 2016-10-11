@@ -46,6 +46,9 @@
         weakify(device);
         if (![self.deviceArray containsObject:device]) {
             [self.deviceArray addObject:device];
+            device.historyDataReaded = ^(TBLEDeviceRawData *historyRawData) {
+                [self storeDeviceData:device history:YES];
+            };
         }
         return YES;
     } else {
@@ -63,21 +66,24 @@
     }
 }
 
-- (void)storeDeviceData:(TBLEDevice *)device {
+- (void)storeDeviceData:(TBLEDevice *)device history:(BOOL)isHistory {
     if (self.dataArray.count >= 10) {
         [[TDataManager sharedDataManager] saveContext];
         [self.dataArray removeAllObjects];
     }
-    MDeviceData *d = [NSEntityDescription insertNewObjectForEntityForName:@"MDeviceData" inManagedObjectContext:[[TDataManager sharedDataManager] managedObjectContext]];
-    d.time = [NSDate date];
-    d.pres = device.currentRawData.Pres;
-    d.humi = device.currentRawData.Humi;
-    d.temp = device.currentRawData.Temp;
-    d.uvle = device.currentRawData.UVLe;
-    d.macAddress = device.macAddr;
-    TLocationManager *lm = [TLocationManager sharedManager];
-    [self assembleLocation:lm.location toDeviceData:d];
-    [self.dataArray addObject:d];
+    TBLEDeviceRawData *rawData = isHistory ? device.historyRawData : device.currentRawData;
+    if (rawData.dataValidity) {
+        MDeviceData *d = [NSEntityDescription insertNewObjectForEntityForName:@"MDeviceData" inManagedObjectContext:[[TDataManager sharedDataManager] managedObjectContext]];
+        d.time = rawData.date;
+        d.pres = rawData.Pres;
+        d.humi = rawData.Humi;
+        d.temp = rawData.Temp;
+        d.uvle = rawData.UVLe;
+        d.macAddress = device.macAddr;
+        TLocationManager *lm = [TLocationManager sharedManager];
+        [self assembleLocation:isHistory ? nil : lm.location toDeviceData:d];
+        [self.dataArray addObject:d];
+    }
 }
 
 - (void)assembleLocation:(CLLocation *)location toDeviceData:(MDeviceData *)d {
@@ -118,7 +124,7 @@
 #pragma mark - events
 - (void)eTimer {
     for (TBLEDevice *dev in self.deviceArray) {
-        [self storeDeviceData:dev];
+        [self storeDeviceData:dev history:NO];
     }
 }
 

@@ -27,10 +27,10 @@
     const void *rawData = data.bytes;
     int a = 0;
     char *b = (char *)&a;
-    for (int i = 0; i < sizeof(int); i ++) {
+    for (int i = 0; i < data.length - 3; i ++) {
         *(b + i) = *(char *)(rawData + 3 + i);
     }
-    return (double)a/100.0;
+    return [[self class] calculatorPres:(double)a];
 }
 
 + (double)convertUVNuData:(NSData *)data {
@@ -47,7 +47,7 @@
     for (int i = 0; i < sizeof(int) - 2; i ++) {
         *(b + i) = *(char *)(rawData + 2 + i);
     }
-    return (double)a * 125.0 / 65536 - 6;
+    return [[self class] calculatorHumi:(double)a];
 }
 
 + (double)convertTempData:(NSData *)data {
@@ -57,7 +57,7 @@
     for (int i = 0; i < sizeof(int) - 2; i ++) {
         *(b + i) = *(char *)(rawData + i);
     }
-    return (double) a * 175.72 / 65536 - 46.85;
+    return [[self class] calculatorTemp:(double)a];
 }
 
 + (int)matchUVLeWithUVNu:(double)UVNu {
@@ -80,4 +80,22 @@
         return 0;
     }
 }
+
+#pragma mark - calculator
++ (double)calculatorHumi:(double)humi {
+    return humi * 125.0 / 65536 - 6;
+}
+
++ (double)calculatorTemp:(double)temp {
+    return temp * 175.72 / 65536 - 46.85;
+}
+
++ (double)calculatorPres:(double)pres {
+    return pres / 100.0;
+}
+
++ (double)calculatorUvLe:(double)uvle {
+    return [[self class] matchUVLeWithUVNu:uvle];
+}
+
 @end

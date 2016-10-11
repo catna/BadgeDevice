@@ -26,6 +26,13 @@
 @synthesize Pres = _Pres;
 @synthesize UVLe = _UVLe;
 
+- (id)init {
+    if (self = [super init]) {
+        self.date = [NSDate date];
+    }
+    return self;
+}
+
 - (void)setTHRawData:(NSData *)THRawData {
     if (THRawData == NULL) {
         return;
@@ -136,7 +143,11 @@
 @end
 
 static const void *TBLEDeviceDataStoreCharacteristicKey = @"TBLEDeviceDataStoreCharacteristicKey";
+static const void *TBLEDeviceDataStoreHistoryDataKey = @"TBLEDeviceDataStoreHistoryDataKey";
+static const void *TBLEDeviceHistoryDataReadedKey = @"TBLEDeviceHistoryDataReadedKey";
+static const void *TBLEDeviceBatteryKey = @"TBLEDeviceBatteryKey";
 @implementation TBLEDevice(DataDistill)
+#pragma mark - public methods
 - (void)startDistill {
     if (nil != self.DataStoreCharacteristic && nil != self.peri) {
         [self.peri readValueForCharacteristic:self.DataStoreCharacteristic];
@@ -151,6 +162,10 @@ static const void *TBLEDeviceDataStoreCharacteristicKey = @"TBLEDeviceDataStoreC
         int compare00Result = bcmp(characteristic.value.bytes, &all00, characteristic.value.length);
         if (0 != compareFFResult && 0 != compare00Result) {
             NSLog(@"\r\n读取到的历史和电量信息%@\r\n", characteristic.value);
+            [self parseCharacteristicData:characteristic.value];
+            if (self.historyDataReaded) {
+                self.historyDataReaded(self.historyRawData);
+            }
         }
     }
     [self startDistill];
@@ -188,12 +203,89 @@ static const void *TBLEDeviceDataStoreCharacteristicKey = @"TBLEDeviceDataStoreC
     return data;
 }
 
+#pragma mark - private methods
+//    读取到的历史和电量信息<1009080a 2129f06b 7e775c8d 01430908>
+//    BYTE0：年
+//    BYTE1：月
+//    BYTE2：日
+//    BYTE3：时
+//    BYTE4：分
+//    BYTE5：紫外线
+//    BYTE6~7：温度
+//    BYTE8~9：湿度
+//    BYTE10~12：大气压
+//    BYTE13：电池电量
+//    BYTE14~15：保留
+- (void)parseCharacteristicData:(NSData *)data {
+    const char *rawData = data.bytes;
+    int tehu = 0, uvle = 0;
+    char time[5], pres[6];
+    memcpy(time, rawData, 5);
+    *((char *)&uvle) = rawData[5];
+    memcpy(&tehu, &rawData[6], 4);
+    memcpy(&pres, &rawData[7], 6);
+    
+    self.historyRawData.THRawData = [NSData dataWithBytes:&tehu length:sizeof(tehu)];
+    self.historyRawData.PrRawData = [NSData dataWithBytes:pres length:6];
+    self.historyRawData.UVRawData = [NSData dataWithBytes:&uvle length:sizeof(uvle)];
+    self.historyRawData.date = [self parseHistoryDate:time];
+    
+    NSUInteger battery = 0;
+    *((char *)&battery) = rawData[13];
+    self.battery = battery;
+}
+
+- (NSDate *)parseHistoryDate:(const char *)dateBytes {
+    char y = dateBytes[0];
+    char M = dateBytes[1];
+    char d = dateBytes[2];
+    char H = dateBytes[3];
+    char m = dateBytes[4];
+    NSString *strDate = [NSString stringWithFormat:@"20%02d-%02d-%02d %02d:%2d", y, M, d, H, m];
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    dateFormatter.timeZone = [NSTimeZone systemTimeZone];
+    dateFormatter.dateFormat = @"yyyy-MM-dd HH:mm";
+    NSDate *date = [dateFormatter dateFromString:strDate];
+    return date;
+}
+
+#pragma mark - setter & getter
 - (void)setDataStoreCharacteristic:(CBCharacteristic *)DataStoreCharacteristic {
     objc_setAssociatedObject(self, TBLEDeviceDataStoreCharacteristicKey, DataStoreCharacteristic, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
 - (CBCharacteristic *)DataStoreCharacteristic {
     return objc_getAssociatedObject(self, TBLEDeviceDataStoreCharacteristicKey);
+}
+
+- (void)setHistoryRawData:(TBLEDeviceRawData *)historyRawData {
+    objc_setAssociatedObject(self, TBLEDeviceDataStoreHistoryDataKey, historyRawData, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
+- (TBLEDeviceRawData *)historyRawData {
+    id hd = objc_getAssociatedObject(self, TBLEDeviceDataStoreHistoryDataKey);
+    if (nil == hd) {
+        TBLEDeviceRawData *d = [[TBLEDeviceRawData alloc] init];
+        [self setHistoryRawData:d];
+        hd = d;
+    }
+    return hd;
+}
+
+- (void)setHistoryDataReaded:(void (^)(TBLEDeviceRawData *))historyDataReaded {
+    objc_setAssociatedObject(self, TBLEDeviceHistoryDataReadedKey, historyDataReaded, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
+- (void (^)(TBLEDeviceRawData *))historyDataReaded {
+    return objc_getAssociatedObject(self, TBLEDeviceHistoryDataReadedKey);
+}
+
+- (void)setBattery:(NSUInteger)battery {
+    objc_setAssociatedObject(self, TBLEDeviceBatteryKey, @(battery), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
+- (NSUInteger)battery {
+    return [(NSNumber *)objc_getAssociatedObject(self, TBLEDeviceBatteryKey) unsignedIntegerValue];
 }
 
 @end

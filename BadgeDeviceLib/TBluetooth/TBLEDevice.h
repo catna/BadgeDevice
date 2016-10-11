@@ -11,6 +11,8 @@
 @class CBPeripheral,CBCharacteristic;
 
 @interface TBLEDeviceRawData : NSObject
+@property (nonatomic, strong) NSDate *date;
+
 @property (nonatomic ,strong) NSData *UVRawData;/**< 紫外线数据*/
 @property (nonatomic ,strong) NSData *THRawData;/**< 温湿度数据*/
 @property (nonatomic ,strong) NSData *PrRawData;/**< 大气压数据*/
@@ -55,6 +57,12 @@
 
 @interface TBLEDevice (DataDistill)
 @property (nonatomic, strong) CBCharacteristic *DataStoreCharacteristic;
+@property (nonatomic, strong) TBLEDeviceRawData *historyRawData;/**< 历史数据*/
+@property (nonatomic, assign) NSUInteger battery;/**< 历史电量数据*/
+/*!
+ *	@brief 用于记录历史数据，交给trace工具调用
+ */
+@property (nonatomic, strong) void (^historyDataReaded)(TBLEDeviceRawData *historyRawData);
 - (void)startDistill;
 
 /*!

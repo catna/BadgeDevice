@@ -48,4 +48,10 @@
  *	@brief 返回紫外线强度信息
  */
 + (int)matchUVLeWithUVNu:(double)UVNu;
+
+#pragma mark - calculator
++ (double)calculatorHumi:(double)humi;
++ (double)calculatorTemp:(double)temp;
++ (double)calculatorPres:(double)pres;
++ (double)calculatorUvLe:(double)uvle;
 @end
