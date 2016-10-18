@@ -63,6 +63,11 @@
  *	@brief 用于记录历史数据，交给trace工具调用
  */
 @property (nonatomic, strong) void (^historyDataReaded)(TBLEDeviceRawData *historyRawData);
+
+/*!
+ *	@brief 完成读取时候的操作，执行一次置空
+ */
+@property (nonatomic, strong) void (^historyDataReadCompletion)(BOOL completion);
 - (void)startDistill;
 
 /*!

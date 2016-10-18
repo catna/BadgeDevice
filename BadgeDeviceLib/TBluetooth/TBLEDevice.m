@@ -146,6 +146,8 @@ static const void *TBLEDeviceDataStoreCharacteristicKey = @"TBLEDeviceDataStoreC
 static const void *TBLEDeviceDataStoreHistoryDataKey = @"TBLEDeviceDataStoreHistoryDataKey";
 static const void *TBLEDeviceHistoryDataReadedKey = @"TBLEDeviceHistoryDataReadedKey";
 static const void *TBLEDeviceBatteryKey = @"TBLEDeviceBatteryKey";
+static const void *TBLEDeviceHistoryDataReadCompletionKey = @"TBLEDeviceHistoryDataReadCompletionKey";
+
 @implementation TBLEDevice(DataDistill)
 #pragma mark - public methods
 - (void)startDistill {
@@ -165,6 +167,12 @@ static const void *TBLEDeviceBatteryKey = @"TBLEDeviceBatteryKey";
             [self parseCharacteristicData:characteristic.value];
             if (self.historyDataReaded) {
                 self.historyDataReaded(self.historyRawData);
+            }
+        } else {
+            NSLog(@"读取数据操作完成");
+            if (self.historyDataReadCompletion) {
+                self.historyDataReadCompletion(YES);
+                self.historyDataReadCompletion = nil;
             }
         }
     }
@@ -286,6 +294,14 @@ static const void *TBLEDeviceBatteryKey = @"TBLEDeviceBatteryKey";
 
 - (NSUInteger)battery {
     return [(NSNumber *)objc_getAssociatedObject(self, TBLEDeviceBatteryKey) unsignedIntegerValue];
+}
+
+- (void)setHistoryDataReadCompletion:(void (^)(BOOL))historyDataReadCompletion {
+    objc_setAssociatedObject(self, TBLEDeviceHistoryDataReadCompletionKey, historyDataReadCompletion, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
+- (void (^)(BOOL))historyDataReadCompletion {
+    return objc_getAssociatedObject(self, TBLEDeviceHistoryDataReadCompletionKey);
 }
 
 @end
