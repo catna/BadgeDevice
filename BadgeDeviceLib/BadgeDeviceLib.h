@@ -12,6 +12,8 @@
 #import "TBLEDevice.h"
 #import "TBluetooth.h"
 #import "TBluetoothTools.h"
+#import "TBLEDeviceDistill.h"
+#import "TBLEDeviceRawData.h"
 
 #import "DataStoreTool.h"
 #import "MDeviceData.h"

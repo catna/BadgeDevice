@@ -55,3 +55,35 @@
 + (double)calculatorPres:(double)pres;
 + (double)calculatorUvLe:(double)uvle;
 @end
+
+@interface TBluetoothTools (History)
+/*!
+ *	@brief 制造一个满足文档中需要写入的当前时间的数据
+ *  BYTE0：年
+ *  BYTE1：月
+ *  BYTE2：日
+ *  BYTE3：时
+ *  BYTE4：分
+ *  BYTE5~7：保留
+ */
++ (NSData *)createCurrentTimeData;
+
+/*!
+ *	@brief 读取数据时间信息
+ *	数据读取每次返回16个字节。
+ *	其中，
+ *	BYTE0：年
+ *	BYTE1：月
+ *	BYTE2：日
+ *	BYTE3：时
+ *	BYTE4：分
+ *	BYTE5：紫外线
+ *	BYTE6~7：温度
+ *	BYTE8~9：湿度
+ *
+ *	@param dateBytes	必须返回的是16位的char数组
+ *
+ *	@return 返回解析好的时间，可能为nil
+ */
++ (NSDate *)parseHistoryDate:(const char *)dateBytes;
+@end

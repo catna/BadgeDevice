@@ -46,9 +46,9 @@
         weakify(device);
         if (![self.deviceArray containsObject:device]) {
             [self.deviceArray addObject:device];
-            device.historyDataReaded = ^(TBLEDeviceRawData *historyRawData) {
-                [self storeDeviceData:device history:YES];
-            };
+//            device.historyDataReaded = ^(TBLEDeviceRawData *historyRawData) {
+//                [self storeDeviceData:device history:YES];
+//            };
         }
         return YES;
     } else {
@@ -71,19 +71,19 @@
         [[TDataManager sharedDataManager] saveContext];
         [self.dataArray removeAllObjects];
     }
-    TBLEDeviceRawData *rawData = isHistory ? device.historyRawData : device.currentRawData;
-    if (rawData.dataValidity) {
-        MDeviceData *d = [NSEntityDescription insertNewObjectForEntityForName:@"MDeviceData" inManagedObjectContext:[[TDataManager sharedDataManager] managedObjectContext]];
-        d.time = rawData.date;
-        d.pres = rawData.Pres;
-        d.humi = rawData.Humi;
-        d.temp = rawData.Temp;
-        d.uvle = rawData.UVLe;
-        d.macAddress = device.macAddr;
-        TLocationManager *lm = [TLocationManager sharedManager];
-        [self assembleLocation:isHistory ? nil : lm.location toDeviceData:d];
-        [self.dataArray addObject:d];
-    }
+//    TBLEDeviceRawData *rawData = isHistory ? device.historyRawData : device.currentRawData;
+//    if (rawData.dataValidity) {
+//        MDeviceData *d = [NSEntityDescription insertNewObjectForEntityForName:@"MDeviceData" inManagedObjectContext:[[TDataManager sharedDataManager] managedObjectContext]];
+//        d.time = rawData.date;
+//        d.pres = rawData.Pres;
+//        d.humi = rawData.Humi;
+//        d.temp = rawData.Temp;
+//        d.uvle = rawData.UVLe;
+//        d.macAddress = device.macAddr;
+//        TLocationManager *lm = [TLocationManager sharedManager];
+//        [self assembleLocation:isHistory ? nil : lm.location toDeviceData:d];
+//        [self.dataArray addObject:d];
+//    }
 }
 
 - (void)assembleLocation:(CLLocation *)location toDeviceData:(MDeviceData *)d {

@@ -7,10 +7,13 @@
 //
 
 #import "TBluetooth.h"
+#import <BabyBluetooth.h>
+
 #import "TBLEDefine.h"
 #import "TBLEDevice.h"
-
-#import <BabyBluetooth.h>
+#import "TBLEDeviceRawData.h"
+#import "TBLEDeviceDistill.h"
+#import "TBLENotification.h"
 #import "TBluetoothTools.h"
 
 @interface TBluetooth ()
@@ -27,9 +30,8 @@
 @end
 
 
-@implementation TBluetooth {
-    NSUInteger _readDataLimit;//想让CPU运转的时间再少一些，虽然不加这点东西也成
-}
+@implementation TBluetooth
+@synthesize managerState = _managerState;
 @synthesize devicesDic = _devicesDic;
 @synthesize babyBluetooth = _babyBluetooth;
 
@@ -106,18 +108,14 @@
                         self.babyBluetooth.having(d.peri).connectToPeripherals().discoverServices().discoverCharacteristics().readValueForCharacteristic().begin();
                     }
                 }
-                if (self.BluetoothStatusChanged) {
-                    self.BluetoothStatusChanged(YES);
-                }
                 break;
                 
             default:
                 NSLog(@"电源关闭或者不可用%@", self.devicesDic);
-                if (self.BluetoothStatusChanged) {
-                    self.BluetoothStatusChanged(NO);
-                }
                 break;
         }
+        _managerState = central.state;
+        [[NSNotificationCenter defaultCenter] postNotificationName:kBLENotiManagerStatusChanged object:nil];
     }];
     
     //只发现名字符合要求的设备，其他的一律忽略
@@ -136,7 +134,6 @@
         if (![self.devicesDic.allKeys containsObject:peripheral]) {
             [self.devicesDic setObject:[[TBLEDevice alloc] init] forKey:peripheral];
         }
-        self.devicesDic[peripheral].name = peripheral.name;
         self.devicesDic[peripheral].peri = peripheral;
         self.devicesDic[peripheral].advertisementData = advertisementData;
         if (self.devicesChanged) {
@@ -177,12 +174,11 @@
         if ([service.UUID.UUIDString isEqualToString:ConnectService]) {
             for (CBCharacteristic *characteristic in service.characteristics) {
                 if ([characteristic.UUID.UUIDString isEqualToString:ConnectData]) {
-                    self.devicesDic[peripheral].DataStoreCharacteristic = characteristic;
-                    [self.devicesDic[peripheral] startDistill];
+                    self.devicesDic[peripheral].distillTool.historyDataCharacteristic = characteristic;
                 }
                 
                 if ([characteristic.UUID.UUIDString isEqualToString:ConnectTimeConfig]) {
-                    [self.devicesDic[peripheral] timeCalibration:characteristic];
+                    self.devicesDic[peripheral].distillTool.timeCalibrateCharacteristic = characteristic;
                 }
             }
         }
@@ -193,12 +189,14 @@
         //筛选出可以设备的mac地址
         [self distillMacAddr:peripheral ch:characteristic];
         [self readValueForCh:characteristic inPeri:peripheral];
-        [self.devicesDic[peripheral] distillData:characteristic];
+        if ([characteristic.UUID.UUIDString isEqualToString:ConnectData]) {
+            [self.devicesDic[peripheral].distillTool distillData];
+        }
     }];
 }
 
 - (void)search {
-    self.babyBluetooth.scanForPeripherals().connectToPeripherals().discoverServices().discoverCharacteristics().readValueForCharacteristic().begin();
+    self.babyBluetooth.scanForPeripherals().connectToPeripherals().discoverServices().discoverCharacteristics().begin();
 }
 
 ///打开数据通道
@@ -268,7 +266,7 @@
 }
 
 - (void)readValueForCh:(CBCharacteristic *)characteristic inPeri:(CBPeripheral *)peri {
-    if ([self.devicesDic.allKeys containsObject:peri] && _readDataLimit <= 20) {
+    if ([self.devicesDic.allKeys containsObject:peri]) {
         NSString *UUIDStr = characteristic.UUID.UUIDString;
         for (NSArray *uuidArr in self.seConfDataDic.allValues) {
             if ([uuidArr containsObject:UUIDStr]) {
@@ -281,17 +279,12 @@
                     self.devicesDic[peri].currentRawData.UVRawData = characteristic.value;
                 } else if ([UUIDStr isEqualToString:PrData]) {
                     dataName = @"大气压";
-                    self.devicesDic[peri].currentRawData.PrRawData = [characteristic.value copy];
+                    self.devicesDic[peri].currentRawData.PrRawData = characteristic.value;
                 }
-                NSLog(@"读取设备%@的%@数据--%@",self.devicesDic[peri].macAddr,dataName, self.devicesDic[peri].currentRawData);
+//                NSLog(@"读取设备%@的%@数据--%@",self.devicesDic[peri].macAddr,dataName, self.devicesDic[peri].currentRawData);
             }
         }
-    } else {
-        if (_readDataLimit >= 50) {
-            _readDataLimit = 0;
-        }
     }
-    _readDataLimit ++;
 }
 
 @end

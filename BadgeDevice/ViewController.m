@@ -12,6 +12,7 @@
 #import <BadgeDeviceLib/TBluetooth.h>
 #import <BadgeDeviceLib/TBLEDevice.h>
 #import <BadgeDeviceLib/TBLEDefine.h>
+#import <BadgeDeviceLib/TBLEDeviceDistill.h>
 
 #import "DataStoreTool.h"
 
@@ -44,6 +45,10 @@
                 };
                 
                 device.selected = YES;
+                
+//                device.historyDataReadCompletion = ^(BOOL readCompletion) {
+//                    NSLog(@"数据读取完成");
+//                };
                 
                 [[DataStoreTool sharedTool] traceADevice:device];
             };

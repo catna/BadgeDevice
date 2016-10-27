@@ -99,3 +99,47 @@
 }
 
 @end
+
+@implementation TBluetoothTools (History)
++ (NSData *)createCurrentTimeData {
+    NSDate *date = [NSDate date];
+    NSDateFormatter *formatter = [NSDateFormatter new];
+    formatter.dateFormat = @"yyyy|MM|dd|HH|mm";
+    NSString *dateString = [formatter stringFromDate:date];
+    NSArray <NSString *>*dateArray = [dateString componentsSeparatedByString:@"|"];
+    
+    char year   = [[dateArray[0] substringFromIndex:2] intValue];
+    char month  = [dateArray[1] intValue];
+    char day    = [dateArray[2] intValue];
+    char hour   = [dateArray[3] intValue];
+    char minute = [dateArray[4] intValue];
+    
+    char dateBytes[8];
+    dateBytes[7] = 0x00;
+    dateBytes[6] = 0x00;
+    dateBytes[5] = 0x00;
+    dateBytes[4] = minute;
+    dateBytes[3] = hour;
+    dateBytes[2] = day;
+    dateBytes[1] = month;
+    dateBytes[0] = year;
+    
+    NSData *data = [NSData dataWithBytes:&dateBytes length:sizeof(dateBytes)];
+    return data;
+}
+
++ (NSDate *)parseHistoryDate:(const char *)dateBytes {
+    char y = dateBytes[0];
+    char M = dateBytes[1];
+    char d = dateBytes[2];
+    char H = dateBytes[3];
+    char m = dateBytes[4];
+    NSString *strDate = [NSString stringWithFormat:@"20%02d-%02d-%02d %02d:%2d", y, M, d, H, m];
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    dateFormatter.timeZone = [NSTimeZone systemTimeZone];
+    dateFormatter.dateFormat = @"yyyy-MM-dd HH:mm";
+    NSDate *date = [dateFormatter dateFromString:strDate];
+    return date;
+}
+
+@end

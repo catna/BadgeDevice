@@ -7,25 +7,10 @@
 //
 
 #import <Foundation/Foundation.h>
-
 @class CBPeripheral,CBCharacteristic;
-
-@interface TBLEDeviceRawData : NSObject
-@property (nonatomic, strong) NSDate *date;
-
-@property (nonatomic ,strong) NSData *UVRawData;/**< 紫外线数据*/
-@property (nonatomic ,strong) NSData *THRawData;/**< 温湿度数据*/
-@property (nonatomic ,strong) NSData *PrRawData;/**< 大气压数据*/
-
-@property (nonatomic, assign, readonly) BOOL dataValidity;/**< 数据有效性*/
-@property (nonatomic ,strong, readonly) NSString *UVLe;
-@property (nonatomic ,strong, readonly) NSString *Pres;
-@property (nonatomic ,strong, readonly) NSString *Temp;
-@property (nonatomic ,strong, readonly) NSString *Humi;
-@end
+@class TBLEDeviceRawData, TBLEDeviceDistill;
 
 @interface TBLEDevice : NSObject
-@property (nonatomic ,copy) NSString *name;
 @property (nonatomic ,strong) NSDictionary *advertisementData;/**< ad*/
 
 @property (nonatomic ,copy, readonly) NSString *macAddr;
@@ -56,32 +41,5 @@
 @end
 
 @interface TBLEDevice (DataDistill)
-@property (nonatomic, strong) CBCharacteristic *DataStoreCharacteristic;
-@property (nonatomic, strong) TBLEDeviceRawData *historyRawData;/**< 历史数据*/
-@property (nonatomic, assign) NSUInteger battery;/**< 历史电量数据*/
-/*!
- *	@brief 用于记录历史数据，交给trace工具调用
- */
-@property (nonatomic, strong) void (^historyDataReaded)(TBLEDeviceRawData *historyRawData);
-
-/*!
- *	@brief 完成读取时候的操作，执行一次置空
- */
-@property (nonatomic, strong) void (^historyDataReadCompletion)(BOOL completion);
-- (void)startDistill;
-
-/*!
- *	@brief 筛选当前读取到的数据
- */
-- (void)distillData:(CBCharacteristic *)characteristic;
-
-/*!
- *	@brief 时间校准
- */
-- (void)timeCalibration:(CBCharacteristic *)characteristic;
-
-/*!
- *	@brief 制造一个满足文档中需要写入的当前时间的数据
- */
-- (NSData *)createCurrentTimeData;
+@property (nonatomic, strong, readonly) TBLEDeviceDistill *distillTool;
 @end
