@@ -13,6 +13,10 @@
 
 extern NSString * const kBLENotiManagerStatusChanged;
 
+extern NSString * const kBLENotiManagerDeviceChanged;
+
 //extern NSString * const kBLENotiDeviceStatusChanged;
+
+extern NSString * const kBLENotiDevicesMacAddrReaded;
 
 #endif /* TBLENotification_h */

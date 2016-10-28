@@ -67,6 +67,7 @@
         if (self.devicesChanged) {
             self.devicesChanged();
         }
+        [[NSNotificationCenter defaultCenter] postNotificationName:kBLENotiManagerDeviceChanged object:self.devicesDic];
     }
     if (device.isConnect) {
         [self.babyBluetooth cancelPeripheralConnection:device.peri];
@@ -105,7 +106,7 @@
                 NSLog(@"电源开启%@", self.devicesDic);
                 for (TBLEDevice *d in self.devicesDic.allValues) {
                     if (d.selected) {
-                        self.babyBluetooth.having(d.peri).connectToPeripherals().discoverServices().discoverCharacteristics().readValueForCharacteristic().begin();
+                        self.babyBluetooth.having(d.peri).connectToPeripherals().discoverServices().discoverCharacteristics().begin();
                     }
                 }
                 break;
@@ -130,14 +131,14 @@
     [self.babyBluetooth setBlockOnDiscoverToPeripherals:^(CBCentralManager *central, CBPeripheral *peripheral, NSDictionary *advertisementData, NSNumber *RSSI) {
         strongify(self);
         NSLog(@"已扫描的设备:%@",peripheral.name);
-
         if (![self.devicesDic.allKeys containsObject:peripheral]) {
             [self.devicesDic setObject:[[TBLEDevice alloc] init] forKey:peripheral];
-        }
-        self.devicesDic[peripheral].peri = peripheral;
-        self.devicesDic[peripheral].advertisementData = advertisementData;
-        if (self.devicesChanged) {
-            self.devicesChanged();
+            [self.devicesDic[peripheral] setValue:peripheral forKey:@"peri"];
+            [self.devicesDic[peripheral] setValue:advertisementData forKey:@"advertisementData"];
+            if (self.devicesChanged) {
+                self.devicesChanged();
+            }
+            [[NSNotificationCenter defaultCenter] postNotificationName:kBLENotiManagerDeviceChanged object:self.devicesDic];
         }
     }];
 
@@ -155,7 +156,6 @@
         if ([self.devicesDic.allKeys containsObject:peripheral]) {
             [self.devicesDic[peripheral] setConnectStatus:YES];
         }
-        
     }];
 
     // 设备断开连接的委托
@@ -170,7 +170,14 @@
 //     扫描到设备某个 service 下的 characteristic 的委托
     [self.babyBluetooth setBlockOnDiscoverCharacteristics:^(CBPeripheral *peripheral, CBService *service, NSError *error) {
         strongify(self);
-        [self dataGalleryOpen:YES peri:peripheral service:service];
+        for (NSString *key in self.seConfDataDic.allKeys) {
+            if ([service.UUID.UUIDString isEqualToString:key]) {
+                for (CBCharacteristic *characteristic in service.characteristics) {
+                    [self store:characteristic peri:peripheral];
+                }
+            }
+        }
+        
         if ([service.UUID.UUIDString isEqualToString:ConnectService]) {
             for (CBCharacteristic *characteristic in service.characteristics) {
                 if ([characteristic.UUID.UUIDString isEqualToString:ConnectData]) {
@@ -199,24 +206,14 @@
     self.babyBluetooth.scanForPeripherals().connectToPeripherals().discoverServices().discoverCharacteristics().begin();
 }
 
-///打开数据通道
-- (void)dataGalleryOpen:(BOOL)open peri:(CBPeripheral *)peri service:(CBService *)service{
-    for (NSString *key in self.seConfDataDic.allKeys) {
-        if ([service.UUID.UUIDString isEqualToString:key]) {
-            NSArray *serviceConfigAndData = self.seConfDataDic[key];
-            for (CBCharacteristic *ch in service.characteristics) {
-                if ([ch.UUID.UUIDString isEqualToString:serviceConfigAndData.firstObject]) {
-                    Byte b = open ? 0x01 : 0x00;
-                    NSData *data = [NSData dataWithBytes:&b length:sizeof(b)];
-                    [peri writeValue:data forCharacteristic:ch type:CBCharacteristicWriteWithResponse];
-                }
-                if ([ch.UUID.UUIDString isEqualToString:serviceConfigAndData.lastObject]) {
-#if DEBUG
-                    NSDictionary *nameDic = @{UVService:@"紫外线",THService:@"温湿度",PrService:@"大气压"};
-                    NSString *str = nameDic[key];
-                    NSLog(@"读取到%@数据--%@",str,ch.value);
-#endif
-                    [peri setNotifyValue:open forCharacteristic:ch];
+- (void)store:(CBCharacteristic *)characteristic peri:(CBPeripheral *)peri {
+    if ([self.devicesDic.allKeys containsObject:peri]) {
+        NSArray *keys = @[UVConfig, UVData, THConfig, THData, PrConfig, PrData];
+        for (NSString *key in keys) {
+            if ([characteristic.UUID.UUIDString isEqualToString:key]) {
+                [self.devicesDic[peri].characteristics setObject:characteristic forKey:key];
+                if (self.devicesDic[peri].characteristics.count >= 6) {
+                    [self.devicesDic[peri] setValue:@(YES) forKey:@"isReady"];
                 }
             }
         }
@@ -260,7 +257,7 @@
         NSString *macAddress = [TBluetoothTools macWithCharacteristicData:ch.value];
         NSLog(@"读取到设备mac地址:%@",macAddress);
         if ([self.devicesDic.allKeys containsObject:peri]) {
-            [self.devicesDic[peri] setMacAddr:macAddress];
+            [self.devicesDic[peri] setValue:macAddress forKey:@"macAddr"];
         }
     }
 }

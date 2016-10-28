@@ -11,17 +11,27 @@
 #import <objc/runtime.h>
 #import <BabyBluetooth.h>
 
+#import "TBLEDefine.h"
 #import "TBluetoothTools.h"
 #import "TBluetooth.h"
 #import "TBLEDeviceDistill.h"
 #import "TBLEDeviceRawData.h"
+#import "TBLENotification.h"
+
+@interface TBLEDevice ()
+@property (nonatomic, assign) BOOL isReady;
+@end
 
 @implementation TBLEDevice
+@synthesize peri = _peri;
+@synthesize advertisementData = _advertisementData;
 @synthesize macAddr = _macAddr;
 @synthesize isConnect = _isConnect;
+@synthesize characteristics = _characteristics;
 
 - (void)setConnectStatus:(BOOL)connect {
     _isConnect = connect;
+    [self setNotifyData:self.notifyData];
     if (self.connectStatusChanged) {
         self.connectStatusChanged(_isConnect);
     }
@@ -36,29 +46,45 @@
     }
 }
 
-- (void)setMacAddr:(NSString *)macAddr {
-    _macAddr = [macAddr mutableCopy];
-    if (self.macAddressReaded) {
-        self.macAddressReaded(_macAddr);
+- (void)setIsReady:(BOOL)isReady {
+    _isReady = isReady;
+    if (self.readyHandler) {
+        self.readyHandler(_isReady);
     }
 }
 
-- (void)setDataUpdateHandler:(void (^)(BOOL))DataUpdateHandler {
-    _DataUpdateHandler = DataUpdateHandler;
-//    self.currentRawData.DataUpdateHandler = _DataUpdateHandler;
+- (void)setNotifyData:(BOOL)notifyData {
+    _notifyData = notifyData;
+    NSArray *keys = @[UVConfig, THConfig, PrConfig];
+    for (NSString *key in keys) {
+        CBCharacteristic *cha = [self.characteristics valueForKey:key];
+        if (self.peri && cha) {
+            Byte open = _notifyData ? 0x01 : 0x00;
+            NSData *data = [NSData dataWithBytes:&open length:sizeof(open)];
+            [self.peri writeValue:data forCharacteristic:cha type:CBCharacteristicWriteWithResponse];
+        }
+    }
+    
+    NSArray *notiKeys = @[UVData, THData, PrData];
+    for (NSString *key in notiKeys) {
+        CBCharacteristic *cha = [self.characteristics valueForKey:key];
+        if (self.peri && cha) {
+            [self.peri setNotifyValue:_notifyData forCharacteristic:cha];
+        }
+    }
 }
 
-- (void)clearAllPropertyData {
-    self.macAddr = nil;
-    self.peri = nil;
+- (void)setMacAddr:(NSString *)macAddr {
+    _macAddr = [macAddr mutableCopy];
+    [[NSNotificationCenter defaultCenter] postNotificationName:kBLENotiDevicesMacAddrReaded object:self];
 }
 
 #pragma mark - getter
-- (NSMutableArray <CBCharacteristic *>*)characteristicsForData {
-    if (!_characteristicsForData) {
-        _characteristicsForData = [[NSMutableArray alloc] init];
+- (NSMutableDictionary<NSString *,CBCharacteristic *> *)characteristics {
+    if (!_characteristics) {
+        _characteristics = [[NSMutableDictionary alloc] init];
     }
-    return _characteristicsForData;
+    return _characteristics;
 }
 
 - (TBLEDeviceRawData *)currentRawData {
@@ -79,9 +105,10 @@ static const void *TBLEDeviceDistillToolKey = "TBLEDeviceDistillToolKey";
 }
 
 - (TBLEDeviceDistill *)distillTool {
-    id distill = objc_getAssociatedObject(self, TBLEDeviceDistillToolKey);
+    TBLEDeviceDistill *distill = objc_getAssociatedObject(self, TBLEDeviceDistillToolKey);
     if (!distill) {
         distill = [[TBLEDeviceDistill alloc] init];
+        [distill setValue:self forKey:@"device"];
         [self setDistillTool:distill];
     }
     return distill;

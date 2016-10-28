@@ -58,7 +58,7 @@
 
 - (BOOL)cancelTraceDevice:(TBLEDevice *)device {
     if (device && [self.deviceArray containsObject:device]) {
-        device.DataUpdateHandler = nil;
+//        device.DataUpdateHandler = nil;
         [self.deviceArray removeObject:device];
         return YES;
     } else {

@@ -10,17 +10,18 @@
 @class TBLEDevice, TBLEDeviceRawData, CBCharacteristic;
 
 @interface TBLEDeviceDistill : NSObject
-@property (nonatomic, weak) TBLEDevice *device;
+@property (nonatomic, weak, readonly) TBLEDevice *device;
 
 @property (nonatomic, strong) CBCharacteristic *historyDataCharacteristic;
 @property (nonatomic, strong) CBCharacteristic *timeCalibrateCharacteristic;
 
 @property (nonatomic, assign, readonly) NSUInteger battery;
 @property (nonatomic, strong, readonly) TBLEDeviceRawData *historyRawData;
+
 /*!
- *	@brief 用于记录历史数据，交给trace工具调用
+ *	@brief 读取数据操作完成
  */
-@property (nonatomic, strong) void (^historyDataReaded)(TBLEDeviceRawData *historyRawData);
+@property (nonatomic, strong) void (^readHistory)(BOOL completion);
 
 - (BOOL)startDistill;
 - (void)distillData;

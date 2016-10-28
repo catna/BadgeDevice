@@ -30,6 +30,13 @@
                                     <constraint firstAttribute="height" constant="40" id="n2U-aP-sc7"/>
                                 </constraints>
                             </view>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oOF-wZ-7sf">
+                                <rect key="frame" x="20" y="51" width="46" height="97"/>
+                                <state key="normal" title="Button"/>
+                                <connections>
+                                    <action selector="dump:" destination="BYZ-38-t0r" eventType="touchUpInside" id="CHb-T1-MY9"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>

@@ -35,25 +35,31 @@
                     return;
                 }
                 
+                device.selected = YES;
+                
                 weakify(device);
-                device.macAddressReaded = ^(NSString *macaddress) {
+                device.readyHandler = ^(BOOL isReady) {
                     strongify(device);
-                    if ([macaddress isEqualToString:@"04:A3:16:37:E5:27"]) {
-                        device.selected = NO;
-                        return;
+                    if (isReady) {
+                        device.notifyData = YES;
                     }
                 };
                 
-                device.selected = YES;
-                
-//                device.historyDataReadCompletion = ^(BOOL readCompletion) {
-//                    NSLog(@"数据读取完成");
-//                };
-                
-                [[DataStoreTool sharedTool] traceADevice:device];
+//                [[DataStoreTool sharedTool] traceADevice:device];
             };
         }
     };
+}
+
+- (IBAction)dump:(UIButton *)sender {
+    for (TBLEDevice *dev in [TBluetooth sharedBluetooth].devicesDic.allValues) {
+        [dev.distillTool startDistill];
+        dev.distillTool.readHistory = ^(BOOL completion) {
+            if (completion) {
+                NSLog(@"数据读取完成");
+            }
+        };
+    }
 }
 
 
