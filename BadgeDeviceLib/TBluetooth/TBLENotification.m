@@ -14,4 +14,8 @@ NSString * const kBLENotiManagerDeviceChanged = @"kBLENotiManagerDeviceChanged";
 
 NSString * const kBLENotiDeviceStatusChanged = @"kBLENotiDeviceStatusChanged";
 
-NSString * const kBLENotiDevicesMacAddrReaded = @"kBLENotiDevicesMacAddrReaded";
+NSString * const kBLENotiDeviceMacAddrReaded = @"kBLENotiDeviceMacAddrReaded";
+
+NSString * const kBLENotiDeviceDataUpdate = @"kBLENotiDeviceDataUpdate";
+
+NSString * const kBLENotiDeviceHistoryDataReadCompletion = @"kBLENotiDeviceHistoryDataReadCompletion";

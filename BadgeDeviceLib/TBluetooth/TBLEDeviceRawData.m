@@ -8,9 +8,9 @@
 
 #import "TBLEDeviceRawData.h"
 #import "TBluetoothTools.h"
+#import "TBLENotification.h"
 
 @interface TBLEDeviceRawData ()
-@property (nonatomic, strong) void (^DataUpdateHandler)(BOOL dataValidity);
 @end
 
 @implementation TBLEDeviceRawData {
@@ -25,6 +25,8 @@
 - (id)init {
     if (self = [super init]) {
         self.date = [NSDate date];
+        self.dataCreateTime = [NSDate date];
+        self.dataRecordTime = [NSDate date];
     }
     return self;
 }
@@ -74,9 +76,8 @@
 }
 
 - (void)updateData {
-    if (self.DataUpdateHandler) {
-        self.DataUpdateHandler(self.dataValidity);
-    }
+    self.date = [NSDate date];
+    [[NSNotificationCenter defaultCenter] postNotificationName:kBLENotiDeviceDataUpdate object:nil];
 #if DEBUG
     NSLog(@"徽章数据->\r\n温度:%@\t湿度:%@\t气压:%@\t紫外线:%@\r\n", self.Temp, self.Humi, self.Pres, self.UVLe);
 #endif

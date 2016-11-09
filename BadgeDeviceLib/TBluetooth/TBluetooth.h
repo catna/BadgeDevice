@@ -12,10 +12,9 @@
 @class TBLEDevice;
 
 @interface TBluetooth : NSObject
-@property (nonatomic, assign, readonly) CBCentralManagerState managerState;
-
+///蓝牙可用判断
+@property (nonatomic, assign, readonly) BOOL BLEAvaliable;
 @property (nonatomic ,strong ,readonly) NSMutableDictionary <CBPeripheral *,TBLEDevice *> *devicesDic;
-@property (nonatomic, strong) void (^devicesChanged)(void);
 
 @property (nonatomic, assign) BOOL autoSearchEnable;
 /*!
@@ -37,5 +36,16 @@
  *	@brief 停止蓝牙功能相关的运行
  */
 - (void)stop;
+
+#pragma mark - 
+/*!
+ *	@brief 设备连接变化请求
+ *
+ *	@param connect	是否连接
+ *	@param peri		设备
+ *
+ *	@return 操作是否完成
+ */
+- (BOOL)connect:(BOOL)connect peri:(CBPeripheral *)peri;
 
 @end

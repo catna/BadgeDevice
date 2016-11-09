@@ -15,6 +15,7 @@
 #import "TBluetoothTools.h"
 #import "TBluetooth.h"
 #import "TBLEDeviceDistill.h"
+#import "TBLEDeviceActive.h"
 #import "TBLEDeviceRawData.h"
 #import "TBLENotification.h"
 
@@ -27,19 +28,26 @@
 @synthesize advertisementData = _advertisementData;
 @synthesize macAddr = _macAddr;
 @synthesize isConnect = _isConnect;
-@synthesize characteristics = _characteristics;
 
-- (void)setConnectStatus:(BOOL)connect {
-    _isConnect = connect;
-    [self setNotifyData:self.notifyData];
-    if (self.connectStatusChanged) {
-        self.connectStatusChanged(_isConnect);
+
+- (void)notificationWithName:(NSString *)name {
+    if (self.selected) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:name object:nil];
     }
+}
+
+#pragma mark - setter
+- (void)setIsConnect:(BOOL)isConnect {
+    _isConnect = isConnect;
+    [self notificationWithName:kBLENotiDeviceStatusChanged];
 }
 
 - (void)setSelected:(BOOL)selected {
     _selected = selected;
     BabyBluetooth *BLE = [[TBluetooth sharedBluetooth] valueForKeyPath:@"babyBluetooth"];
+    if (_selected && !self.peri.state == CBPeripheralStateConnected) {
+//        [BLE conn]
+    }
     _selected ? [BLE AutoReconnect:self.peri] : [BLE AutoReconnectCancel:self.peri];
     if (!_selected) {
         [BLE cancelPeripheralConnection:self.peri];
@@ -48,54 +56,21 @@
 
 - (void)setIsReady:(BOOL)isReady {
     _isReady = isReady;
-    if (self.readyHandler) {
-        self.readyHandler(_isReady);
-    }
-}
-
-- (void)setNotifyData:(BOOL)notifyData {
-    _notifyData = notifyData;
-    NSArray *keys = @[UVConfig, THConfig, PrConfig];
-    for (NSString *key in keys) {
-        CBCharacteristic *cha = [self.characteristics valueForKey:key];
-        if (self.peri && cha) {
-            Byte open = _notifyData ? 0x01 : 0x00;
-            NSData *data = [NSData dataWithBytes:&open length:sizeof(open)];
-            [self.peri writeValue:data forCharacteristic:cha type:CBCharacteristicWriteWithResponse];
-        }
-    }
-    
-    NSArray *notiKeys = @[UVData, THData, PrData];
-    for (NSString *key in notiKeys) {
-        CBCharacteristic *cha = [self.characteristics valueForKey:key];
-        if (self.peri && cha) {
-            [self.peri setNotifyValue:_notifyData forCharacteristic:cha];
-        }
-    }
+    [self notificationWithName:kBLENotiDeviceStatusChanged];
 }
 
 - (void)setMacAddr:(NSString *)macAddr {
     _macAddr = [macAddr mutableCopy];
-    [[NSNotificationCenter defaultCenter] postNotificationName:kBLENotiDevicesMacAddrReaded object:self];
+    [[NSNotificationCenter defaultCenter] postNotificationName:kBLENotiDeviceMacAddrReaded object:self];
 }
 
 #pragma mark - getter
-- (NSMutableDictionary<NSString *,CBCharacteristic *> *)characteristics {
-    if (!_characteristics) {
-        _characteristics = [[NSMutableDictionary alloc] init];
-    }
-    return _characteristics;
-}
 
-- (TBLEDeviceRawData *)currentRawData {
-    if (!_currentRawData) {
-        _currentRawData = [[TBLEDeviceRawData alloc] init];
-    }
-    return _currentRawData;
-}
+
 @end
 
 static const void *TBLEDeviceDistillToolKey = "TBLEDeviceDistillToolKey";
+static const void *TBLEDeviceActiveToolKey = "TBLEDeviceActiveToolKey";
 @implementation TBLEDevice(DataDistill)
 #pragma mark - public methods
 
@@ -112,6 +87,19 @@ static const void *TBLEDeviceDistillToolKey = "TBLEDeviceDistillToolKey";
         [self setDistillTool:distill];
     }
     return distill;
+}
+
+- (void)setActiveTool:(TBLEDeviceActive *)activeTool {
+    objc_setAssociatedObject(self, TBLEDeviceActiveToolKey, activeTool, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
+- (TBLEDeviceActive *)activeTool {
+    TBLEDeviceActive *activeTool = objc_getAssociatedObject(self, TBLEDeviceActiveToolKey);
+    if (!activeTool) {
+        activeTool = [[TBLEDeviceActive alloc] init];
+        [self setActiveTool:activeTool];
+    }
+    return activeTool;
 }
 
 @end

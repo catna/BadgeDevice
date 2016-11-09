@@ -11,9 +11,12 @@
 #import "TBLEDevice.h"
 #import "TBLEDeviceRawData.h"
 #import <CoreBluetooth/CoreBluetooth.h>
+#import "TBLENotification.h"
+
+#define FFCountMax 10
 
 @interface TBLEDeviceDistill ()
-
+@property (nonatomic, assign) NSUInteger FFCount;
 @end
 
 @implementation TBLEDeviceDistill
@@ -23,7 +26,7 @@
 
 #pragma mark - public methods
 - (BOOL)startDistill {
-    if (self.device.peri && self.historyDataCharacteristic) {
+    if (self.device.peri && self.historyDataCharacteristic && self.FFCount <= FFCountMax) {
         [self.device.peri readValueForCharacteristic:self.historyDataCharacteristic];
         return YES;
     }
@@ -40,18 +43,13 @@
         if (0 != compareFFResult && 0 != compare00Result) {
             NSLog(@"\r\n读取到的历史和电量信息%@\r\n", data);
             [self parseCharacteristicData:data];
-            if (self.readHistory) {
-                self.readHistory(NO);
-            }
-            [self startDistill];
         } else if (0 == compareFFResult) {
             NSLog(@"读取数据操作完成");
-            if (self.readHistory) {
-                self.readHistory(YES);
-            }
+            self.FFCount += 1;
             [self timeCalibration];
         }
     }
+    [self startDistill];
 }
 
 - (BOOL)timeCalibration {

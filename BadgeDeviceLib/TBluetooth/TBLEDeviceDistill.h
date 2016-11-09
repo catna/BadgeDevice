@@ -18,11 +18,6 @@
 @property (nonatomic, assign, readonly) NSUInteger battery;
 @property (nonatomic, strong, readonly) TBLEDeviceRawData *historyRawData;
 
-/*!
- *	@brief 读取数据操作完成
- */
-@property (nonatomic, strong) void (^readHistory)(BOOL completion);
-
 - (BOOL)startDistill;
 - (void)distillData;
 - (BOOL)timeCalibration;

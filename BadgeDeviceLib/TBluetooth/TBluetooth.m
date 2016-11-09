@@ -13,6 +13,7 @@
 #import "TBLEDevice.h"
 #import "TBLEDeviceRawData.h"
 #import "TBLEDeviceDistill.h"
+#import "TBLEDeviceActive.h"
 #import "TBLENotification.h"
 #import "TBluetoothTools.h"
 
@@ -31,7 +32,7 @@
 
 
 @implementation TBluetooth
-@synthesize managerState = _managerState;
+@synthesize BLEAvaliable = _BLEAvaliable;
 @synthesize devicesDic = _devicesDic;
 @synthesize babyBluetooth = _babyBluetooth;
 
@@ -41,7 +42,8 @@
         _babyBluetooth = [BabyBluetooth shareBabyBluetooth];
         [self cancelConnectingAndConfig];
         [self setupWorkFlow];
-        [self timer];
+        self.autoSearchEnable = NO;
+        [self.timer fire];
     }
     return self;
 }
@@ -64,9 +66,6 @@
 - (void)removeDevice:(TBLEDevice *)device {
     if ([self.devicesDic.allKeys containsObject:device.peri]) {
         [self.devicesDic removeObjectForKey:device.peri];
-        if (self.devicesChanged) {
-            self.devicesChanged();
-        }
         [[NSNotificationCenter defaultCenter] postNotificationName:kBLENotiManagerDeviceChanged object:self.devicesDic];
     }
     if (device.isConnect) {
@@ -77,6 +76,16 @@
 - (void)stop {
     self.babyBluetooth.stop(1);
     [self.devicesDic removeAllObjects];
+}
+
+- (BOOL)connect:(BOOL)connect peri:(CBPeripheral *)peri {
+    if (!peri) return NO;
+    if (connect) {
+        self.babyBluetooth.having(peri).connectToPeripherals().discoverServices().discoverCharacteristics().readValueForCharacteristic().begin();
+    } else {
+        [self.babyBluetooth cancelPeripheralConnection:peri];
+    }
+    return YES;
 }
 
 - (void)eTimer {
@@ -115,7 +124,7 @@
                 NSLog(@"电源关闭或者不可用%@", self.devicesDic);
                 break;
         }
-        _managerState = central.state;
+        _BLEAvaliable = central.state == CBCentralManagerStatePoweredOn;
         [[NSNotificationCenter defaultCenter] postNotificationName:kBLENotiManagerStatusChanged object:nil];
     }];
     
@@ -135,9 +144,6 @@
             [self.devicesDic setObject:[[TBLEDevice alloc] init] forKey:peripheral];
             [self.devicesDic[peripheral] setValue:peripheral forKey:@"peri"];
             [self.devicesDic[peripheral] setValue:advertisementData forKey:@"advertisementData"];
-            if (self.devicesChanged) {
-                self.devicesChanged();
-            }
             [[NSNotificationCenter defaultCenter] postNotificationName:kBLENotiManagerDeviceChanged object:self.devicesDic];
         }
     }];
@@ -154,7 +160,7 @@
         strongify(self);
         NSLog(@"连接成功---%@",peripheral.name);
         if ([self.devicesDic.allKeys containsObject:peripheral]) {
-            [self.devicesDic[peripheral] setConnectStatus:YES];
+            [self.devicesDic[peripheral] setValue:@(YES) forKey:@"isConnect"];
         }
     }];
 
@@ -163,7 +169,7 @@
         NSLog(@"断开%@连接", peripheral.name);
         strongify(self);
         if ([self.devicesDic.allKeys containsObject:peripheral]) {
-            [self.devicesDic[peripheral] setConnectStatus:NO];
+            [self.devicesDic[peripheral] setValue:@(NO) forKey:@"isConnect"];
         }
     }];
 
@@ -173,7 +179,9 @@
         for (NSString *key in self.seConfDataDic.allKeys) {
             if ([service.UUID.UUIDString isEqualToString:key]) {
                 for (CBCharacteristic *characteristic in service.characteristics) {
-                    [self store:characteristic peri:peripheral];
+                        if ([self.devicesDic.allKeys containsObject:peripheral]) {
+                            [self.devicesDic[peripheral].activeTool store:characteristic peri:peripheral];
+                        }
                 }
             }
         }
@@ -206,19 +214,7 @@
     self.babyBluetooth.scanForPeripherals().connectToPeripherals().discoverServices().discoverCharacteristics().begin();
 }
 
-- (void)store:(CBCharacteristic *)characteristic peri:(CBPeripheral *)peri {
-    if ([self.devicesDic.allKeys containsObject:peri]) {
-        NSArray *keys = @[UVConfig, UVData, THConfig, THData, PrConfig, PrData];
-        for (NSString *key in keys) {
-            if ([characteristic.UUID.UUIDString isEqualToString:key]) {
-                [self.devicesDic[peri].characteristics setObject:characteristic forKey:key];
-                if (self.devicesDic[peri].characteristics.count >= 6) {
-                    [self.devicesDic[peri] setValue:@(YES) forKey:@"isReady"];
-                }
-            }
-        }
-    }
-}
+
 
 #pragma mark - getter
 - (NSMutableDictionary <CBPeripheral *,TBLEDevice *>*)devicesDic {
@@ -267,18 +263,7 @@
         NSString *UUIDStr = characteristic.UUID.UUIDString;
         for (NSArray *uuidArr in self.seConfDataDic.allValues) {
             if ([uuidArr containsObject:UUIDStr]) {
-                NSString *dataName;
-                if ([UUIDStr isEqualToString:THData]) {
-                    dataName = @"温湿度";
-                    self.devicesDic[peri].currentRawData.THRawData = characteristic.value;
-                } else if ([UUIDStr isEqualToString:UVData]) {
-                    dataName = @"紫外线";
-                    self.devicesDic[peri].currentRawData.UVRawData = characteristic.value;
-                } else if ([UUIDStr isEqualToString:PrData]) {
-                    dataName = @"大气压";
-                    self.devicesDic[peri].currentRawData.PrRawData = characteristic.value;
-                }
-//                NSLog(@"读取设备%@的%@数据--%@",self.devicesDic[peri].macAddr,dataName, self.devicesDic[peri].currentRawData);
+                [self.devicesDic[peri].activeTool updateData:characteristic];
             }
         }
     }

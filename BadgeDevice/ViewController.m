@@ -24,42 +24,42 @@
 #pragma mark - life cycle
 - (void)viewDidLoad {
     [[TBluetooth sharedBluetooth] scanAndConnect:YES];
-    [TBluetooth sharedBluetooth].devicesChanged = ^{
-        for (TBLEDevice *device in [TBluetooth sharedBluetooth].devicesDic.allValues) {
-            weakify(device);
-            device.connectStatusChanged = ^(BOOL isConnect) {
-                strongify(device);
-                
-                if ([device.macAddr isEqualToString:@"04:A3:16:37:E5:27"]) {
-                    device.selected = NO;
-                    return;
-                }
-                
-                device.selected = YES;
-                
-                weakify(device);
-                device.readyHandler = ^(BOOL isReady) {
-                    strongify(device);
-                    if (isReady) {
-                        device.notifyData = YES;
-                    }
-                };
-                
-//                [[DataStoreTool sharedTool] traceADevice:device];
-            };
-        }
-    };
+//    [TBluetooth sharedBluetooth].devicesChanged = ^{
+//        for (TBLEDevice *device in [TBluetooth sharedBluetooth].devicesDic.allValues) {
+//            weakify(device);
+//            device.connectStatusChanged = ^(BOOL isConnect) {
+//                strongify(device);
+//                
+//                if ([device.macAddr isEqualToString:@"04:A3:16:37:E5:27"]) {
+//                    device.selected = NO;
+//                    return;
+//                }
+//                
+//                device.selected = YES;
+//                
+//                weakify(device);
+//                device.readyHandler = ^(BOOL isReady) {
+//                    strongify(device);
+//                    if (isReady) {
+//                        device.notifyData = YES;
+//                    }
+//                };
+//                
+////                [[DataStoreTool sharedTool] traceADevice:device];
+//            };
+//        }
+//    };
 }
 
 - (IBAction)dump:(UIButton *)sender {
-    for (TBLEDevice *dev in [TBluetooth sharedBluetooth].devicesDic.allValues) {
-        [dev.distillTool startDistill];
-        dev.distillTool.readHistory = ^(BOOL completion) {
-            if (completion) {
-                NSLog(@"数据读取完成");
-            }
-        };
-    }
+//    for (TBLEDevice *dev in [TBluetooth sharedBluetooth].devicesDic.allValues) {
+//        [dev.distillTool startDistill];
+//        dev.distillTool.readHistory = ^(BOOL completion) {
+//            if (completion) {
+//                NSLog(@"数据读取完成");
+//            }
+//        };
+//    }
 }
 
 
