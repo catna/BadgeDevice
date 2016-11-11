@@ -24,6 +24,13 @@
 @synthesize historyRawData = _historyRawData;
 @synthesize battery = _battery;
 
+- (id)initWithDevice:(TBLEDevice *)device {
+    if (self = [super init]) {
+        _device = device;
+    }
+    return self;
+}
+
 #pragma mark - public methods
 - (BOOL)startDistill {
     if (self.device.peri && self.historyDataCharacteristic && self.FFCount <= FFCountMax) {

@@ -20,6 +20,13 @@
 @synthesize currentRawData = _currentRawData;
 @synthesize characteristics = _characteristics;
 
+- (id)initWithDevice:(TBLEDevice *)device {
+    if (self = [super init]) {
+        _device = device;
+    }
+    return self;
+}
+
 - (void)updateData:(CBCharacteristic *)characteristic {
     NSString *UUIDStr = characteristic.UUID.UUIDString;
     NSString *dataName;

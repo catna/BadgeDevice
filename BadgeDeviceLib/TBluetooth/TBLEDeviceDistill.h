@@ -22,4 +22,5 @@
 - (void)distillData;
 - (BOOL)timeCalibration;
 
+- (id)initWithDevice:(TBLEDevice *)device;
 @end

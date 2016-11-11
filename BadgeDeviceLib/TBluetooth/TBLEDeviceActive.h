@@ -21,4 +21,6 @@
 - (void)updateData:(CBCharacteristic *)characteristic;
 - (void)store:(CBCharacteristic *)characteristic
          peri:(CBPeripheral *)peri;
+
+- (id)initWithDevice:(TBLEDevice *)device;
 @end

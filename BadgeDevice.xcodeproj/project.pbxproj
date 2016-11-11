@@ -53,6 +53,8 @@
 		E1DA86371D9FE31300F2159E /* BadgeDeviceLib.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E103F5751D991BB5000AC300 /* BadgeDeviceLib.framework */; };
 		E1ED39661DD33FB000681C1D /* TBLEDeviceActive.h in Headers */ = {isa = PBXBuildFile; fileRef = E1ED39641DD33FB000681C1D /* TBLEDeviceActive.h */; };
 		E1ED39671DD33FB000681C1D /* TBLEDeviceActive.m in Sources */ = {isa = PBXBuildFile; fileRef = E1ED39651DD33FB000681C1D /* TBLEDeviceActive.m */; };
+		E1ED396A1DD422AA00681C1D /* BadgeDevice.h in Headers */ = {isa = PBXBuildFile; fileRef = E1ED39681DD422AA00681C1D /* BadgeDevice.h */; };
+		E1ED396B1DD422AA00681C1D /* BadgeDevice.m in Sources */ = {isa = PBXBuildFile; fileRef = E1ED39691DD422AA00681C1D /* BadgeDevice.m */; };
 		E1F03A3F1CEB0C1B007AD562 /* libz.1.2.5.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = E1F03A3E1CEB0C1B007AD562 /* libz.1.2.5.tbd */; };
 		E1F03A411CEB0C29007AD562 /* libsqlite3.0.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = E1F03A401CEB0C29007AD562 /* libsqlite3.0.tbd */; };
 /* End PBXBuildFile section */
@@ -104,6 +106,8 @@
 		E19E375D1CC8C71F00071346 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E1ED39641DD33FB000681C1D /* TBLEDeviceActive.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TBLEDeviceActive.h; sourceTree = "<group>"; };
 		E1ED39651DD33FB000681C1D /* TBLEDeviceActive.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TBLEDeviceActive.m; sourceTree = "<group>"; };
+		E1ED39681DD422AA00681C1D /* BadgeDevice.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BadgeDevice.h; sourceTree = "<group>"; };
+		E1ED39691DD422AA00681C1D /* BadgeDevice.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BadgeDevice.m; sourceTree = "<group>"; };
 		E1F03A3E1CEB0C1B007AD562 /* libz.1.2.5.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.1.2.5.tbd; path = usr/lib/libz.1.2.5.tbd; sourceTree = SDKROOT; };
 		E1F03A401CEB0C29007AD562 /* libsqlite3.0.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.0.tbd; path = usr/lib/libsqlite3.0.tbd; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
@@ -185,6 +189,8 @@
 			children = (
 				E16ED4B71DA223D400982664 /* BadgeDeviceLib.h */,
 				E16ED4B81DA223D400982664 /* BadgeDeviceLib.modulemap */,
+				E1ED39681DD422AA00681C1D /* BadgeDevice.h */,
+				E1ED39691DD422AA00681C1D /* BadgeDevice.m */,
 				E103C2FC1DA75D2000C86061 /* DataStore */,
 				E103C3031DA75D2000C86061 /* TBluetooth */,
 				E16ED4B91DA223D400982664 /* Info.plist */,
@@ -267,6 +273,7 @@
 				E103C31A1DA75DF900C86061 /* TLocationManager.h in Headers */,
 				E103C31E1DA75F1E00C86061 /* JZLocationConverter.h in Headers */,
 				E106E70B1DC1F524001EBB54 /* TBLEDeviceDistill.h in Headers */,
+				E1ED396A1DD422AA00681C1D /* BadgeDevice.h in Headers */,
 				E106E7021DC1EA1F001EBB54 /* TBLENotification.h in Headers */,
 				E106E7071DC1F4F9001EBB54 /* TBLEDeviceRawData.h in Headers */,
 				E103C3111DA75D2000C86061 /* TBLEDefine.h in Headers */,
@@ -446,6 +453,7 @@
 				E103C31F1DA75F1E00C86061 /* JZLocationConverter.m in Sources */,
 				E103C3151DA75D2000C86061 /* TBluetooth.m in Sources */,
 				E103C3101DA75D2000C86061 /* TDataManager.m in Sources */,
+				E1ED396B1DD422AA00681C1D /* BadgeDevice.m in Sources */,
 				E106E7041DC1EB84001EBB54 /* TBLENotification.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

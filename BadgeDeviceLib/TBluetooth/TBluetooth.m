@@ -8,26 +8,21 @@
 
 #import "TBluetooth.h"
 #import <BabyBluetooth.h>
+#import <objc/runtime.h>
 
 #import "TBLEDefine.h"
 #import "TBLEDevice.h"
-#import "TBLEDeviceRawData.h"
-#import "TBLEDeviceDistill.h"
-#import "TBLEDeviceActive.h"
 #import "TBLENotification.h"
 #import "TBluetoothTools.h"
 
 @interface TBluetooth ()
 @property (nonatomic, strong, readonly) BabyBluetooth *babyBluetooth;/**<babyBluetooth tool*/
-@property (nonatomic, strong) NSDictionary <NSString *,NSArray<NSString *>*>* seConfDataDic;
-
 @property (nonatomic, strong) NSTimer *timer;
 @end
 
 
 @interface TBluetooth (Tools)
 - (void)distillMacAddr:(CBPeripheral *)peri ch:(CBCharacteristic *)ch;
-- (void)readValueForCh:(CBCharacteristic *)characteristic inPeri:(CBPeripheral *)peri;
 @end
 
 
@@ -68,9 +63,7 @@
         [self.devicesDic removeObjectForKey:device.peri];
         [[NSNotificationCenter defaultCenter] postNotificationName:kBLENotiManagerDeviceChanged object:self.devicesDic];
     }
-    if (device.isConnect) {
-        [self.babyBluetooth cancelPeripheralConnection:device.peri];
-    }
+    [self.babyBluetooth cancelPeripheralConnection:device.peri];
 }
 
 - (void)stop {
@@ -157,10 +150,10 @@
 
     // 连接到设备成功的委托
     [self.babyBluetooth setBlockOnConnected:^(CBCentralManager *central, CBPeripheral *peripheral) {
-        strongify(self);
         NSLog(@"连接成功---%@",peripheral.name);
+        strongify(self);
         if ([self.devicesDic.allKeys containsObject:peripheral]) {
-            [self.devicesDic[peripheral] setValue:@(YES) forKey:@"isConnect"];
+            [self.devicesDic[peripheral] decideIsReady];
         }
     }];
 
@@ -169,32 +162,17 @@
         NSLog(@"断开%@连接", peripheral.name);
         strongify(self);
         if ([self.devicesDic.allKeys containsObject:peripheral]) {
-            [self.devicesDic[peripheral] setValue:@(NO) forKey:@"isConnect"];
+            [self.devicesDic[peripheral] decideIsReady];
         }
     }];
 
 //     扫描到设备某个 service 下的 characteristic 的委托
     [self.babyBluetooth setBlockOnDiscoverCharacteristics:^(CBPeripheral *peripheral, CBService *service, NSError *error) {
         strongify(self);
-        for (NSString *key in self.seConfDataDic.allKeys) {
-            if ([service.UUID.UUIDString isEqualToString:key]) {
-                for (CBCharacteristic *characteristic in service.characteristics) {
-                        if ([self.devicesDic.allKeys containsObject:peripheral]) {
-                            [self.devicesDic[peripheral].activeTool store:characteristic peri:peripheral];
-                        }
-                }
-            }
-        }
-        
-        if ([service.UUID.UUIDString isEqualToString:ConnectService]) {
-            for (CBCharacteristic *characteristic in service.characteristics) {
-                if ([characteristic.UUID.UUIDString isEqualToString:ConnectData]) {
-                    self.devicesDic[peripheral].distillTool.historyDataCharacteristic = characteristic;
-                }
-                
-                if ([characteristic.UUID.UUIDString isEqualToString:ConnectTimeConfig]) {
-                    self.devicesDic[peripheral].distillTool.timeCalibrateCharacteristic = characteristic;
-                }
+        if ([self.devicesDic.allKeys containsObject:peripheral]) {
+            TBLEDevice *device = self.devicesDic[peripheral];
+            if (device.dataWagon && [device.dataWagon respondsToSelector:@selector(storeCharacteristicInService:peri:)]) {
+                [device.dataWagon storeCharacteristicInService:service peri:peripheral];
             }
         }
     }];
@@ -203,9 +181,11 @@
         strongify(self);
         //筛选出可以设备的mac地址
         [self distillMacAddr:peripheral ch:characteristic];
-        [self readValueForCh:characteristic inPeri:peripheral];
-        if ([characteristic.UUID.UUIDString isEqualToString:ConnectData]) {
-            [self.devicesDic[peripheral].distillTool distillData];
+        if ([self.devicesDic.allKeys containsObject:peripheral]) {
+            TBLEDevice *device = self.devicesDic[peripheral];
+            if (device.dataWagon && [device.dataWagon respondsToSelector:@selector(carryCharacteristic:peri:)]) {
+                [device.dataWagon carryCharacteristic:characteristic peri:peripheral];
+            }
         }
     }];
 }
@@ -231,13 +211,6 @@
     return _babyBluetooth;
 }
 
-- (NSDictionary <NSString *,NSArray <NSString *>*>*)seConfDataDic {
-    if (!_seConfDataDic) {
-        _seConfDataDic = @{UVService:@[UVConfig,UVData],THService:@[THConfig,THData],PrService:@[PrConfig,PrData]};
-    }
-    return _seConfDataDic;
-}
-
 - (NSTimer *)timer {
     if (!_timer) {
         _timer = [NSTimer scheduledTimerWithTimeInterval:AutoSearchTimeGap target:self selector:@selector(eTimer) userInfo:nil repeats:YES];
@@ -254,17 +227,6 @@
         NSLog(@"读取到设备mac地址:%@",macAddress);
         if ([self.devicesDic.allKeys containsObject:peri]) {
             [self.devicesDic[peri] setValue:macAddress forKey:@"macAddr"];
-        }
-    }
-}
-
-- (void)readValueForCh:(CBCharacteristic *)characteristic inPeri:(CBPeripheral *)peri {
-    if ([self.devicesDic.allKeys containsObject:peri]) {
-        NSString *UUIDStr = characteristic.UUID.UUIDString;
-        for (NSArray *uuidArr in self.seConfDataDic.allValues) {
-            if ([uuidArr containsObject:UUIDStr]) {
-                [self.devicesDic[peri].activeTool updateData:characteristic];
-            }
         }
     }
 }
