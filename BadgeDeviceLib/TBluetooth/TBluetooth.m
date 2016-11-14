@@ -8,7 +8,6 @@
 
 #import "TBluetooth.h"
 #import <BabyBluetooth.h>
-#import <objc/runtime.h>
 
 #import "TBLEDefine.h"
 #import "TBLEDevice.h"
@@ -54,6 +53,7 @@
 }
 
 - (void)scanAndConnect:(BOOL)autoSearch {
+    DLog(@"开始连接工作,自动搜索:%d", autoSearch);
     _autoSearchEnable = autoSearch;
     [self search];
 }
@@ -62,6 +62,7 @@
     if ([self.devicesDic.allKeys containsObject:device.peri]) {
         [self.devicesDic removeObjectForKey:device.peri];
         [[NSNotificationCenter defaultCenter] postNotificationName:kBLENotiManagerDeviceChanged object:self.devicesDic];
+        DLog(@"移除设备:%@", device);
     }
     [self.babyBluetooth cancelPeripheralConnection:device.peri];
 }
@@ -73,6 +74,7 @@
 
 - (BOOL)connect:(BOOL)connect peri:(CBPeripheral *)peri {
     if (!peri) return NO;
+    DLog(@"连接:%d, 设备:%@", connect, peri);
     if (connect) {
         self.babyBluetooth.having(peri).connectToPeripherals().discoverServices().discoverCharacteristics().readValueForCharacteristic().begin();
     } else {
@@ -105,7 +107,7 @@
         strongify(self);
         switch (central.state) {
             case CBCentralManagerStatePoweredOn:
-                NSLog(@"电源开启%@", self.devicesDic);
+                DLog(@"电源开启%@", self.devicesDic);
                 for (TBLEDevice *d in self.devicesDic.allValues) {
                     if (d.selected) {
                         self.babyBluetooth.having(d.peri).connectToPeripherals().discoverServices().discoverCharacteristics().begin();
@@ -114,7 +116,7 @@
                 break;
                 
             default:
-                NSLog(@"电源关闭或者不可用%@", self.devicesDic);
+                DLog(@"电源关闭或者不可用%@", self.devicesDic);
                 break;
         }
         _BLEAvaliable = central.state == CBCentralManagerStatePoweredOn;
@@ -132,10 +134,10 @@
     // 扫描到设备的委托
     [self.babyBluetooth setBlockOnDiscoverToPeripherals:^(CBCentralManager *central, CBPeripheral *peripheral, NSDictionary *advertisementData, NSNumber *RSSI) {
         strongify(self);
-        NSLog(@"已扫描的设备:%@",peripheral.name);
+        DLog(@"已扫描的设备:%@",peripheral.name);
         if (![self.devicesDic.allKeys containsObject:peripheral]) {
-            [self.devicesDic setObject:[[TBLEDevice alloc] init] forKey:peripheral];
-            [self.devicesDic[peripheral] setValue:peripheral forKey:@"peri"];
+            TBLEDevice *d = [[TBLEDevice alloc] initWithPeri:peripheral];
+            [self.devicesDic setObject:d forKey:peripheral];
             [self.devicesDic[peripheral] setValue:advertisementData forKey:@"advertisementData"];
             [[NSNotificationCenter defaultCenter] postNotificationName:kBLENotiManagerDeviceChanged object:self.devicesDic];
         }
@@ -150,24 +152,17 @@
 
     // 连接到设备成功的委托
     [self.babyBluetooth setBlockOnConnected:^(CBCentralManager *central, CBPeripheral *peripheral) {
-        NSLog(@"连接成功---%@",peripheral.name);
-        strongify(self);
-        if ([self.devicesDic.allKeys containsObject:peripheral]) {
-            [self.devicesDic[peripheral] decideIsReady];
-        }
+        DLog(@"连接成功---%@",peripheral.name);
     }];
 
     // 设备断开连接的委托
     [self.babyBluetooth setBlockOnDisconnect:^(CBCentralManager *central, CBPeripheral *peripheral, NSError *error) {
-        NSLog(@"断开%@连接", peripheral.name);
-        strongify(self);
-        if ([self.devicesDic.allKeys containsObject:peripheral]) {
-            [self.devicesDic[peripheral] decideIsReady];
-        }
+        DLog(@"断开%@连接", peripheral.name);
     }];
 
 //     扫描到设备某个 service 下的 characteristic 的委托
     [self.babyBluetooth setBlockOnDiscoverCharacteristics:^(CBPeripheral *peripheral, CBService *service, NSError *error) {
+        DLog(@"搜索到Characteristics, service:%@", service);
         strongify(self);
         if ([self.devicesDic.allKeys containsObject:peripheral]) {
             TBLEDevice *device = self.devicesDic[peripheral];
@@ -179,6 +174,7 @@
 
     [self.babyBluetooth setBlockOnReadValueForCharacteristic:^(CBPeripheral *peripheral, CBCharacteristic *characteristic, NSError *error) {
         strongify(self);
+        DLog(@"读取到Characteristics:%@, 数据:%@", characteristic, characteristic.value);
         //筛选出可以设备的mac地址
         [self distillMacAddr:peripheral ch:characteristic];
         if ([self.devicesDic.allKeys containsObject:peripheral]) {
@@ -191,7 +187,7 @@
 }
 
 - (void)search {
-    self.babyBluetooth.scanForPeripherals().connectToPeripherals().discoverServices().discoverCharacteristics().begin();
+    self.babyBluetooth.scanForPeripherals().connectToPeripherals().discoverServices().discoverCharacteristics().readValueForCharacteristic().begin();
 }
 
 
@@ -224,7 +220,7 @@
 - (void)distillMacAddr:(CBPeripheral *)peri ch:(CBCharacteristic *)ch {
     if ([ch.UUID.UUIDString isEqualToString:MacAddrUUID]) {
         NSString *macAddress = [TBluetoothTools macWithCharacteristicData:ch.value];
-        NSLog(@"读取到设备mac地址:%@",macAddress);
+        DLog(@"读取到设备mac地址:%@",macAddress);
         if ([self.devicesDic.allKeys containsObject:peri]) {
             [self.devicesDic[peri] setValue:macAddress forKey:@"macAddr"];
         }

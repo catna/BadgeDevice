@@ -26,11 +26,28 @@
 @synthesize advertisementData = _advertisementData;
 @synthesize macAddr = _macAddr;
 @synthesize isReady = _isReady;
+#pragma mark - life cycle
+- (id)initWithPeri:(CBPeripheral *)peri {
+    if (self = [super init]) {
+        _peri = peri;
+        [self.peri addObserver:self forKeyPath:@"state" options:NSKeyValueObservingOptionNew context:nil];
+    }
+    return self;
+}
+
+- (void)dealloc {
+    [self.peri removeObserver:self forKeyPath:@"state"];
+}
+
+#pragma mark - private methods
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSString *,id> *)change context:(void *)context {
+    if ([object isEqual:self.peri] && [keyPath isEqualToString:@"state"]) {
+        [self decideIsReady];
+    }
+}
 
 - (void)notificationWithName:(NSString *)name {
-    if (self.selected) {
-        [[NSNotificationCenter defaultCenter] postNotificationName:name object:nil];
-    }
+    [[NSNotificationCenter defaultCenter] postNotificationName:name object:self];
 }
 
 - (void)decideIsReady {
@@ -41,10 +58,7 @@
     }
 }
 
-#pragma mark - setter
-
-- (void)setSelected:(BOOL)selected {
-    _selected = selected;
+- (void)autoConnecnt {
     BabyBluetooth *BLE = [[TBluetooth sharedBluetooth] valueForKeyPath:@"babyBluetooth"];
     if (_selected && !(self.peri.state == CBPeripheralStateConnected)) {
         [[TBluetooth sharedBluetooth] connect:YES peri:self.peri];
@@ -53,6 +67,12 @@
     if (!_selected) {
         [BLE cancelPeripheralConnection:self.peri];
     }
+}
+
+#pragma mark - setter
+- (void)setSelected:(BOOL)selected {
+    _selected = selected;
+    [self autoConnecnt];
 }
 
 - (void)setIsReady:(BOOL)isReady {

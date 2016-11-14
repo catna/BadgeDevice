@@ -13,6 +13,9 @@
 #import <BadgeDeviceLib/TBLEDevice.h>
 #import <BadgeDeviceLib/TBLEDefine.h>
 #import <BadgeDeviceLib/TBLEDeviceDistill.h>
+#import "BadgeDeviceNotification.h"
+#import "BadgeDeviceManager.h"
+#import "BadgeDevice.h"
 
 #import "DataStoreTool.h"
 
@@ -21,45 +24,25 @@
 @end
 
 @implementation ViewController
+
 #pragma mark - life cycle
 - (void)viewDidLoad {
-    [[TBluetooth sharedBluetooth] scanAndConnect:YES];
-//    [TBluetooth sharedBluetooth].devicesChanged = ^{
-//        for (TBLEDevice *device in [TBluetooth sharedBluetooth].devicesDic.allValues) {
-//            weakify(device);
-//            device.connectStatusChanged = ^(BOOL isConnect) {
-//                strongify(device);
-//                
-//                if ([device.macAddr isEqualToString:@"04:A3:16:37:E5:27"]) {
-//                    device.selected = NO;
-//                    return;
-//                }
-//                
-//                device.selected = YES;
-//                
-//                weakify(device);
-//                device.readyHandler = ^(BOOL isReady) {
-//                    strongify(device);
-//                    if (isReady) {
-//                        device.notifyData = YES;
-//                    }
-//                };
-//                
-////                [[DataStoreTool sharedTool] traceADevice:device];
-//            };
-//        }
-//    };
+    [super viewDidLoad];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(eNotiDeviceChanged) name:kNotiBadgeDeviceManagerDeviceChanged object:nil];
+    [[BadgeDeviceManager sharedManager] scan:YES];
+}
+
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+#pragma mark - event
+- (void)eNotiDeviceChanged {
+    NSLog(@"视图层设备数目变化%ld", [[[BadgeDeviceManager sharedManager] devices] count]);
 }
 
 - (IBAction)dump:(UIButton *)sender {
-//    for (TBLEDevice *dev in [TBluetooth sharedBluetooth].devicesDic.allValues) {
-//        [dev.distillTool startDistill];
-//        dev.distillTool.readHistory = ^(BOOL completion) {
-//            if (completion) {
-//                NSLog(@"数据读取完成");
-//            }
-//        };
-//    }
+
 }
 
 
