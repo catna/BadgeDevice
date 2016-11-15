@@ -8,6 +8,7 @@
 
 #import "TBLEDeviceActive.h"
 #import <CoreBluetooth/CoreBluetooth.h>
+#import "TBLENotification.h"
 #import "TBLEDeviceRawData.h"
 #import "TBLEDefine.h"
 #import "TBLEDevice.h"
@@ -17,6 +18,7 @@
 @end
 
 @implementation TBLEDeviceActive
+@synthesize isReady = _isReady;
 @synthesize currentRawData = _currentRawData;
 @synthesize characteristics = _characteristics;
 
@@ -50,6 +52,12 @@
         if ([characteristic.UUID.UUIDString isEqualToString:key]) {
             [self.characteristics setObject:characteristic forKey:key];
         }
+    }
+    if (self.characteristics.count >= keys.count && self.device.peri) {
+        _isReady = YES;
+        [[NSNotificationCenter defaultCenter] postNotificationName:kBLENotiDeviceToolPrepared object:nil];
+    } else {
+        _isReady = NO;
     }
 }
 
@@ -88,4 +96,9 @@
     }
     return _characteristics;
 }
+
+- (BOOL)isReady {
+    return _isReady;
+}
+
 @end

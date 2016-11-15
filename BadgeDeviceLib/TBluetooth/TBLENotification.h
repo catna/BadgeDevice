@@ -32,6 +32,11 @@ extern NSString * const kBLENotiDeviceStatusChanged;
 extern NSString * const kBLENotiDeviceMacAddrReaded;
 
 /*!
+ *	@brief 设备的工具准备好工作状态
+ */
+extern NSString * const kBLENotiDeviceToolPrepared;
+
+/*!
  *	@brief 设备当前数据更新
  */
 extern NSString * const kBLENotiDeviceDataUpdate;

@@ -14,6 +14,7 @@
 
 @property (nonatomic, strong) NSMutableDictionary<NSString *,CBCharacteristic *> *characteristics;
 
+@property (nonatomic, assign, readonly) BOOL isReady;
 @property (nonatomic, assign) BOOL notify;
 
 @property (nonatomic ,strong, readonly) TBLEDeviceRawData *currentRawData;/**< 当前数据*/

@@ -21,6 +21,7 @@
 
 @interface ViewController ()
 @property (weak, nonatomic) IBOutlet UITextView *textView;
+@property (nonatomic, strong) BadgeDevice *device;
 @end
 
 @implementation ViewController
@@ -39,10 +40,13 @@
 #pragma mark - event
 - (void)eNotiDeviceChanged {
     NSLog(@"视图层设备数目变化%ld", [[[BadgeDeviceManager sharedManager] devices] count]);
+    self.device = [[[[BadgeDeviceManager sharedManager] devices] allValues] firstObject];
 }
 
 - (IBAction)dump:(UIButton *)sender {
-
+    if (self.device.distillTool.isReady) {
+        [self.device.distillTool startDistill];
+    }
 }
 
 

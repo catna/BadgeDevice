@@ -8,13 +8,9 @@
 
 #import <Foundation/Foundation.h>
 
-@class BadgeDevice;
+@class TBLEDevice, BadgeDevice;
 @interface BadgeDeviceManager : NSObject
-
-/*!
- *	@brief key:设备mac地址
- */
-@property (nonatomic, strong, readonly) NSMutableDictionary<NSString *, BadgeDevice *> *devices;
+@property (nonatomic, strong, readonly) NSMutableDictionary<TBLEDevice *, BadgeDevice *> *devices;
 
 + (instancetype)sharedManager;
 - (void)scan:(BOOL)enable;

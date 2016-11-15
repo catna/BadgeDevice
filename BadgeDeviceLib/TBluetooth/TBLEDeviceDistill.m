@@ -21,8 +21,8 @@
 
 @implementation TBLEDeviceDistill
 @synthesize device = _device;
-@synthesize historyRawData = _historyRawData;
 @synthesize battery = _battery;
+@synthesize historyData = _historyData;
 
 - (id)initWithDevice:(TBLEDevice *)device {
     if (self = [super init]) {
@@ -56,7 +56,13 @@
             [self timeCalibration];
         }
     }
-    [self startDistill];
+    if (self.FFCount <= FFCountMax) {
+        [self startDistill];
+    } else {
+        self.FFCount = 0;
+        [self timeCalibration];
+        [[NSNotificationCenter defaultCenter] postNotificationName:kBLENotiDeviceHistoryDataReadCompletion object:nil];
+    }
 }
 
 - (BOOL)timeCalibration {
@@ -94,16 +100,39 @@
     hisData.PrRawData = [NSData dataWithBytes:pres length:6];
     hisData.UVRawData = [NSData dataWithBytes:&uvle length:sizeof(uvle)];
     hisData.date = [TBluetoothTools parseHistoryDate:time];
-    self.historyRawData = hisData;
-    
+    [self.historyData addObject:hisData];
     NSUInteger battery = 0;
     *((char *)&battery) = rawData[13];
     _battery = battery;
 }
 
 #pragma mark - setter & getter
-- (void)setHistoryRawData:(TBLEDeviceRawData *)historyRawData {
-    _historyRawData = historyRawData;
+- (void)setHistoryDataCharacteristic:(CBCharacteristic *)historyDataCharacteristic {
+    _historyDataCharacteristic = historyDataCharacteristic;
+    if (self.isReady) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:kBLENotiDeviceToolPrepared object:nil];
+    }
+}
+
+- (void)setTimeCalibrateCharacteristic:(CBCharacteristic *)timeCalibrateCharacteristic {
+    _timeCalibrateCharacteristic = timeCalibrateCharacteristic;
+    if (self.isReady) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:kBLENotiDeviceToolPrepared object:nil];
+    }
+}
+
+- (NSMutableArray<TBLEDeviceRawData *> *)historyData {
+    if (!_historyData) {
+        _historyData = [[NSMutableArray alloc] init];
+    }
+    return _historyData;
+}
+
+- (BOOL)isReady {
+    if (self.device.peri && self.historyDataCharacteristic && self.timeCalibrateCharacteristic) {
+        return YES;
+    }
+    return NO;
 }
 
 @end
