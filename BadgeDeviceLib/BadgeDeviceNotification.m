@@ -9,3 +9,7 @@
 #import <Foundation/Foundation.h>
 
 NSString * const kNotiBadgeDeviceManagerDeviceChanged = @"kNotiBadgeDeviceManagerDeviceChanged";
+
+NSString * const kNotiBadgeDeviceHistoryDataReadCompletion = @"kNotiBadgeDeviceHistoryDataReadCompletion";
+
+NSString * const kNotiBadgeDeviceCurrentDataUpdate = @"kNotiBadgeDeviceCurrentDataUpdate";

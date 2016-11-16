@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "TBluetooth/TBLEDevice.h"
+#import "TBLEDevice.h"
 @class TBLEDeviceDistill, TBLEDeviceActive;
 
 @interface BadgeDevice : NSObject<TBLEDeviceDataWagon>
@@ -16,4 +16,10 @@
 @property (nonatomic, strong, readonly) TBLEDeviceActive *activeTool;
 
 - (id)initWithDevice:(TBLEDevice *)device;
+
+- (BOOL)notifyCurrentData:(BOOL)enable;
+
+- (BOOL)readHistoryData;
+
+- (BOOL)resetTime;
 @end

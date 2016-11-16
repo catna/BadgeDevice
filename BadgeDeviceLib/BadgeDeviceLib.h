@@ -8,11 +8,17 @@
 
 #import <UIKit/UIKit.h>
 
+#import "BadgeDeviceNotification.h"
+#import "BadgeDeviceManager.h"
+#import "BadgeDevice.h"
+
 #import "TBLEDefine.h"
 #import "TBLEDevice.h"
 #import "TBluetooth.h"
+#import "TBLENotification.h"
 #import "TBluetoothTools.h"
 #import "TBLEDeviceDistill.h"
+#import "TBLEDeviceActive.h"
 #import "TBLEDeviceRawData.h"
 
 #import "DataStoreTool.h"

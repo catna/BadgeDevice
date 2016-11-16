@@ -10,7 +10,7 @@
 
 @class TBLEDevice, BadgeDevice;
 @interface BadgeDeviceManager : NSObject
-@property (nonatomic, strong, readonly) NSMutableDictionary<TBLEDevice *, BadgeDevice *> *devices;
+@property (nonatomic, strong, readonly) NSMutableDictionary<NSString *, BadgeDevice *> *devices;
 
 + (instancetype)sharedManager;
 - (void)scan:(BOOL)enable;

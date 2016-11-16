@@ -34,6 +34,7 @@
 
 @interface TBLEDevice : NSObject
 @property (nonatomic, strong, readonly) CBPeripheral *peri;
+@property (nonatomic, strong, readonly) NSDate *discoveryTime;
 @property (nonatomic, strong, readonly) NSDictionary *advertisementData;
 @property (nonatomic, copy, readonly) NSString *macAddr;
 

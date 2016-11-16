@@ -45,7 +45,8 @@
 
 - (IBAction)dump:(UIButton *)sender {
     if (self.device.distillTool.isReady) {
-        [self.device.distillTool startDistill];
+        [self.device readHistoryData];
+        [self.device notifyCurrentData:YES];
     }
 }
 

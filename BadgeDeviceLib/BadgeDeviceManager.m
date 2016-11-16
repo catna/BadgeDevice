@@ -15,6 +15,7 @@
 #import "BadgeDeviceNotification.h"
 
 @interface BadgeDeviceManager ()
+@property (nonatomic, strong) NSMutableDictionary<NSDate *,BadgeDevice *> *devArray;
 @end
 
 @implementation BadgeDeviceManager
@@ -54,20 +55,36 @@
 - (void)eNotiDeviceChanged {
     NSArray *devices = [[[TBluetooth sharedBluetooth] devicesDic] allValues];
     for (TBLEDevice *device in devices) {
-        if (![self.devices.allKeys containsObject:device]) {
-            BadgeDevice *dev = [[BadgeDevice alloc] initWithDevice:device];
-            [self.devices setObject:dev forKey:device];
+        if (![self.devArray.allKeys containsObject:device.discoveryTime]) {
+            BadgeDevice *d = [[BadgeDevice alloc] initWithDevice:device];
+            [self.devArray setObject:d forKey:device.discoveryTime];
         }
     }
+    [self showMacDev];
     [[NSNotificationCenter defaultCenter] postNotificationName:kNotiBadgeDeviceManagerDeviceChanged object:nil];
 }
 
+- (void)showMacDev {
+    for (BadgeDevice *dev in self.devArray.allValues) {
+        if (dev.device.macAddr) {
+            [self.devices setObject:dev forKey:dev.device.macAddr];
+        }
+    }
+}
+
 #pragma mark - getter
-- (NSMutableDictionary<TBLEDevice *,BadgeDevice *> *)devices {
+- (NSMutableDictionary<NSString *,BadgeDevice *> *)devices {
     if (!_devices) {
         _devices = [[NSMutableDictionary alloc] init];
     }
     return _devices;
+}
+
+- (NSMutableDictionary<NSDate *,BadgeDevice *> *)devArray {
+    if (!_devArray) {
+        _devArray = [[NSMutableDictionary alloc] init];
+    }
+    return _devArray;
 }
 
 @end

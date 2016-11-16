@@ -8,15 +8,22 @@
 
 #import <Foundation/Foundation.h>
 
-#define DataStoreToolRecordFrequency 1
-
-@class TBLEDevice, MDeviceData;
+@class MDeviceData;
 
 @interface DataStoreTool : NSObject
 + (instancetype)sharedTool;
+/*!
+ *	@brief 创建一个可以保存数据的对象模型
+ *
+ *	@return 返回上述模型
+ */
+- (MDeviceData *)createAModelToFill;
 
-- (BOOL)traceADevice:(TBLEDevice *)device;
-- (BOOL)cancelTraceDevice:(TBLEDevice *)device;
+/*!
+ *	@brief 保存当前模型
+ */
+- (void)save;
+
 /*!
  *	@brief 获取存储的数据
  *

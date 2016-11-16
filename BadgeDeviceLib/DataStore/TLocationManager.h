@@ -10,7 +10,7 @@
 #import <CoreLocation/CoreLocation.h>
 
 @interface TLocationManager : NSObject
-@property (nonatomic, strong, readonly) CLLocation * _Nullable location;
+@property (nonatomic, strong, readonly) CLLocation * location;
 @property (nonatomic, strong, readonly) CLLocationManager *locationManager;
 
 @property (nonatomic, assign) BOOL workingInBackground;

@@ -139,6 +139,7 @@
             TBLEDevice *d = [[TBLEDevice alloc] initWithPeri:peripheral];
             [self.devicesDic setObject:d forKey:peripheral];
             [self.devicesDic[peripheral] setValue:advertisementData forKey:@"advertisementData"];
+            [self.devicesDic[peripheral] setValue:[NSDate date] forKey:@"discoveryTime"];
             [[NSNotificationCenter defaultCenter] postNotificationName:kBLENotiManagerDeviceChanged object:self.devicesDic];
         }
     }];

@@ -12,11 +12,13 @@
 #import "TBLEDeviceRawData.h"
 #import <CoreBluetooth/CoreBluetooth.h>
 #import "TBLENotification.h"
+#import "TBLEDefine.h"
 
 #define FFCountMax 10
 
 @interface TBLEDeviceDistill ()
 @property (nonatomic, assign) NSUInteger FFCount;
+@property (nonatomic, assign) BOOL readEnable;
 @end
 
 @implementation TBLEDeviceDistill
@@ -27,6 +29,7 @@
 - (id)initWithDevice:(TBLEDevice *)device {
     if (self = [super init]) {
         _device = device;
+        _readEnable = NO;
     }
     return self;
 }
@@ -34,6 +37,7 @@
 #pragma mark - public methods
 - (BOOL)startDistill {
     if (self.device.peri && self.historyDataCharacteristic && self.FFCount <= FFCountMax) {
+        self.readEnable = YES;
         [self.device.peri readValueForCharacteristic:self.historyDataCharacteristic];
         return YES;
     }
@@ -41,6 +45,7 @@
 }
 
 - (void)distillData {
+    if (!self.readEnable) { return; }
     if (self.historyDataCharacteristic && self.device.peri) {
         NSData *data = self.historyDataCharacteristic.value;
         unsigned int const allFF = ~0;
@@ -48,19 +53,20 @@
         int compareFFResult = bcmp(data.bytes, &allFF, sizeof(allFF));
         int compare00Result = bcmp(data.bytes, &all00, data.length);
         if (0 != compareFFResult && 0 != compare00Result) {
-            NSLog(@"\r\n读取到的历史和电量信息%@\r\n", data);
+            DLog(@"\r\n读取到的历史和电量信息%@\r\n", data);
             [self parseCharacteristicData:data];
         } else if (0 == compareFFResult) {
-            NSLog(@"读取数据操作完成");
+            DLog(@"读取到全FFFF数据");
             self.FFCount += 1;
-            [self timeCalibration];
         }
     }
-    if (self.FFCount <= FFCountMax) {
+    if (self.FFCount <= FFCountMax && self.readEnable) {
         [self startDistill];
     } else {
         self.FFCount = 0;
+        self.readEnable = NO;
         [self timeCalibration];
+        DLog(@"读取完所有的历史数据");
         [[NSNotificationCenter defaultCenter] postNotificationName:kBLENotiDeviceHistoryDataReadCompletion object:nil];
     }
 }
@@ -99,7 +105,7 @@
     hisData.THRawData = [NSData dataWithBytes:&tehu length:sizeof(tehu)];
     hisData.PrRawData = [NSData dataWithBytes:pres length:6];
     hisData.UVRawData = [NSData dataWithBytes:&uvle length:sizeof(uvle)];
-    hisData.date = [TBluetoothTools parseHistoryDate:time];
+    hisData.dataRecordTime = [TBluetoothTools parseHistoryDate:time];
     [self.historyData addObject:hisData];
     NSUInteger battery = 0;
     *((char *)&battery) = rawData[13];
