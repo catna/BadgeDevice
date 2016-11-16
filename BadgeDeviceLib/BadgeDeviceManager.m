@@ -66,8 +66,10 @@
 
 - (void)showMacDev {
     for (BadgeDevice *dev in self.devArray.allValues) {
-        if (dev.device.macAddr) {
+        if (dev.device.macAddr && dev.device.isReady) {
             [self.devices setObject:dev forKey:dev.device.macAddr];
+        } else if (dev.device.macAddr) {
+            [self.devices removeObjectForKey:dev.device.macAddr];
         }
     }
 }

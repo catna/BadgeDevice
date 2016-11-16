@@ -42,7 +42,7 @@
         dataName = @"大气压";
         _currentRawData.PrRawData = characteristic.value;
     }
-    //                NSLog(@"读取设备%@的%@数据--%@",self.devicesDic[peri].macAddr,dataName, self.devicesDic[peri].currentRawData);
+    DLog(@"读取设备%@的%@数据--%@",self.device.macAddr,dataName, self.currentRawData);
 
 }
 

@@ -76,9 +76,7 @@
 
 - (void)updateData {
     [[NSNotificationCenter defaultCenter] postNotificationName:kBLENotiDeviceDataUpdate object:nil];
-#if DEBUG
     NSLog(@"徽章数据->\r\n温度:%@\t湿度:%@\t气压:%@\t紫外线:%@\r\n", self.Temp, self.Humi, self.Pres, self.UVLe);
-#endif
 }
 
 @end

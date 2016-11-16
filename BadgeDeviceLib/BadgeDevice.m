@@ -26,6 +26,7 @@
 
 @implementation BadgeDevice {
     NSUInteger _currentDataCount;
+    BOOL _notifyEnable;
 }
 @synthesize device = _device;
 @synthesize activeTool = _activeTool;
@@ -54,6 +55,7 @@
 
 #pragma mark - public methods
 - (BOOL)notifyCurrentData:(BOOL)enable {
+    _notifyEnable = enable;
     if (self.activeTool.isReady) {
         self.activeTool.notify = enable;
         return YES;
@@ -78,6 +80,12 @@
 }
 
 #pragma mark - private methods
+- (void)eNotiOtherStatusChanged {
+    if (self.activeTool.isReady) {
+        self.activeTool.notify = _notifyEnable;
+    }
+}
+
 - (void)eNotiHistoryData {
     if (self.distillTool.historyData.count > 0) {
         DataStoreTool *ds = [DataStoreTool sharedTool];
@@ -91,6 +99,10 @@
                 d.temp = data.Temp;
                 d.uvle = data.UVLe;
                 d.macAddress = self.device.macAddr;
+                d.isHistoryData = @(YES);
+                NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+                formatter.dateFormat = @"yyyy-MM-dd HH:mm";
+                d.recordTime = [formatter stringFromDate:d.time];
                 [ds save];
             }
         }
@@ -104,12 +116,16 @@
         DataStoreTool *ds = [DataStoreTool sharedTool];
         MDeviceData *d = [ds createAModelToFill];
         d.name = self.device.peri.name;
-        d.time = self.activeTool.currentRawData.dataRecordTime;
+        d.time = [NSDate date];
         d.pres = self.activeTool.currentRawData.Pres;
         d.humi = self.activeTool.currentRawData.Humi;
         d.temp = self.activeTool.currentRawData.Temp;
         d.uvle = self.activeTool.currentRawData.UVLe;
         d.macAddress = self.device.macAddr;
+        d.isHistoryData = @(NO);
+        NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+        formatter.dateFormat = @"yyyy-MM-dd HH:mm";
+        d.recordTime = [formatter stringFromDate:d.time];
         [ds save];
     }
     _currentDataCount += 1;
@@ -121,6 +137,7 @@
 - (void)addListener {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(eNotiHistoryData) name:kBLENotiDeviceHistoryDataReadCompletion object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(eNotiCurrentDataUpdate) name:kBLENotiDeviceDataUpdate object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(eNotiOtherStatusChanged) name:kBLENotiDeviceToolPrepared object:nil];
 }
 
 - (void)removeListener {

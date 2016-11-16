@@ -18,6 +18,9 @@
 
 @property (nonatomic, copy) NSString *latitude, *longitude, *locationTimeStamp;
 
+@property (nonatomic, copy) NSString *recordTime;
+@property (nonatomic, strong) NSNumber *isHistoryData;
+
 - (NSString *)generateShowText;
 
 @end
