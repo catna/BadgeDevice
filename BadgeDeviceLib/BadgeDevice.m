@@ -71,18 +71,13 @@
     return NO;
 }
 
-- (BOOL)resetTime {
-    if (self.distillTool.isReady) {
-        [self.distillTool timeCalibration];
-        return YES;
-    }
-    return NO;
-}
-
 #pragma mark - private methods
 - (void)eNotiOtherStatusChanged {
     if (self.activeTool.isReady) {
         self.activeTool.notify = _notifyEnable;
+    }
+    if (self.distillTool.isReady) {
+        [self.distillTool timeCalibration];
     }
 }
 

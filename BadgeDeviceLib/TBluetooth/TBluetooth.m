@@ -153,18 +153,20 @@
 
     // 连接到设备成功的委托
     [self.babyBluetooth setBlockOnConnected:^(CBCentralManager *central, CBPeripheral *peripheral) {
+        strongify(self);
         DLog(@"连接成功---%@",peripheral.name);
     }];
 
     // 设备断开连接的委托
     [self.babyBluetooth setBlockOnDisconnect:^(CBCentralManager *central, CBPeripheral *peripheral, NSError *error) {
+        strongify(self);
         DLog(@"断开%@连接", peripheral.name);
     }];
 
 //     扫描到设备某个 service 下的 characteristic 的委托
     [self.babyBluetooth setBlockOnDiscoverCharacteristics:^(CBPeripheral *peripheral, CBService *service, NSError *error) {
-        DLog(@"搜索到Characteristics, service:%@", service);
         strongify(self);
+        DLog(@"搜索到Characteristics, service:%@", service);
         if ([self.devicesDic.allKeys containsObject:peripheral]) {
             TBLEDevice *device = self.devicesDic[peripheral];
             if (device.dataWagon && [device.dataWagon respondsToSelector:@selector(storeCharacteristicInService:peri:)]) {

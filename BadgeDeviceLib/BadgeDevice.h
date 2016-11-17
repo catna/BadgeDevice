@@ -20,6 +20,4 @@
 - (BOOL)notifyCurrentData:(BOOL)enable;
 
 - (BOOL)readHistoryData;
-
-- (BOOL)resetTime;
 @end
