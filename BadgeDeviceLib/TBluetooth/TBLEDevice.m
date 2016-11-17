@@ -58,22 +58,22 @@
     }
 }
 
-- (void)autoConnecnt {
-    BabyBluetooth *BLE = [[TBluetooth sharedBluetooth] valueForKeyPath:@"babyBluetooth"];
-    if (_selected && !(self.peri.state == CBPeripheralStateConnected)) {
-        [[TBluetooth sharedBluetooth] connect:YES peri:self.peri];
-    }
-    _selected ? [BLE AutoReconnect:self.peri] : [BLE AutoReconnectCancel:self.peri];
-    if (!_selected) {
-        [BLE cancelPeripheralConnection:self.peri];
-    }
-}
+//- (void)autoConnecnt {
+//    BabyBluetooth *BLE = [[TBluetooth sharedBluetooth] valueForKeyPath:@"babyBluetooth"];
+//    if (_selected && !(self.peri.state == CBPeripheralStateConnected)) {
+//        [[TBluetooth sharedBluetooth] connect:YES peri:self.peri];
+//    }
+//    _selected ? [BLE AutoReconnect:self.peri] : [BLE AutoReconnectCancel:self.peri];
+//    if (!_selected) {
+//        [BLE cancelPeripheralConnection:self.peri];
+//    }
+//}
 
 #pragma mark - setter
-- (void)setSelected:(BOOL)selected {
-    _selected = selected;
-    [self autoConnecnt];
-}
+//- (void)setSelected:(BOOL)selected {
+//    _selected = selected;
+//    [self autoConnecnt];
+//}
 
 - (void)setIsReady:(BOOL)isReady {
     _isReady = isReady;

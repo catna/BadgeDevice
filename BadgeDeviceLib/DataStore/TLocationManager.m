@@ -8,6 +8,7 @@
 
 #import "TLocationManager.h"
 #import "JZLocationConverter.h"
+#import <UIKit/UIKit.h>
 
 @interface TLocationManager()<CLLocationManagerDelegate>
 @property (nonatomic, strong) void (^aLocationRequestHandler)(CLLocation *);
@@ -39,7 +40,9 @@
 
 - (void)setWorkingInBackground:(BOOL)workingInBackground {
     _workingInBackground = workingInBackground;
-    self.locationManager.allowsBackgroundLocationUpdates = _workingInBackground;
+    if ([[[UIDevice currentDevice] systemVersion] doubleValue] > 9.0) {
+        self.locationManager.allowsBackgroundLocationUpdates = _workingInBackground;
+    }
 }
 
 #pragma mark - CLLocationManagerDelegate

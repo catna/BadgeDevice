@@ -51,6 +51,16 @@
     }
 }
 
+- (void)cancelConnect:(BadgeDevice *)dev {
+    [[TBluetooth sharedBluetooth] connect:NO peri:dev.device.peri];
+}
+
+- (void)reconnectAll {
+    for (BadgeDevice *d in self.devArray.allValues) {
+        [[TBluetooth sharedBluetooth] connect:YES peri:d.device.peri];
+    }
+}
+
 #pragma mark - private methods
 - (void)eNotiDeviceChanged {
     NSArray *devices = [[[TBluetooth sharedBluetooth] devicesDic] allValues];

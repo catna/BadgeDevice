@@ -108,11 +108,6 @@
         switch (central.state) {
             case CBCentralManagerStatePoweredOn:
                 DLog(@"电源开启%@", self.devicesDic);
-                for (TBLEDevice *d in self.devicesDic.allValues) {
-                    if (d.selected) {
-                        self.babyBluetooth.having(d.peri).connectToPeripherals().discoverServices().discoverCharacteristics().begin();
-                    }
-                }
                 break;
                 
             default:

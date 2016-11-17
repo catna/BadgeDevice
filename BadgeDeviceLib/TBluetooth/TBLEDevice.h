@@ -46,7 +46,7 @@
 /*!
  *	@brief 这个是设备是否属于手机，并且有权限重新连接的一个凭证，在网络端申请进行一下判断，当这个值为NO的时候，会自动断掉这个设备的连接;当为YES的时候，会设置该设备为自动重连状态
  */
-@property (nonatomic, assign) BOOL selected;
+//@property (nonatomic, assign) BOOL selected;
 
 @property (nonatomic, weak) id<TBLEDeviceDataWagon> dataWagon;
 
