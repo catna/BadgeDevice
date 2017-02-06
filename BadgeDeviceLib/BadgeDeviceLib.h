@@ -16,4 +16,8 @@ FOUNDATION_EXPORT const unsigned char BadgeDeviceLibVersionString[];
 
 // In this header, you should import all the public headers of your framework using statements like #import <BadgeDeviceLib/PublicHeader.h>
 
-
+#import "TBLEManager.h"
+#import "TBLEDevice.h"
+#import "TBLEData"
+#import "TBLETools.h"
+#import "TBLEDefine.h"
