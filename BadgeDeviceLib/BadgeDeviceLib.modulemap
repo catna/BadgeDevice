@@ -1,6 +1,0 @@
-framework module BadgeDeviceLib {
-    umbrella header "BadgeDeviceLib.h"
-    
-    export *
-    module * { export * }
-}
