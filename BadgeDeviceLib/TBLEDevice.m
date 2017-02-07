@@ -8,6 +8,8 @@
 
 #import "TBLEDevice.h"
 #import <CoreBluetooth/CoreBluetooth.h>
+#import "TBLEDefine.h"
+#import "TBLETools.h"
 
 @interface TBLEDevice () <CBPeripheralDelegate>
 
@@ -20,7 +22,6 @@
     if (self = [super init]) {
         _peri = peri;
         _peri.delegate = self;
-        [_peri discoverServices:nil];
     }
     return self;
 }
@@ -37,7 +38,11 @@
 }
 
 - (void)peripheral:(CBPeripheral *)peripheral didDiscoverCharacteristicsForService:(CBService *)service error:(NSError *)error {
-    
+    for (CBCharacteristic *ch in service.characteristics) {
+        if ([ch.UUID.UUIDString isEqualToString:MacAddrUUID]) {
+            _macAddress = [TBLETools macWithCharacteristicData:ch.value];
+        }
+    }
 }
 
 @end

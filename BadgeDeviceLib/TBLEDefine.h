@@ -9,6 +9,7 @@
 #ifndef TBLEDefine_h
 #define TBLEDefine_h
 
+#define TimerWorkerFrequence 5 /**< 定时器工作时间间隔*/
 #define MacAddrUUID @"2A23"
 
 #define UVService @"F000AA00-0451-4000-B000-000000000000"
@@ -29,8 +30,6 @@
 
 #define DeviceNameOne @"SensorTag"
 #define DeviceNameTwo @"TI BLE Sensor Tag"
-
-#define AutoSearchTimeGap 5 /**<自动搜索时间间隔*/
 
 #endif /* TBLEDefine_h */
 
