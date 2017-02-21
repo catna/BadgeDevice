@@ -86,4 +86,19 @@
  *	@return 返回解析好的时间，可能为nil
  */
 + (NSDate *)parseHistoryDate:(const char *)dateBytes;
+
+/*!
+ *	@brief 读取历史数据中的信息
+ *  @discussion 注意: 因为要解析的数据是预定义好的格式,所以要按照返回数据定义进行操作
+                定义:
+                第一个:温湿度数据
+                第二个:气压数据
+                第三个:紫外线数据
+                第四个:时间数据(调用解析时间的方法)
+                第五个:电量数据(char)
+ *	@param data	需要解析的数据
+ *
+ *	@return 一个由多种数据返回的数组,可能为nil,所以在使用之前最好判定下时候是满足预定的数据
+ */
++ (NSArray <NSData *> *)distillHistoryData:(NSData *)data;
 @end

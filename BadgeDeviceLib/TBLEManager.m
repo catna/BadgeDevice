@@ -29,6 +29,7 @@
 }
 
 - (void)turnON {
+    //TODO: 需要在此处添加访问蓝牙功能的提示开关
     [self.manager scanForPeripheralsWithServices:nil options:nil];
     [self.timer fire];
 }
@@ -47,7 +48,7 @@
 #pragma mark - CBCentralManagerDelegate
 - (void)centralManagerDidUpdateState:(CBCentralManager *)central {
     switch (central.state) {
-        case CBManagerStatePoweredOn:
+        case CBCentralManagerStatePoweredOn:
             [self turnON];
             break;
             
@@ -57,10 +58,14 @@
 }
 
 - (void)centralManager:(CBCentralManager *)central didDiscoverPeripheral:(CBPeripheral *)peripheral advertisementData:(NSDictionary<NSString *,id> *)advertisementData RSSI:(NSNumber *)RSSI {
+    // 这个方法是搜索到设备的代理，当搜索到的设备的名字和预定义好的名字一致时，就把设备连接添加到设备列表内，同时准备去连接这个设备
     if ([peripheral.name isEqualToString:DeviceNameOne] || [peripheral.name isEqualToString:DeviceNameTwo]) {
         TBLEDevice *dev = [[TBLEDevice alloc] initWithPeripheral:peripheral];
+        // 将设备的广播信息保存起来，以便会后需要用到的时候进行处理
         dev.advertise = advertisementData;
         [self.devices setObject:dev forKey:peripheral];
+        // 尝试连接到这个设备，参数设置为空
+        //TODO: 之后可以在这个位置设置一个连接断开的参数选项作为丰富设置功能的一个功能
         [self.manager connectPeripheral:peripheral options:nil];
     }
 }

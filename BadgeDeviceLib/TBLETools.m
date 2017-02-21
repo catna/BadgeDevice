@@ -142,4 +142,45 @@
     return date;
 }
 
+//    读取到的历史和电量信息<1009080a 2129f06b 7e775c8d 01430908>
+//    BYTE0：年
+//    BYTE1：月
+//    BYTE2：日
+//    BYTE3：时
+//    BYTE4：分
+//    BYTE5：紫外线
+//    BYTE6~7：温度
+//    BYTE8~9：湿度
+//    BYTE10~12：大气压
+//    BYTE13：电池电量
+//    BYTE14~15：保留
++ (NSArray <NSData *> *)distillHistoryData:(NSData *)data {
+    NSMutableArray <NSData *> *arr = [[NSMutableArray alloc] init];
+    const char *rawData = data.bytes;
+    // 定义好数据的长度(bit长度)
+    int tehu = 0, uvle = 0;
+    char time[5], pres[6];
+    // 将bit拷贝到相应位置
+    memcpy(time, rawData, 5);
+    *((char *)&uvle) = rawData[5];
+    memcpy(&tehu, &rawData[6], 4);
+    memcpy(&pres, &rawData[7], 6);
+    // 将温湿度数据传送到数组的第一个
+    [arr addObject:[NSData dataWithBytes:&tehu length:sizeof(tehu)]];
+    // 将气压数据传送到数组的第二个
+    [arr addObject:[NSData dataWithBytes:pres length:6]];
+    // 将紫外线数据传送到数组的第三个
+    [arr addObject:[NSData dataWithBytes:&uvle length:sizeof(uvle)]];
+    // 将时间放到数组的第四个
+    [arr addObject:[NSData dataWithBytes:time length:5]];
+    // 将电池电量数据放到数组的第五个
+    char battery = rawData[13];
+    [arr addObject:[NSData dataWithBytes:&battery length:sizeof(char)]];
+    // 如果数组的长度不是5
+    if (arr.count != 5) {
+        return nil;
+    }
+    return arr;
+}
+
 @end
