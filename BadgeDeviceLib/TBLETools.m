@@ -165,6 +165,14 @@
 + (NSArray <NSData *> *)distillHistoryData:(NSData *)data {
     NSMutableArray <NSData *> *arr = [[NSMutableArray alloc] init];
     const char *rawData = data.bytes;
+    // 对数据进行判断
+    unsigned int const allFF = ~0;
+    unsigned long long all00 = 0;
+    int compareFFResult = bcmp(data.bytes, &allFF, sizeof(allFF));
+    int compare00Result = bcmp(data.bytes, &all00, data.length);
+    if (compareFFResult == 0 || compare00Result == 0) {
+        return nil;
+    }
     // 定义好数据的长度(bit长度)
     int tehu = 0, uvle = 0;
     char time[5], pres[6];

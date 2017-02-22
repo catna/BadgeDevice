@@ -33,7 +33,7 @@
  */
 @property (nonatomic, strong, readonly) NSNumber *RSSI;
 /// 设备记录下的电量信息，可能为0
-@property (nonatomic, assign, readonly) short powerQ;
+@property (nonatomic, assign, readonly) NSUInteger powerQ;
 
 /// 设备的当前数据
 @property (nonatomic, strong, readonly) TBLEData *data;
@@ -61,6 +61,13 @@
  *	@return 是否把同步时间的数据发送出去
  */
 - (BOOL)timeCalibration;
+
+/*!
+ *	@brief 读取历史数据
+ *  @discussion 读取历史数据的时候,内部会根据UUID默认循环的读下去,一旦数据解析不成功,就会跳出循环
+ *  @return 是否找到可以读取的 Characteristic 并且发送读取消息
+ */
+- (BOOL)readHistoryData;
 
 #pragma mark - advanced
 /// 自动重连的选项

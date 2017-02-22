@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		E1CCC4021E5D5A1D00883990 /* TBLENoti.h in Headers */ = {isa = PBXBuildFile; fileRef = E1CCC4011E5D5A1D00883990 /* TBLENoti.h */; };
+		E1CCC4021E5D5A1D00883990 /* TBLENoti.h in Headers */ = {isa = PBXBuildFile; fileRef = E1CCC4011E5D5A1D00883990 /* TBLENoti.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E1CCC4041E5D5A3F00883990 /* TBLENoti.m in Sources */ = {isa = PBXBuildFile; fileRef = E1CCC4031E5D5A3F00883990 /* TBLENoti.m */; };
 		E1EA86E61E48557900BB4C35 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = E1EA86E51E48557900BB4C35 /* main.m */; };
 		E1EA86E91E48557900BB4C35 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = E1EA86E81E48557900BB4C35 /* AppDelegate.m */; };
@@ -179,10 +179,10 @@
 			files = (
 				E1EA87111E4857A100BB4C35 /* TBLEDefine.h in Headers */,
 				E1EA87181E48600D00BB4C35 /* TBLEDevice.h in Headers */,
-				E1CCC4021E5D5A1D00883990 /* TBLENoti.h in Headers */,
 				E1EA871C1E4863A100BB4C35 /* TBLEData.h in Headers */,
 				E1EA87141E4857FF00BB4C35 /* TBLEManager.h in Headers */,
 				E1EA87241E48709B00BB4C35 /* TBLETools.h in Headers */,
+				E1CCC4021E5D5A1D00883990 /* TBLENoti.h in Headers */,
 				E1EA87041E4855A000BB4C35 /* BadgeDeviceLib.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

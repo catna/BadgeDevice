@@ -13,3 +13,5 @@ NSString * const kTBLENotiStatusChanged = @"kTBLENotiStatusChanged";
 NSString * const kTBLENotiDataChanged = @"kTBLENotiDataChanged";
 
 NSString * const kTBLENotiHistoryDataReaded = @"kTBLENotiHistoryDataReaded";
+
+NSString * const kTBLENotiGetError = @"kTBLENotiGetError";

@@ -34,4 +34,10 @@ extern NSString *const kTBLENotiDataChanged;
  */
 extern NSString *const kTBLENotiHistoryDataReaded;
 
+/*!
+ *	@brief 通知收到一些错误
+ *  @discussion 接受到一些错误,错误可以采取集中处理的方式,如果抛出,则可能会附带一些字符串来描述这些错误
+ */
+extern NSString *const kTBLENotiGetError;
+
 #endif /* TBLENoti_h */

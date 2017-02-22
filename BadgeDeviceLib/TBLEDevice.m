@@ -35,6 +35,7 @@
     if (self = [super init]) {
         _peri = peri;
         _peri.delegate = self;
+        _powerQ = 0;
         _listen = YES;
         _open = YES;
         _autoReconnect = YES;
@@ -58,16 +59,20 @@
     return NO;
 }
 
-/*!
- *	@brief 发送时间校准的数据
- *
- *	@return 是否发送出了数据
- */
 - (BOOL)timeCalibration {
     // 找到时间的Characteristic
     CBCharacteristic *timeCh = [self.dicKeyCharacteristic objectForKey:ConnectTimeConfig];
     if (timeCh) {
         return [self send:[TBLETools createCurrentTimeData] to:timeCh];
+    }
+    return NO;
+}
+
+- (BOOL)readHistoryData {
+    CBCharacteristic *ch = [self.dicKeyCharacteristic objectForKey:ConnectData];
+    if (ch) {
+        [self.peri readValueForCharacteristic:ch];
+        return YES;
     }
     return NO;
 }
@@ -148,6 +153,7 @@
     DLog(@"BLE %@", [self.data represent]);
     
     if ([characteristic.UUID.UUIDString isEqualToString:ConnectData]) {
+        DLog(@"BLE history value: %@", characteristic.value);
         NSArray <NSData *>*datas = [TBLETools distillHistoryData:characteristic.value];
         if (datas) {
             self.dataHistory.temp = [TBLETools convertTempData:datas[0]];
@@ -157,8 +163,12 @@
             self.dataHistory.date = [TBLETools parseHistoryDate:datas[3].bytes];
             const char *battery = datas[4].bytes;
             _powerQ = (short)&battery;
-            DLog(@"BLE powerQ:%d History %@", self.powerQ, [self.dataHistory represent]);
+            DLog(@"BLE powerQ:%uld History %@", self.powerQ, [self.dataHistory represent]);
             [[NSNotificationCenter defaultCenter] postNotificationName:kTBLENotiHistoryDataReaded object:self];
+            // 在这里形成读取链
+            [self readHistoryData];
+        } else {
+            [[NSNotificationCenter defaultCenter] postNotificationName:kTBLENotiGetError object:@"历史数据解析出错,查看日志来得到信息"];
         }
     }
 }
