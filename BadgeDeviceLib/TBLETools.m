@@ -23,6 +23,14 @@
     return @"";
 }
 
++ (NSString *)softwareStringFrom:(NSData *)data {
+    NSString *str = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+    if (!str) {
+        str = @"";
+    }
+    return str;
+}
+
 + (double)convertPresData:(NSData *)data {
     const void *rawData = data.bytes;
     int a = 0;

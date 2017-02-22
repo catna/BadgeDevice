@@ -200,12 +200,15 @@
  *  @param ch       需要解析的Characteristic
  */
 - (void)readDeviceInfo:(BOOL)parse ch:(CBCharacteristic *)ch {
+    if (!parse) {
+        [self.peri readValueForCharacteristic:ch];
+        return;
+    }
     if ([ch.UUID.UUIDString isEqualToString:MacAddrUUID]) {
-        if (parse) {
-            _macAddress = [TBLETools macWithCharacteristicData:ch.value];
-        } else {
-            [self.peri readValueForCharacteristic:ch];
-        }
+        _macAddress = [TBLETools macWithCharacteristicData:ch.value];
+    }
+    if ([ch.UUID.UUIDString isEqualToString:SoftwareVersionUUID]) {
+        _softwareVersion = [TBLETools softwareStringFrom:ch.value];
     }
 }
 
