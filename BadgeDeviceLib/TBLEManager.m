@@ -30,19 +30,19 @@
 }
 
 - (void)turnON {
-    //TODO: 需要在此处添加访问蓝牙功能的提示开关
-    [self.manager scanForPeripheralsWithServices:nil options:nil];
+    [self.manager scanForPeripheralsWithServices:nil options:@{CBCentralManagerScanOptionAllowDuplicatesKey:@(NO)}];
     [self.timer fire];
 }
 
 - (void)turnOFF {
-    [self.devices removeAllObjects];
+    for (CBPeripheral *peri in self.devices.allKeys) {
+        [self connect:NO to:peri];
+    }
     [self.timer invalidate];
     self.timer = nil;
 }
 
 - (void)connect:(BOOL)conn to:(CBPeripheral *)peri {
-    //TODO: 之后可以在这个位置设置一个连接断开的参数选项作为丰富设置功能的一个功能
     if (conn) {
         NSDictionary *option = @{CBConnectPeripheralOptionNotifyOnConnectionKey:@(self.alertConnect), CBConnectPeripheralOptionNotifyOnDisconnectionKey:@(self.alertConnect)};
         [self.manager connectPeripheral:peri options:option];
@@ -55,6 +55,7 @@
 #pragma mark - event
 - (void)eTimer {
     DLog(@"BLE Timer Event");
+    // 自动重连设备的功能
     for (CBPeripheral *peri in self.devices.allKeys) {
         if (peri.state == CBPeripheralStateDisconnected) {
             TBLEDevice *device = [self.devices objectForKey:peri];
@@ -72,7 +73,7 @@
         case CBCentralManagerStatePoweredOn:
             [self turnON];
             break;
-            
+        // 一旦电源关闭,就释放掉一些资源以免浪费
         default:[self turnOFF];
             break;
     }

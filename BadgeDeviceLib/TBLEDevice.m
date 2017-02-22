@@ -64,7 +64,7 @@
  */
 - (BOOL)timeCalibration {
     // 找到时间的Characteristic
-    CBCharacteristic *timeCh = [self.dicKeyCharacteristic valueForKey:ConnectTimeConfig];
+    CBCharacteristic *timeCh = [self.dicKeyCharacteristic objectForKey:ConnectTimeConfig];
     if (timeCh) {
         return [self send:[TBLETools createCurrentTimeData] to:timeCh];
     }
@@ -167,7 +167,7 @@
  */
 - (void)changeNotiOf:(CBPeripheral *)peri {
     for (NSString *key in @[THData, UVData, PrData, ConnectData]) {
-        CBCharacteristic *ch = [self.dicKeyCharacteristic valueForKey:key];
+        CBCharacteristic *ch = [self.dicKeyCharacteristic objectForKey:key];
         if ([ch.UUID.UUIDString isEqualToString:key] && peri && ch) {
             [peri setNotifyValue:self.listen forCharacteristic:ch];
         }
@@ -179,7 +179,7 @@
  */
 - (void)changeDataSwitch {
     for (NSString *key in @[THConfig, UVConfig, PrConfig]) {
-        CBCharacteristic *ch = [self.dicKeyCharacteristic valueForKey:key];
+        CBCharacteristic *ch = [self.dicKeyCharacteristic objectForKey:key];
         if (ch) {
             // openData 是否打开数据通道(预定义好的开关数据内容)
             Byte od = self.open ? 0x01 : 0x00;
