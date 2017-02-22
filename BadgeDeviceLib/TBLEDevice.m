@@ -11,6 +11,7 @@
 #import "TBLEDefine.h"
 #import "TBLETools.h"
 #import "TBLEData.h"
+#import "TBLENoti.h"
 
 @interface TBLEDevice () <CBPeripheralDelegate>
 /// 用于存储相关联的characteristic
@@ -80,7 +81,7 @@
  *	@param error		error
  */
 - (void)peripheral:(CBPeripheral *)peripheral didReadRSSI:(NSNumber *)RSSI error:(NSError *)error {
-    
+    [[NSNotificationCenter defaultCenter] postNotificationName:kTBLENotiStatusChanged object:self];
 }
 
 /*!
@@ -135,6 +136,7 @@
         self.data.date = [NSDate date];
         self.data.temp = [TBLETools convertTempData:characteristic.value];
         self.data.humi = [TBLETools convertHumiData:characteristic.value];
+        [[NSNotificationCenter defaultCenter] postNotificationName:kTBLENotiDataChanged object:self];
     }
     if ([characteristic.UUID.UUIDString isEqualToString:PrData]) {
         self.data.pres = [TBLETools convertPresData:characteristic.value];
@@ -155,6 +157,7 @@
             const char *battery = datas[4].bytes;
             _powerQ = (short)&battery;
             DLog(@"BLE powerQ:%d History %@", self.powerQ, [self.dataHistory represent]);
+            [[NSNotificationCenter defaultCenter] postNotificationName:kTBLENotiHistoryDataReaded object:self];
         }
     }
 }

@@ -12,4 +12,4 @@ NSString * const kTBLENotiStatusChanged = @"kTBLENotiStatusChanged";
 
 NSString * const kTBLENotiDataChanged = @"kTBLENotiDataChanged";
 
-NSString * const KTBLENotiHistoryDataReaded = @"KTBLENotiHistoryDataReaded";
+NSString * const kTBLENotiHistoryDataReaded = @"kTBLENotiHistoryDataReaded";

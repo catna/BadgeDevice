@@ -10,6 +10,7 @@
 #import <CoreBluetooth/CoreBluetooth.h>
 #import "TBLEDefine.h"
 #import "TBLEDevice.h"
+#import "TBLENoti.h"
 
 @interface TBLEManager () <CBCentralManagerDelegate>
 @property (nonatomic, strong) NSTimer *timer;
@@ -77,6 +78,7 @@
         default:[self turnOFF];
             break;
     }
+    [[NSNotificationCenter defaultCenter] postNotificationName:kTBLENotiStatusChanged object:nil];
 }
 
 - (void)centralManager:(CBCentralManager *)central didDiscoverPeripheral:(CBPeripheral *)peripheral advertisementData:(NSDictionary<NSString *,id> *)advertisementData RSSI:(NSNumber *)RSSI {
@@ -94,10 +96,12 @@
 - (void)centralManager:(CBCentralManager *)central didConnectPeripheral:(CBPeripheral *)peripheral {
     DLog(@"BLE-didConnectPeripheral:%@", peripheral.name);
     [peripheral discoverServices:nil];
+    [[NSNotificationCenter defaultCenter] postNotificationName:kTBLENotiStatusChanged object:peripheral];
 }
 
 - (void)centralManager:(CBCentralManager *)central didDisconnectPeripheral:(CBPeripheral *)peripheral error:(NSError *)error {
     DLog(@"BLE-didDisconnectPeripheral:%@", peripheral.name);
+    [[NSNotificationCenter defaultCenter] postNotificationName:kTBLENotiStatusChanged object:peripheral];
 }
 
 #pragma mark - getter
