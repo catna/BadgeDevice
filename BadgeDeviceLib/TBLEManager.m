@@ -58,12 +58,13 @@
     DLog(@"BLE Timer Event");
     // 自动重连设备的功能
     for (CBPeripheral *peri in self.devices.allKeys) {
-        if (peri.state == CBPeripheralStateDisconnected) {
-            TBLEDevice *device = [self.devices objectForKey:peri];
-            if (device.autoReconnect) {
-                [self connect:YES to:peri];
-                DLog(@"BLE reConnect %@ -mac:%@", peri.name, device.macAddress);
-            }
+        TBLEDevice *device = [self.devices objectForKey:peri];
+        if (device.autoReconnect && peri.state == CBPeripheralStateDisconnected) {
+            [self connect:YES to:peri];
+            DLog(@"BLE reConnect %@ -mac:%@", peri.name, device.macAddress);
+        }
+        if (device.autoRefreshRSSI) {
+            [device.peri readRSSI];
         }
     }
 }

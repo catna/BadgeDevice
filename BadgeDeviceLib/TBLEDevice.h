@@ -26,6 +26,12 @@
 @property (nonatomic, strong, readonly) NSString *macAddress;
 /// 设备的硬件软件版本，同mac
 @property (nonatomic, strong, readonly) NSString *softwareVersion;
+
+/*!
+ *	@brief 信号强度
+ *  @discussion 因为系统自带的那个信号强度属性已经被废弃了,所以在这里提供数据强度的读取接口,当未读取到信号强度时,这个属性会是nil
+ */
+@property (nonatomic, strong, readonly) NSNumber *RSSI;
 /// 设备记录下的电量信息，可能为0
 @property (nonatomic, assign, readonly) short powerQ;
 
@@ -59,4 +65,6 @@
 #pragma mark - advanced
 /// 自动重连的选项
 @property (nonatomic, assign) BOOL autoReconnect;   // default is YES
+/// 自动更新信号强度的选项
+@property (nonatomic, assign) BOOL autoRefreshRSSI; // default is NO
 @end

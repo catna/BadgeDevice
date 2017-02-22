@@ -81,6 +81,7 @@
  *	@param error		error
  */
 - (void)peripheral:(CBPeripheral *)peripheral didReadRSSI:(NSNumber *)RSSI error:(NSError *)error {
+    _RSSI = RSSI;
     [[NSNotificationCenter defaultCenter] postNotificationName:kTBLENotiStatusChanged object:self];
 }
 
