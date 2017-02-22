@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		E1CCC4021E5D5A1D00883990 /* TBLENoti.h in Headers */ = {isa = PBXBuildFile; fileRef = E1CCC4011E5D5A1D00883990 /* TBLENoti.h */; };
+		E1CCC4041E5D5A3F00883990 /* TBLENoti.m in Sources */ = {isa = PBXBuildFile; fileRef = E1CCC4031E5D5A3F00883990 /* TBLENoti.m */; };
 		E1EA86E61E48557900BB4C35 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = E1EA86E51E48557900BB4C35 /* main.m */; };
 		E1EA86E91E48557900BB4C35 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = E1EA86E81E48557900BB4C35 /* AppDelegate.m */; };
 		E1EA86EC1E48557900BB4C35 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E1EA86EB1E48557900BB4C35 /* ViewController.m */; };
@@ -53,6 +55,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		E1CCC4011E5D5A1D00883990 /* TBLENoti.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TBLENoti.h; sourceTree = "<group>"; };
+		E1CCC4031E5D5A3F00883990 /* TBLENoti.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TBLENoti.m; sourceTree = "<group>"; };
 		E1EA86E11E48557900BB4C35 /* BadgeDevice.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BadgeDevice.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E1EA86E51E48557900BB4C35 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		E1EA86E71E48557900BB4C35 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -146,6 +150,8 @@
 			children = (
 				E1EA87021E4855A000BB4C35 /* BadgeDeviceLib.h */,
 				E1EA87101E4857A100BB4C35 /* TBLEDefine.h */,
+				E1CCC4011E5D5A1D00883990 /* TBLENoti.h */,
+				E1CCC4031E5D5A3F00883990 /* TBLENoti.m */,
 				E1EA87121E4857FF00BB4C35 /* TBLEManager.h */,
 				E1EA87131E4857FF00BB4C35 /* TBLEManager.m */,
 				E1EA87161E48600D00BB4C35 /* TBLEDevice.h */,
@@ -176,6 +182,7 @@
 			files = (
 				E1EA87111E4857A100BB4C35 /* TBLEDefine.h in Headers */,
 				E1EA87181E48600D00BB4C35 /* TBLEDevice.h in Headers */,
+				E1CCC4021E5D5A1D00883990 /* TBLENoti.h in Headers */,
 				E1EA871C1E4863A100BB4C35 /* TBLEData.h in Headers */,
 				E1EA87141E4857FF00BB4C35 /* TBLEManager.h in Headers */,
 				E1EA87241E48709B00BB4C35 /* TBLETools.h in Headers */,
@@ -234,7 +241,7 @@
 				TargetAttributes = {
 					E1EA86E01E48557900BB4C35 = {
 						CreatedOnToolsVersion = 8.2.1;
-						DevelopmentTeam = 7VTAQLJLUA;
+						DevelopmentTeam = YXKQ8AG4Q3;
 						ProvisioningStyle = Automatic;
 					};
 					E1EA86FF1E4855A000BB4C35 = {
@@ -300,6 +307,7 @@
 			files = (
 				E1EA871D1E4863A100BB4C35 /* TBLEData.m in Sources */,
 				E1EA87191E48600D00BB4C35 /* TBLEDevice.m in Sources */,
+				E1CCC4041E5D5A3F00883990 /* TBLENoti.m in Sources */,
 				E1EA87151E4857FF00BB4C35 /* TBLEManager.m in Sources */,
 				E1EA87251E48709B00BB4C35 /* TBLETools.m in Sources */,
 			);
@@ -356,6 +364,7 @@
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
@@ -375,7 +384,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -404,6 +413,7 @@
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
@@ -417,7 +427,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -429,12 +439,15 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = 7VTAQLJLUA;
 				INFOPLIST_FILE = BadgeDevice/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.mx.BadgeDevice;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 			};
 			name = Debug;
 		};
@@ -442,12 +455,15 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = 7VTAQLJLUA;
 				INFOPLIST_FILE = BadgeDevice/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.mx.BadgeDevice;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 			};
 			name = Release;
 		};
@@ -455,6 +471,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 7VTAQLJLUA;
@@ -476,7 +493,7 @@
 		E1EA870B1E4855A000BB4C35 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 7VTAQLJLUA;
