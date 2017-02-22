@@ -15,36 +15,17 @@
 
 @implementation TBLEData
 // 在设置这些变量的时候就判断数据是否在正常范围内,从而改变数据的可用性
-#pragma mark - setter
+// 选取一个属性设置就好,多了没必要
 - (void)setTemp:(double)temp {
-    if (temp > -40 && temp < 100) {
-        _temp = temp;
-        _useful = YES;
-    } else {
-        _useful = NO;
-    }
+    _temp = temp;
+    [self dataCheck];
 }
 
-- (void)setHumi:(double)humi {
-    if (humi > -1 && humi <= 100) {
-        _humi = humi;
-        _useful = YES;
-    } else {
-        _useful = NO;
-    }
-}
-
-- (void)setPres:(double)pres {
-    if (pres >= 800 && pres <= 1200) {
-        _pres = pres;
-        _useful = YES;
-    } else {
-        _useful = NO;
-    }
-}
-
-- (void)setUvNu:(double)uvNu {
-    _uvNu = uvNu;
+- (void)dataCheck {
+    BOOL ct = _temp > -40 && _temp < 100;
+    BOOL ch = _humi > -1 && _humi <= 100;
+    BOOL cp = _pres >= 800 && _pres <= 1200;
+    _useful = ct && ch && cp;
 }
 
 - (NSString *)represent {
