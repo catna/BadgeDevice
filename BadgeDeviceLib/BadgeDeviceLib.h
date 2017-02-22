@@ -21,3 +21,4 @@ FOUNDATION_EXPORT const unsigned char BadgeDeviceLibVersionString[];
 #import "TBLEData.h"
 #import "TBLETools.h"
 #import "TBLEDefine.h"
+#import "TBLENoti.h"
