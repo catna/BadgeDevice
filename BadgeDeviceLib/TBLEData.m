@@ -17,15 +17,30 @@
 // 在设置这些变量的时候就判断数据是否在正常范围内,从而改变数据的可用性
 #pragma mark - setter
 - (void)setTemp:(double)temp {
-    _temp = temp;
+    if (temp > -40 && temp < 100) {
+        _temp = temp;
+        _useful = YES;
+    } else {
+        _useful = NO;
+    }
 }
 
 - (void)setHumi:(double)humi {
-    _humi = humi;
+    if (humi > -1 && humi <= 100) {
+        _humi = humi;
+        _useful = YES;
+    } else {
+        _useful = NO;
+    }
 }
 
 - (void)setPres:(double)pres {
-    _pres = pres;
+    if (pres >= 800 && pres <= 1200) {
+        _pres = pres;
+        _useful = YES;
+    } else {
+        _useful = NO;
+    }
 }
 
 - (void)setUvNu:(double)uvNu {
