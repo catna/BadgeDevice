@@ -8,13 +8,16 @@
 
 #import <Foundation/Foundation.h>
 
-@class CBPeripheral;
+@class CBPeripheral, CBService;
 @class TBLEData;
 
 /// 单个设备
 @interface TBLEDevice : NSObject
 /// 依据此设备创建的本实例，暴露出来以供读取其他信息
 @property (nonatomic, strong, readonly) CBPeripheral *peri;
+/// 搜索到的设备服务,依据UUID保留下来
+@property (nonatomic, strong, readonly) NSDictionary <NSString *,CBService *> *services;
+
 /// 本设备在连接前广播的数据内容，在此处保存下来，当然可能为空，不想写nullable，太费劲了,当然为了兼容swift之后可以慢慢添加上去
 @property (nonatomic, strong) NSDictionary *advertise;
 
@@ -52,4 +55,8 @@
  *	@return 是否把同步时间的数据发送出去
  */
 - (BOOL)timeCalibration;
+
+#pragma mark - advanced
+/// 自动重连的选项
+@property (nonatomic, assign) BOOL autoReconnect;   // default is YES
 @end

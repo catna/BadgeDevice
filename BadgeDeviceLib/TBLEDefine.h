@@ -10,7 +10,9 @@
 #define TBLEDefine_h
 
 #define TimerWorkerFrequence 5 /**< 定时器工作时间间隔*/
-#define MacAddrUUID @"2A23"
+
+#define MacAddrUUID @"2A23"         // mac地址的UUID
+#define SoftwareVersionUUID @""     // 硬件软件版本的UUID
 
 #define UVService @"F000AA00-0451-4000-B000-000000000000"
 #define UVData    @"F000AA01-0451-4000-B000-000000000000"

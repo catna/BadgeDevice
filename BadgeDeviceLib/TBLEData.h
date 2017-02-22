@@ -26,4 +26,8 @@
 /// 紫外线(紫外线等级可以依靠工具方法进行转换, 没必要丢失原始的数据)
 @property (nonatomic, assign) double uvNu;
 
+/*!
+ *	@brief 显示这个对象的数据详情
+ */
+- (NSString *)represent;
 @end

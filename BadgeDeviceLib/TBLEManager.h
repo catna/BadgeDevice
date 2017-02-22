@@ -18,7 +18,9 @@
 @property (nonatomic, strong, readonly) CBCentralManager *manager;
 /// 已经知道的设备
 @property (nonatomic, strong, readonly) NSMutableDictionary <CBPeripheral *,TBLEDevice *> *devices;
-@property (nonatomic, assign, readonly) BOOL powon;
+
+/// 接收连接变化时系统提供的通知
+@property (nonatomic, assign) BOOL alertConnect;    // default is YES
 
 /// 通过单例模式避免重复创建多个蓝牙设备管理器工具
 + (instancetype)sharedManager;

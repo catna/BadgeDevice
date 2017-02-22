@@ -15,6 +15,8 @@
 @interface TBLEDevice () <CBPeripheralDelegate>
 /// 用于存储相关联的characteristic
 @property (nonatomic, strong) NSMutableDictionary <NSString *, CBCharacteristic *> *dicKeyCharacteristic;
+/// 内部保存这些服务的动态字典
+@property (nonatomic, strong) NSMutableDictionary <NSString *,CBService *> *dicServices;
 @end
 
 @implementation TBLEDevice
@@ -34,6 +36,7 @@
         _peri.delegate = self;
         _listen = YES;
         _open = YES;
+        _autoReconnect = YES;
     }
     return self;
 }
@@ -48,7 +51,7 @@
  */
 - (BOOL)send:(NSData *)data to:(CBCharacteristic *)characteristic {
     if (data && characteristic && self.peri) {
-        [self.peri writeValue:data forCharacteristic:characteristic type:CBCharacteristicWriteWithoutResponse];
+        [self.peri writeValue:data forCharacteristic:characteristic type:CBCharacteristicWriteWithResponse];
         return YES;
     }
     return NO;
@@ -60,8 +63,12 @@
  *	@return 是否发送出了数据
  */
 - (BOOL)timeCalibration {
-    //FIXME: 修正characteristic参数
-    return [self send:[TBLETools createCurrentTimeData] to:nil];
+    // 找到时间的Characteristic
+    CBCharacteristic *timeCh = [self.dicKeyCharacteristic valueForKey:ConnectTimeConfig];
+    if (timeCh) {
+        return [self send:[TBLETools createCurrentTimeData] to:timeCh];
+    }
+    return NO;
 }
 
 #pragma mark - CBPeripheralDelegate
@@ -84,6 +91,8 @@
  */
 - (void)peripheral:(CBPeripheral *)peripheral didDiscoverServices:(NSError *)error {
     for (CBService *service in peripheral.services) {
+        [self.dicServices setObject:service forKey:service.UUID.UUIDString];
+        DLog(@"BLE-peripheralDidDiscoverServices:%@", service.UUID.UUIDString);
         // 去搜寻设备中service的Characteristic
         [peripheral discoverCharacteristics:nil forService:service];
     }
@@ -98,9 +107,12 @@
  */
 - (void)peripheral:(CBPeripheral *)peripheral didDiscoverCharacteristicsForService:(CBService *)service error:(NSError *)error {
     for (CBCharacteristic *ch in service.characteristics) {
+        DLog(@"BLE-didDiscoverCharacteristics:%@ service:%@", ch.UUID, service.UUID);
         [self.dicKeyCharacteristic setObject:ch forKey:ch.UUID.UUIDString];
-        if ([ch.UUID.UUIDString isEqualToString:MacAddrUUID]) {
-            _macAddress = [TBLETools macWithCharacteristicData:ch.value];
+        // 开始读取设备的相关信息
+        [self readDeviceInfo:NO ch:ch];
+        if ([ch.UUID.UUIDString isEqualToString:ConnectTimeConfig]) {
+            [self timeCalibration];
         }
         // 如果是这些配置,则设置监听状态,注意要在字典中设置过key-Value再执行下列语句
         [self changeNotiOf:peripheral];
@@ -116,7 +128,11 @@
  *	@param error				error
  */
 - (void)peripheral:(CBPeripheral *)peripheral didUpdateValueForCharacteristic:(CBCharacteristic *)characteristic error:(NSError *)error {
+    // 解析设备信息
+    [self readDeviceInfo:YES ch:characteristic];
+    
     if ([characteristic.UUID.UUIDString isEqualToString:THData]) {
+        self.data.date = [NSDate date];
         self.data.temp = [TBLETools convertTempData:characteristic.value];
         self.data.humi = [TBLETools convertHumiData:characteristic.value];
     }
@@ -126,6 +142,7 @@
     if ([characteristic.UUID.UUIDString isEqualToString:UVData]) {
         self.data.uvNu = [TBLETools convertUVNuData:characteristic.value];
     }
+    DLog(@"BLE %@", [self.data represent]);
     
     if ([characteristic.UUID.UUIDString isEqualToString:ConnectData]) {
         NSArray <NSData *>*datas = [TBLETools distillHistoryData:characteristic.value];
@@ -137,6 +154,7 @@
             self.dataHistory.date = [TBLETools parseHistoryDate:datas[3].bytes];
             const char *battery = datas[4].bytes;
             _powerQ = (short)&battery;
+            DLog(@"BLE powerQ:%d History %@", self.powerQ, [self.dataHistory represent]);
         }
     }
 }
@@ -171,6 +189,22 @@
     }
 }
 
+/*!
+ *	@brief 读取设备信息
+ *	@discussion     因为读取设备信息需要先通知peri去读，然后在didRead的方法里去解析
+ *	@param parse    是否需要解析
+ *  @param ch       需要解析的Characteristic
+ */
+- (void)readDeviceInfo:(BOOL)parse ch:(CBCharacteristic *)ch {
+    if ([ch.UUID.UUIDString isEqualToString:MacAddrUUID]) {
+        if (parse) {
+            _macAddress = [TBLETools macWithCharacteristicData:ch.value];
+        } else {
+            [self.peri readValueForCharacteristic:ch];
+        }
+    }
+}
+
 #pragma mark - setter
 - (void)setListen:(BOOL)listen {
     _listen = listen;
@@ -188,6 +222,17 @@
         _dicKeyCharacteristic = [[NSMutableDictionary alloc] init];
     }
     return _dicKeyCharacteristic;
+}
+
+- (NSDictionary <NSString *,CBService *> *)services {
+    return self.dicServices;
+}
+
+- (NSMutableDictionary <NSString *,CBService *> *)dicServices {
+    if (!_dicServices) {
+        _dicServices = [[NSMutableDictionary alloc] init];
+    }
+    return _dicServices;
 }
 
 - (TBLEData *)data {
