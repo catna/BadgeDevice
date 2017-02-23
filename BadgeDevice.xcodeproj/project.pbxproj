@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		E1BBD3781E5EC2510037D9E5 /* DeviceInfoTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E1BBD3771E5EC2510037D9E5 /* DeviceInfoTableViewController.m */; };
 		E1CCC4021E5D5A1D00883990 /* TBLENoti.h in Headers */ = {isa = PBXBuildFile; fileRef = E1CCC4011E5D5A1D00883990 /* TBLENoti.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E1CCC4041E5D5A3F00883990 /* TBLENoti.m in Sources */ = {isa = PBXBuildFile; fileRef = E1CCC4031E5D5A3F00883990 /* TBLENoti.m */; };
 		E1EA86E61E48557900BB4C35 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = E1EA86E51E48557900BB4C35 /* main.m */; };
@@ -54,6 +55,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		E1BBD3761E5EC2510037D9E5 /* DeviceInfoTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DeviceInfoTableViewController.h; sourceTree = "<group>"; };
+		E1BBD3771E5EC2510037D9E5 /* DeviceInfoTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DeviceInfoTableViewController.m; sourceTree = "<group>"; };
 		E1CCC4011E5D5A1D00883990 /* TBLENoti.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TBLENoti.h; sourceTree = "<group>"; };
 		E1CCC4031E5D5A3F00883990 /* TBLENoti.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TBLENoti.m; sourceTree = "<group>"; };
 		E1EA86E11E48557900BB4C35 /* BadgeDevice.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BadgeDevice.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -126,6 +129,8 @@
 				E1EA86E81E48557900BB4C35 /* AppDelegate.m */,
 				E1EA86EA1E48557900BB4C35 /* ViewController.h */,
 				E1EA86EB1E48557900BB4C35 /* ViewController.m */,
+				E1BBD3761E5EC2510037D9E5 /* DeviceInfoTableViewController.h */,
+				E1BBD3771E5EC2510037D9E5 /* DeviceInfoTableViewController.m */,
 				E1EA86ED1E48557900BB4C35 /* Main.storyboard */,
 				E1EA86F01E48557900BB4C35 /* Assets.xcassets */,
 				E1EA86F51E48557900BB4C35 /* Info.plist */,
@@ -292,6 +297,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E1EA86EC1E48557900BB4C35 /* ViewController.m in Sources */,
+				E1BBD3781E5EC2510037D9E5 /* DeviceInfoTableViewController.m in Sources */,
 				E1EA86E91E48557900BB4C35 /* AppDelegate.m in Sources */,
 				E1EA86E61E48557900BB4C35 /* main.m in Sources */,
 			);
