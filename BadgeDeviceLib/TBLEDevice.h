@@ -24,8 +24,8 @@
 /// 状态信息
 /// 设备的mac地址信息，可能读不出来
 @property (nonatomic, strong, readonly) NSString *macAddress;
-/// 设备的硬件软件版本，同mac
-@property (nonatomic, strong, readonly) NSString *softwareVersion;
+/// 设备的固件版本，同mac
+@property (nonatomic, strong, readonly) NSString *firmware;
 
 /*!
  *	@brief 信号强度

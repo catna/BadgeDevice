@@ -21,13 +21,13 @@
 + (NSString *)macWithCharacteristicData:(NSData *)macData;
 
 /*!
- *	@brief 把 characteristic 的 value 转换为 软件版本字符串
+ *	@brief 把 characteristic 的 value 转换为 固件版本字符串
  *
  *	@param data	characteristic 的 value
  *
- *	@return 如果解析成功返回的是软件信息字符串,否则返回的是空字符串
+ *	@return 如果解析成功返回的是固件信息字符串,否则返回的是空字符串
  */
-+ (NSString *)softwareStringFrom:(NSData *)data;
++ (NSString *)firmwareStringFrom:(NSData *)data;
 
 /*!
  *	@brief 返回数据单位百帕斯卡

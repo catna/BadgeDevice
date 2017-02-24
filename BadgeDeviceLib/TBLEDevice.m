@@ -218,7 +218,7 @@
         _macAddress = [TBLETools macWithCharacteristicData:ch.value];
     }
     if ([ch.UUID.UUIDString isEqualToString:SoftwareVersionUUID]) {
-        _softwareVersion = [TBLETools softwareStringFrom:ch.value];
+        _firmware = [TBLETools firmwareStringFrom:ch.value];
     }
 }
 

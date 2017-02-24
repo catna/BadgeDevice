@@ -9,11 +9,10 @@
 #import "TBLEData.h"
 
 @interface TBLEData ()
-/// 用于将时间按照一定的格式打印出来
-@property (nonatomic, strong) NSDateFormatter *dateFormatter;
 @end
 
 @implementation TBLEData
+@synthesize dateFormatter = _dateFormatter;
 // 在设置这些变量的时候就判断数据是否在正常范围内,从而改变数据的可用性
 // 选取一个属性设置就好,多了没必要
 - (void)setTemp:(double)temp {

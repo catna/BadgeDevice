@@ -23,7 +23,7 @@
     return @"";
 }
 
-+ (NSString *)softwareStringFrom:(NSData *)data {
++ (NSString *)firmwareStringFrom:(NSData *)data {
     NSString *str = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
     if (!str) {
         str = @"";
